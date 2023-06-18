@@ -37,7 +37,7 @@ class CategoryPage extends StatelessWidget {
       icon: Icons.sports_soccer,
     ),
     const Category(
-      name: 'General Knowledge',
+      name: 'GK',
       color: Colors.blue,
       icon: Icons.school,
     ),

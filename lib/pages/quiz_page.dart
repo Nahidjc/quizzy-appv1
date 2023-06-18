@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quizzy/components/multiple_answer_quiz.dart';
+import 'package:quizzy/components/single_answer_quiz.dart';
 import 'package:quizzy/pages/quiz_result.dart';
 import 'dart:async';
 import 'package:quizzy/utils/quiz_points.dart';
@@ -16,14 +18,24 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Map<String, dynamic>> quizData = [
     {
-      "question": "Which of the following are programming paradigms?",
-      "options": ["Imperative", "Declarative", "Functional", "Procedural"],
-      "correctAnswers": [0, 1, 2],
-    },
-    {
       "question": "What is the capital of Australia?",
       "options": ["Sydney", "Melbourne", "Canberra", "Perth"],
       "correctAnswer": 2
+    },
+    {
+      "question": "Who painted the Mona Lisa?",
+      "options": [
+        "Leonardo da Vinci",
+        "Vincent van Gogh",
+        "Pablo Picasso",
+        "Michelangelo"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "question": "Which country won the FIFA World Cup in 2018?",
+      "options": ["France", "Brazil", "Germany", "Spain"],
+      "correctAnswer": 0
     },
     {
       "question": "What is the chemical symbol for gold?",
@@ -44,6 +56,42 @@ class _QuizPageState extends State<QuizPage> {
         "George Orwell"
       ],
       "correctAnswer": 0
+    },
+    {
+      "question": "What is the tallest mountain in the world?",
+      "options": ["Mount Everest", "K2", "Kangchenjunga", "Makalu"],
+      "correctAnswer": 0
+    },
+    {
+      "question":
+          "Which programming language is known as the 'mother of all languages'?",
+      "options": ["C", "Java", "Python", "Assembly"],
+      "correctAnswer": 3
+    },
+    {
+      "question": "Who is the author of the Harry Potter book series?",
+      "options": [
+        "J.K. Rowling",
+        "Stephen King",
+        "George R.R. Martin",
+        "Dan Brown"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "question": "What is the largest ocean on Earth?",
+      "options": [
+        "Pacific Ocean",
+        "Atlantic Ocean",
+        "Indian Ocean",
+        "Arctic Ocean"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "question": "Which of the following are programming paradigms?",
+      "options": ["Imperative", "Declarative", "Functional", "Procedural"],
+      "correctAnswers": [0, 1, 2],
     },
   ];
 
@@ -197,12 +245,6 @@ class _QuizPageState extends State<QuizPage> {
                     style: const TextStyle(
                         fontSize: 14, fontWeight: FontWeight.bold),
                   ),
-                  // Text('Question ${currentQuestionIndex + 1}'),
-                  // Text(
-                  //   currentQuestion['question'],
-                  //   style: const TextStyle(fontSize: 20),
-                  //   textAlign: TextAlign.center,
-                  // ),
                   const SizedBox(height: 20),
                   if (currentQuestion.containsKey('correctAnswers'))
                     MultipleCorrectAnswerQuestionWidget(
@@ -255,73 +297,6 @@ class _QuizPageState extends State<QuizPage> {
                 ],
               ),
             ),
-    );
-  }
-}
-
-class SingleCorrectAnswerQuestionWidget extends StatelessWidget {
-  final List<dynamic> options;
-  final dynamic selectedAnswer;
-  final ValueChanged<dynamic> onAnswerSelected;
-
-  const SingleCorrectAnswerQuestionWidget({
-    Key? key,
-    required this.options,
-    required this.selectedAnswer,
-    required this.onAnswerSelected,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: List.generate(options.length, (index) {
-        return ListTile(
-          title: Text(options[index]),
-          leading: Radio(
-            value: index,
-            groupValue: selectedAnswer,
-            onChanged: (value) {
-              onAnswerSelected(value);
-            },
-          ),
-        );
-      }),
-    );
-  }
-}
-
-class MultipleCorrectAnswerQuestionWidget extends StatelessWidget {
-  final List<dynamic> options;
-  final List<dynamic> selectedAnswers;
-  final ValueChanged<List<dynamic>> onAnswerSelected;
-
-  const MultipleCorrectAnswerQuestionWidget({
-    required this.options,
-    required this.selectedAnswers,
-    required this.onAnswerSelected,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: List.generate(options.length, (index) {
-        return ListTile(
-          title: Text(options[index]),
-          leading: Checkbox(
-            value: selectedAnswers.contains(index),
-            onChanged: (value) {
-              List<dynamic> updatedAnswers = List.from(selectedAnswers);
-              if (value == true) {
-                updatedAnswers.add(index);
-              } else {
-                updatedAnswers.remove(index);
-              }
-              onAnswerSelected(updatedAnswers);
-            },
-          ),
-        );
-      }),
     );
   }
 }
