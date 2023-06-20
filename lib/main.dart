@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quizzy/pages/home_page.dart';
+import 'package:quizzy/pages/leaderboard.dart';
 import 'package:quizzy/pages/quiz_category.dart';
 
 void main() {
@@ -17,7 +19,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: CategoryPage(),
+      home: HomePage(),
     );
   }
 }
