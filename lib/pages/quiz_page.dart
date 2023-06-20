@@ -158,7 +158,8 @@ class _QuizPageState extends State<QuizPage> {
           builder: (context) => QuizResultPage(
               quizLength: quizData.length,
               correctAnswers: correctAnswers,
-              percentage: (correctAnswers / quizData.length) * 100),
+              percentage: (correctAnswers / quizData.length) * 100,
+              quizpoint: quizpoint),
         ),
       );
     });

@@ -4,11 +4,13 @@ class QuizResultPage extends StatefulWidget {
   final int quizLength;
   final int correctAnswers;
   final double percentage;
+  final int quizpoint;
 
   QuizResultPage({
     required this.quizLength,
     required this.correctAnswers,
     required this.percentage,
+      required this.quizpoint
   });
 
   @override
@@ -105,6 +107,14 @@ class _QuizResultPageState extends State<QuizResultPage>
             const SizedBox(height: 10),
             Text(
               'Correct Answers: ${widget.correctAnswers}/${widget.quizLength}',
+              style: const TextStyle(
+                fontSize: 18,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'Quiz Points: ${widget.quizpoint}',
               style: const TextStyle(
                 fontSize: 18,
                 color: Colors.white,
