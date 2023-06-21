@@ -99,7 +99,7 @@ class _QuizPageState extends State<QuizPage> {
   int score = 0;
   int points = 0;
   bool isSubmitting = false;
-  int timeRemaining = 100;
+  int timeRemaining = 600;
   Timer? timer;
   int currentQuestionIndex = 0;
 
