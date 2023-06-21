@@ -17,10 +17,16 @@ class MultipleCorrectAnswerQuestionWidget extends StatelessWidget {
     return Column(
       children: List.generate(options.length, (index) {
         return Container(
-          margin: const EdgeInsets.symmetric(vertical: 8),
+          margin: const EdgeInsets.symmetric(vertical: 6),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: selectedAnswers.contains(index)
+                  ? Colors.purple
+                  : Colors.grey[300]!,
+              width: 2,
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.3),
@@ -48,10 +54,10 @@ class MultipleCorrectAnswerQuestionWidget extends StatelessWidget {
               }
               onAnswerSelected(updatedAnswers);
             },
-            activeColor: Colors.blue,
+            activeColor: Colors.purple,
             checkColor: Colors.white,
             controlAffinity: ListTileControlAffinity.leading,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 6),
           ),
         );
       }),

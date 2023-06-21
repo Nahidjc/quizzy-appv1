@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
 class QuizResultPage extends StatefulWidget {
   final int quizLength;
   final int correctAnswers;
@@ -107,21 +106,6 @@ class _QuizResultPageState extends State<QuizResultPage>
               height: MediaQuery.of(context).size.height * 0.5,
             ),
           ),
-          // Positioned(
-          //   // top: MediaQuery.of(context).size.height / 2,
-          //   left: 0,
-          //   right: 0,
-          //   bottom: 0,
-          //   child: ClipRRect(
-          //     borderRadius: const BorderRadius.only(
-          //       topLeft: Radius.circular(20.0),
-          //       topRight: Radius.circular(20.0),
-          //     ),
-          //     child: Container(
-          //       color: Colors.white, // Bottom half color
-          //     ),
-          //   ),
-          // ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -131,7 +115,7 @@ class _QuizResultPageState extends State<QuizResultPage>
                 children: [
                   Flexible(
                     child: Container(
-                        padding: const EdgeInsets.only(top: 100),
+                        padding: const EdgeInsets.only(top: 125),
                         child: AnimatedBuilder(
                           animation: _animationController,
                           builder: (context, child) {
@@ -143,7 +127,6 @@ class _QuizResultPageState extends State<QuizResultPage>
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(100)),
                                   child: CustomPaint(
-                                
                                     painter: CircleProgressBarPainter(
                                       progress: _animation.value,
                                       color: Colors.green,
@@ -384,6 +367,15 @@ class CircleProgressBarPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
+    const circle4Radius = 90.0;
+    final circle4Paint = Paint()
+      ..color = const Color.fromARGB(255, 220, 174, 255);
+    canvas.drawCircle(center, circle4Radius, circle4Paint);
+    const circle1Radius = 75.0;
+    final circle1Paint = Paint()..color = Colors.white;
+    canvas.drawCircle(center, circle1Radius, circle1Paint);
+
+
     final radius = (size.width - strokeWidth) / 2;
     final backgroundPaint = Paint()
       ..color = backgroundColor
@@ -396,7 +388,6 @@ class CircleProgressBarPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round;
 
     canvas.drawCircle(center, radius, backgroundPaint);
-
     const startAngle = -90.0 * (3.14 / 180);
     final sweepAngle = 360.0 * (progress / 100) * (3.14 / 180);
 
@@ -431,16 +422,18 @@ class CirclePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     const circle1 = Offset(-20, 140);
     const circle1Radius = 80.0;
-    final circle1Paint = Paint()..color = const Color(0xFFBA86E3);
+    final circle1Paint = Paint()
+      ..color = const Color.fromARGB(255, 220, 174, 255);
 
     const circle2 = Offset(190, 0);
     const circle2Radius = 70.0;
-    final circle2Paint = Paint()..color = const Color(0xFFBA86E3);
+    final circle2Paint = Paint()
+      ..color = const Color.fromARGB(255, 220, 174, 255);
 
     const circle3 = Offset(420, 200);
     const circle3Radius = 80.0;
-    final circle3Paint = Paint()..color = const Color(0xFFBA86E3);
-
+    final circle3Paint = Paint()
+      ..color = const Color.fromARGB(255, 220, 174, 255);
     canvas.drawCircle(circle1, circle1Radius, circle1Paint);
     canvas.drawCircle(circle2, circle2Radius, circle2Paint);
     canvas.drawCircle(circle3, circle3Radius, circle3Paint);
