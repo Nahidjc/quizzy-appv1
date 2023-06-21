@@ -41,11 +41,8 @@ class _MyAppBarState extends State<MyAppBar>
               children: [
                 Row(children: [
                   Container(
-                    // height: 90.0,
-                    // width: 90.0,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40.0),
-                      // color: Colors.white
                     ),
                     child: const CircleAvatar(
                       radius: 30.0,
@@ -71,30 +68,34 @@ class _MyAppBarState extends State<MyAppBar>
                 ]),
                 Row(
                   children: [
-                    TextButton(
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all<OutlinedBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                              side: const BorderSide(
-                                color: Colors.white,
-                                width: 1.0,
+                    Container(
+                        height: 30.0,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  const Color(0xFF5826E5)),
+                              shape: MaterialStateProperty.all<OutlinedBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  side: const BorderSide(
+                                    color: Colors.white,
+                                    width: 1.2,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                          // alignment: Alignment.centerLeft
-                        ),
-                        onPressed: () {},
-                        child: const Row(children: [
-                          Icon(Icons.emoji_events, color: Color(0xFFFFD700)),
-                          Text("100",
-                              style: TextStyle(color: Color(0xFFFFD700)))
-                        ])),
+                            onPressed: () {},
+                            child: const Row(children: [
+                              Icon(Icons.emoji_events,
+                                  color: Color(0xFFFFD700), size: 20.0),
+                              Text("100",
+                                  style: TextStyle(
+                                      color: Color(0xFFFFD700), fontSize: 14.0))
+                            ]))),
                     IconButton(
                       onPressed: () {},
                       icon: const Icon(Icons.notifications_outlined,
                           color: Colors.white),
-                      // alignment: Alignment.centerRight
                     ),
                   ],
                 )
@@ -104,57 +105,60 @@ class _MyAppBarState extends State<MyAppBar>
             Container(
               height: 80.0,
               width: 380.0,
-              // color: Colors.white,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.0),
                   color: Colors.white),
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
+                        margin: const EdgeInsets.only(left: 16.0),
                         child: const Icon(
-                      Icons.emoji_events,
-                      color: Color(0xFFFFD700),
-                      size: 50.0,
-                    )),
+                          Icons.emoji_events,
+                          color: Color(0xFFFFD700),
+                          size: 50.0,
+                        )),
                     Container(
                         alignment: Alignment.center,
-                        padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                        padding: const EdgeInsets.only(top: 10.0),
                         child: const Column(children: [
                           Text("Upcoming Competitions",
                               style: TextStyle(
                                   fontSize: 14.0,
                                   fontWeight: FontWeight.w400,
-                                  letterSpacing: 0.4)),
+                                  letterSpacing: 0.5)),
                           Text("Weekly challenges",
                               style: TextStyle(
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.bold,
-                                  letterSpacing: 0.5)),
-                          Text("Now 11 am - 11.30 pm",
+                                  letterSpacing: 0.6)),
+                          Text("Now 11.00 am - 11.30 pm",
                               style: TextStyle(
                                   fontSize: 14.0,
                                   fontWeight: FontWeight.w400,
-                                  letterSpacing: 0.5))
+                                  letterSpacing: 0.6))
                         ])),
-                    TextButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.yellow),
-                        minimumSize:
-                            MaterialStateProperty.all<Size>(const Size(75, 75)),
-                        shape: MaterialStateProperty.all<OutlinedBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
+                    Container(
+                      margin: const EdgeInsets.only(right: 3.0),
+                      child: TextButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.yellow),
+                          minimumSize: MaterialStateProperty.all<Size>(
+                              const Size(75, 75)),
+                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
                           ),
                         ),
+                        onPressed: () {},
+                        child: const Text("Join\nNow",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.0)),
                       ),
-                      onPressed: () {},
-                      child: const Text("Join\nNow",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0)),
                     )
                   ]),
             )
