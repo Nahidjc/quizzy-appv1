@@ -64,7 +64,7 @@ class Categories extends StatelessWidget {
           return GestureDetector(
             child: Container(
               decoration: BoxDecoration(
-                color:Colors.white,
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(10.0),
                 boxShadow: [
                   BoxShadow(
@@ -84,12 +84,10 @@ class Categories extends StatelessWidget {
                     color: category.color,
                   ),
                   const SizedBox(height: 8.0),
-                  Center(child: Text(
+                  Center(
+                      child: Text(
                     category.name,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 16.0
-                    ),
+                    style: const TextStyle(color: Colors.black, fontSize: 16.0),
                   ))
                 ],
               ),
