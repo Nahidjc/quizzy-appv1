@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:quizzy/pages/result_review.dart';
+
+class ContentItem {
+  final IconData icon;
+  final String label;
+  final Color color;
+  final VoidCallback onTap;
+
+  ContentItem({
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.onTap,
+  });
+}
+
 class QuizResultPage extends StatefulWidget {
-  final int quizLength;
+  final List<Map<String, dynamic>> quizData;
   final int correctAnswers;
   final double percentage;
   final int quizpoint;
+  final List<dynamic> selectedArray;
 
   QuizResultPage(
-      {required this.quizLength,
+      {required this.quizData,
       required this.correctAnswers,
       required this.percentage,
-      required this.quizpoint});
+      required this.quizpoint,
+      required this.selectedArray});
 
   @override
   State<QuizResultPage> createState() => _QuizResultPageState();
@@ -19,43 +37,67 @@ class _QuizResultPageState extends State<QuizResultPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
-
-  final List<ContentItem> contentItems = [
-    ContentItem(
-      icon: Icons.refresh,
-      label: 'Play again',
-      color: Colors.blue,
-    ),
-    ContentItem(
-      icon: Icons.remove_red_eye,
-      label: 'Review answer',
-      color: Colors.orange,
-    ),
-    ContentItem(
-      icon: Icons.share,
-      label: 'Share score',
-      color: Colors.purple,
-    ),
-    ContentItem(
-      icon: Icons.picture_as_pdf,
-      label: 'Generate PDF',
-      color: Colors.indigo,
-    ),
-    ContentItem(
-      icon: Icons.home,
-      label: 'Home',
-      color: Colors.lime,
-    ),
-    ContentItem(
-      icon: Icons.leaderboard,
-      label: 'Leaderboard',
-      color: Colors.teal,
-    ),
-  ];
+  late int quizLength;
+  // final List<ContentItem> contentItems = [
+  //   ContentItem(
+  //     icon: Icons.refresh,
+  //     label: 'Play again',
+  //     color: Colors.blue,
+  //     onTap: () {
+  //       // Handle 'Play again' tapped
+  //     },
+  //   ),
+  //   ContentItem(
+  //     icon: Icons.remove_red_eye,
+  //     label: 'Review answer',
+  //     color: Colors.orange,
+  //     onTap: () {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => ResultReviewPage()),
+  //       );
+  //     },
+  //   ),
+  //   ContentItem(
+  //     icon: Icons.share,
+  //     label: 'Share score',
+  //     color: Colors.purple,
+  //     onTap: () {
+  //       // Handle 'Share score' tapped
+  //     },
+  //   ),
+  //   ContentItem(
+  //     icon: Icons.picture_as_pdf,
+  //     label: 'Generate PDF',
+  //     color: Colors.indigo,
+  //     onTap: () {
+  //       // Handle 'Generate PDF' tapped
+  //     },
+  //   ),
+  //   ContentItem(
+  //     icon: Icons.home,
+  //     label: 'Home',
+  //     color: Colors.lime,
+  //     onTap: () {
+  //       // Handle 'Home' tapped
+  //     },
+  //   ),
+  //   ContentItem(
+  //     icon: Icons.leaderboard,
+  //     label: 'Leaderboard',
+  //     color: Colors.teal,
+  //     onTap: () {
+  //       // Handle 'Leaderboard' tapped
+  //     },
+  //   ),
+  // ];
 
   @override
   void initState() {
     super.initState();
+    quizLength = widget.quizData.length;
+    print(widget.quizData);
+    print(widget.selectedArray);
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -87,7 +129,6 @@ class _QuizResultPageState extends State<QuizResultPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
         backgroundColor: Colors.white,
         body: Stack(children: [
           ClipRRect(
@@ -172,8 +213,7 @@ class _QuizResultPageState extends State<QuizResultPage>
                                       ),
                                     ),
                                   ),
-                                )
-                            );
+                                ));
                           },
                         )),
                   ),
@@ -233,7 +273,7 @@ class _QuizResultPageState extends State<QuizResultPage>
                                             CrossAxisAlignment.stretch,
                                         children: [
                                           Text(
-                                            '${widget.quizLength}',
+                                            '$quizLength',
                                             style: const TextStyle(
                                                 color: Colors.purple,
                                                 fontWeight: FontWeight.bold,
@@ -281,7 +321,7 @@ class _QuizResultPageState extends State<QuizResultPage>
                                             CrossAxisAlignment.stretch,
                                         children: [
                                           Text(
-                                            '${widget.quizLength - widget.correctAnswers}',
+                                            '${quizLength - widget.correctAnswers}',
                                             style: const TextStyle(
                                                 color: Colors.orange,
                                                 fontWeight: FontWeight.bold,
@@ -317,37 +357,184 @@ class _QuizResultPageState extends State<QuizResultPage>
                         childAspectRatio: 1.2,
                         mainAxisSpacing: 0.0,
                         crossAxisSpacing: 0.0,
-                        children: contentItems.map((item) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: item.color,
-                                child: Icon(
-                                  item.icon,
-                                  color: Colors.white,
-                                  size: 25.0,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              // Handle 'Play again' tapped
+                            },
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: Colors.blue,
+                                  child: Icon(
+                                    Icons.refresh,
+                                    color: Colors.white,
+                                    size: 25.0,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 2.0),
-                              Text(
-                                item.label,
-                                style: const TextStyle(
-                                    fontSize: 14.0, color: Colors.black),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          );
-                        }).toList(),
+                                const SizedBox(height: 2.0),
+                                Text(
+                                  'Play again',
+                                  style: const TextStyle(
+                                    fontSize: 14.0,
+                                    color: Colors.black,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ResultReviewPage(
+                                        quizData: widget.quizData,
+                                        selectedAnswers: widget.selectedArray)),
+                              );
+                            },
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: Colors.orange,
+                                  child: Icon(
+                                    Icons.remove_red_eye,
+                                    color: Colors.white,
+                                    size: 25.0,
+                                  ),
+                                ),
+                                const SizedBox(height: 2.0),
+                                Text(
+                                  'Review answer',
+                                  style: const TextStyle(
+                                    fontSize: 14.0,
+                                    color: Colors.black,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              // Handle 'Share score' tapped
+                            },
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: Colors.purple,
+                                  child: Icon(
+                                    Icons.share,
+                                    color: Colors.white,
+                                    size: 25.0,
+                                  ),
+                                ),
+                                const SizedBox(height: 2.0),
+                                Text(
+                                  'Share score',
+                                  style: const TextStyle(
+                                    fontSize: 14.0,
+                                    color: Colors.black,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              // Handle 'Generate PDF' tapped
+                            },
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: Colors.indigo,
+                                  child: Icon(
+                                    Icons.picture_as_pdf,
+                                    color: Colors.white,
+                                    size: 25.0,
+                                  ),
+                                ),
+                                const SizedBox(height: 2.0),
+                                Text(
+                                  'Generate PDF',
+                                  style: const TextStyle(
+                                    fontSize: 14.0,
+                                    color: Colors.black,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              // Handle 'Home' tapped
+                            },
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: Colors.lime,
+                                  child: Icon(
+                                    Icons.home,
+                                    color: Colors.white,
+                                    size: 25.0,
+                                  ),
+                                ),
+                                const SizedBox(height: 2.0),
+                                Text(
+                                  'Home',
+                                  style: const TextStyle(
+                                    fontSize: 14.0,
+                                    color: Colors.black,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              // Handle 'Leaderboard' tapped
+                            },
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: Colors.teal,
+                                  child: Icon(
+                                    Icons.leaderboard,
+                                    color: Colors.white,
+                                    size: 25.0,
+                                  ),
+                                ),
+                                const SizedBox(height: 2.0),
+                                Text(
+                                  'Leaderboard',
+                                  style: const TextStyle(
+                                    fontSize: 14.0,
+                                    color: Colors.black,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    )
+                    ),
                   ],
                 ),
-              ),
+              )
             ],
           )
-        ])
-    );
+        ]));
   }
 }
 
@@ -374,7 +561,6 @@ class CircleProgressBarPainter extends CustomPainter {
     const circle1Radius = 75.0;
     final circle1Paint = Paint()..color = Colors.white;
     canvas.drawCircle(center, circle1Radius, circle1Paint);
-
 
     final radius = (size.width - strokeWidth) / 2;
     final backgroundPaint = Paint()
@@ -407,14 +593,6 @@ class CircleProgressBarPainter extends CustomPainter {
         backgroundColor != oldDelegate.backgroundColor ||
         strokeWidth != oldDelegate.strokeWidth;
   }
-}
-
-class ContentItem {
-  final IconData icon;
-  final String label;
-  final Color color;
-
-  ContentItem({required this.icon, required this.label, required this.color});
 }
 
 class CirclePainter extends CustomPainter {

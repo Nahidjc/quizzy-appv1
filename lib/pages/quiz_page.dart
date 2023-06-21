@@ -22,72 +22,72 @@ class _QuizPageState extends State<QuizPage> {
       "options": ["Sydney", "Melbourne", "Canberra", "Perth"],
       "correctAnswer": 2
     },
-    {
-      "question": "Who painted the Mona Lisa?",
-      "options": [
-        "Leonardo da Vinci",
-        "Vincent van Gogh",
-        "Pablo Picasso",
-        "Michelangelo"
-      ],
-      "correctAnswer": 0
-    },
-    {
-      "question": "Which country won the FIFA World Cup in 2018?",
-      "options": ["France", "Brazil", "Germany", "Spain"],
-      "correctAnswer": 0
-    },
-    {
-      "question": "What is the chemical symbol for gold?",
-      "options": ["Au", "Ag", "Fe", "Cu"],
-      "correctAnswer": 0
-    },
-    {
-      "question": "Which planet is known as the Red Planet?",
-      "options": ["Mars", "Venus", "Jupiter", "Mercury"],
-      "correctAnswer": 0
-    },
-    {
-      "question": "Who wrote the novel 'To Kill a Mockingbird'?",
-      "options": [
-        "Harper Lee",
-        "Jane Austen",
-        "F. Scott Fitzgerald",
-        "George Orwell"
-      ],
-      "correctAnswer": 0
-    },
-    {
-      "question": "What is the tallest mountain in the world?",
-      "options": ["Mount Everest", "K2", "Kangchenjunga", "Makalu"],
-      "correctAnswer": 0
-    },
-    {
-      "question":
-          "Which programming language is known as the 'mother of all languages'?",
-      "options": ["C", "Java", "Python", "Assembly"],
-      "correctAnswer": 0
-    },
-    {
-      "question": "Who is the author of the Harry Potter book series?",
-      "options": [
-        "J.K. Rowling",
-        "Stephen King",
-        "George R.R. Martin",
-        "Dan Brown"
-      ],
-      "correctAnswer": 0
-    },
-    {
-      "question": "What is the largest ocean on Earth?",
-      "options": [
-        "Pacific Ocean",
-        "Atlantic Ocean",
-        "Indian Ocean",
-        "Arctic Ocean"
-      ],
-      "correctAnswer": 0
-    },
+    // {
+    //   "question": "Who painted the Mona Lisa?",
+    //   "options": [
+    //     "Leonardo da Vinci",
+    //     "Vincent van Gogh",
+    //     "Pablo Picasso",
+    //     "Michelangelo"
+    //   ],
+    //   "correctAnswer": 0
+    // },
+    // {
+    //   "question": "Which country won the FIFA World Cup in 2018?",
+    //   "options": ["France", "Brazil", "Germany", "Spain"],
+    //   "correctAnswer": 0
+    // },
+    // {
+    //   "question": "What is the chemical symbol for gold?",
+    //   "options": ["Au", "Ag", "Fe", "Cu"],
+    //   "correctAnswer": 0
+    // },
+    // {
+    //   "question": "Which planet is known as the Red Planet?",
+    //   "options": ["Mars", "Venus", "Jupiter", "Mercury"],
+    //   "correctAnswer": 0
+    // },
+    // {
+    //   "question": "Who wrote the novel 'To Kill a Mockingbird'?",
+    //   "options": [
+    //     "Harper Lee",
+    //     "Jane Austen",
+    //     "F. Scott Fitzgerald",
+    //     "George Orwell"
+    //   ],
+    //   "correctAnswer": 0
+    // },
+    // {
+    //   "question": "What is the tallest mountain in the world?",
+    //   "options": ["Mount Everest", "K2", "Kangchenjunga", "Makalu"],
+    //   "correctAnswer": 0
+    // },
+    // {
+    //   "question":
+    //       "Which programming language is known as the 'mother of all languages'?",
+    //   "options": ["C", "Java", "Python", "Assembly"],
+    //   "correctAnswer": 0
+    // },
+    // {
+    //   "question": "Who is the author of the Harry Potter book series?",
+    //   "options": [
+    //     "J.K. Rowling",
+    //     "Stephen King",
+    //     "George R.R. Martin",
+    //     "Dan Brown"
+    //   ],
+    //   "correctAnswer": 0
+    // },
+    // {
+    //   "question": "What is the largest ocean on Earth?",
+    //   "options": [
+    //     "Pacific Ocean",
+    //     "Atlantic Ocean",
+    //     "Indian Ocean",
+    //     "Arctic Ocean"
+    //   ],
+    //   "correctAnswer": 0
+    // },
     {
       "question": "Which of the following are programming paradigms?",
       "options": ["Imperative", "Declarative", "Functional", "Procedural"],
@@ -99,9 +99,22 @@ class _QuizPageState extends State<QuizPage> {
   int score = 0;
   int points = 0;
   bool isSubmitting = false;
-  int timeRemaining = 600;
+  int timeRemaining = 20;
   Timer? timer;
   int currentQuestionIndex = 0;
+
+  List<dynamic> getSelectedAnswer(Map<int, dynamic> selectedAnswers) {
+    List<dynamic> selectedAnswersArray = [];
+    for (int i = 0; i < quizData.length; i++) {
+      if (!selectedAnswers.containsKey(i)) {
+        selectedAnswersArray.add(quizData[i]['options'].length);
+      } else {
+        dynamic answer = selectedAnswers[i];
+        selectedAnswersArray.add(answer);
+      }
+    }
+    return selectedAnswersArray;
+  }
 
   void startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
@@ -122,7 +135,7 @@ class _QuizPageState extends State<QuizPage> {
       isSubmitting = true;
     });
 
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 2), () {
       int correctAnswers = 0;
       for (int i = 0; i < quizData.length; i++) {
         final question = quizData[i];
@@ -152,14 +165,17 @@ class _QuizPageState extends State<QuizPage> {
         points = quizpoint;
         isSubmitting = false;
       });
+      List<dynamic> selectedArray = getSelectedAnswer(selectedAnswers);
+      print(selectedArray);
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => QuizResultPage(
-              quizLength: quizData.length,
+              quizData: quizData,
               correctAnswers: correctAnswers,
               percentage: (correctAnswers / quizData.length) * 100,
-              quizpoint: quizpoint),
+              quizpoint: quizpoint,
+              selectedArray: selectedArray),
         ),
       );
     });
@@ -221,9 +237,7 @@ class _QuizPageState extends State<QuizPage> {
     final List<dynamic> questionOptions = getOptions();
 
     return Scaffold(
-      appBar: AppBar(
-      
-      ),
+      appBar: AppBar(),
       body: isSubmitting
           ? const Center(
               child: CircularProgressIndicator(),
