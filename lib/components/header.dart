@@ -41,25 +41,24 @@ class _MyAppBarState extends State<MyAppBar>
               children: [
                 Row(children: [
                   Container(
+                    margin: const EdgeInsets.only(right: 8.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40.0),
                     ),
                     child: const CircleAvatar(
-                      radius: 30.0,
-                      backgroundImage: NetworkImage("assets/images/avatar.png"),
+                      radius: 20.0,
+                      backgroundImage: AssetImage("assets/images/avatar.png"),
                     ),
                   ),
                   const Column(children: [
                     Text(
                       "Hello",
-                      textAlign: TextAlign.left,
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 12.0,
                           fontWeight: FontWeight.w300),
                     ),
                     Text("Pradyut",
-                        textAlign: TextAlign.left,
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 14.0,
