@@ -1,49 +1,76 @@
 import 'package:flutter/material.dart';
+import 'package:quizzy/pages/quiz_page.dart';
 
 class Category {
   final String name;
   final Color color;
   final IconData icon;
+  final void Function(BuildContext) onTap;
 
   const Category({
     required this.name,
     required this.color,
     required this.icon,
+    required this.onTap,
   });
 }
 
 class Categories extends StatelessWidget {
   Categories({Key? key}) : super(key: key);
+
   final List<Category> categories = [
-    const Category(
+    Category(
       name: 'Technical',
       color: Colors.blue,
       icon: Icons.code,
+      onTap: (BuildContext context) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => QuizPage(),
+          ),
+        );
+      },
     ),
-    const Category(
+    Category(
       name: 'Arts',
       color: Colors.green,
       icon: Icons.balance,
+      onTap: (BuildContext context) {
+        // Handle 'Arts' category tapped
+      },
     ),
-    const Category(
+    Category(
       name: 'UI/UX',
       color: Colors.orange,
       icon: Icons.design_services,
+      onTap: (BuildContext context) {
+        // Handle 'UI/UX' category tapped
+      },
     ),
-    const Category(
+    Category(
       name: 'Sports',
       color: Colors.teal,
       icon: Icons.sports_soccer,
+      onTap: (BuildContext context) {
+        // Handle 'Sports' category tapped
+      },
     ),
-    const Category(
+    Category(
       name: 'GK',
       color: Colors.blue,
       icon: Icons.school,
+      onTap: (BuildContext context) {
+        // Handle 'GK' category tapped
+      },
     ),
-    const Category(
+    Category(
       name: 'Science',
       color: Colors.green,
       icon: Icons.science,
+      onTap: (BuildContext context) {
+        // Handle 'Science' category tapped
+      },
     ),
   ];
 
@@ -62,6 +89,7 @@ class Categories extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           Category category = categories[index];
           return GestureDetector(
+            onTap: () => category.onTap(context),
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -85,10 +113,14 @@ class Categories extends StatelessWidget {
                   ),
                   const SizedBox(height: 8.0),
                   Center(
-                      child: Text(
-                    category.name,
-                    style: const TextStyle(color: Colors.black, fontSize: 16.0),
-                  ))
+                    child: Text(
+                      category.name,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

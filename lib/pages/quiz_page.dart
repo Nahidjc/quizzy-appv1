@@ -4,12 +4,11 @@ import 'package:quizzy/components/single_answer_quiz.dart';
 import 'package:quizzy/pages/quiz_result.dart';
 import 'dart:async';
 import 'package:quizzy/utils/quiz_points.dart';
-import 'package:quizzy/pages/quiz_category.dart';
 import 'package:quizzy/widget/circular_progress.dart';
 
 class QuizPage extends StatefulWidget {
-  final Category category;
-  const QuizPage({Key? key, required this.category}) : super(key: key);
+ 
+  const QuizPage({Key? key}) : super(key: key);
 
   @override
   State<QuizPage> createState() => _QuizPageState();

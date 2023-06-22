@@ -82,7 +82,7 @@ class CategoryPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => QuizPage(category: category),
+                  builder: (context) => const QuizPage(),
                 ),
               );
             },
