@@ -22,12 +22,14 @@ class QuizResultPage extends StatefulWidget {
   final int quizpoint;
   final List<dynamic> selectedArray;
 
-  QuizResultPage(
-      {required this.quizData,
+  const QuizResultPage(
+      {Key? key,
+      required this.quizData,
       required this.correctAnswers,
       required this.percentage,
       required this.quizpoint,
-      required this.selectedArray});
+      required this.selectedArray})
+      : super(key: key);
 
   @override
   State<QuizResultPage> createState() => _QuizResultPageState();
@@ -38,66 +40,10 @@ class _QuizResultPageState extends State<QuizResultPage>
   late AnimationController _animationController;
   late Animation<double> _animation;
   late int quizLength;
-  // final List<ContentItem> contentItems = [
-  //   ContentItem(
-  //     icon: Icons.refresh,
-  //     label: 'Play again',
-  //     color: Colors.blue,
-  //     onTap: () {
-  //       // Handle 'Play again' tapped
-  //     },
-  //   ),
-  //   ContentItem(
-  //     icon: Icons.remove_red_eye,
-  //     label: 'Review answer',
-  //     color: Colors.orange,
-  //     onTap: () {
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => ResultReviewPage()),
-  //       );
-  //     },
-  //   ),
-  //   ContentItem(
-  //     icon: Icons.share,
-  //     label: 'Share score',
-  //     color: Colors.purple,
-  //     onTap: () {
-  //       // Handle 'Share score' tapped
-  //     },
-  //   ),
-  //   ContentItem(
-  //     icon: Icons.picture_as_pdf,
-  //     label: 'Generate PDF',
-  //     color: Colors.indigo,
-  //     onTap: () {
-  //       // Handle 'Generate PDF' tapped
-  //     },
-  //   ),
-  //   ContentItem(
-  //     icon: Icons.home,
-  //     label: 'Home',
-  //     color: Colors.lime,
-  //     onTap: () {
-  //       // Handle 'Home' tapped
-  //     },
-  //   ),
-  //   ContentItem(
-  //     icon: Icons.leaderboard,
-  //     label: 'Leaderboard',
-  //     color: Colors.teal,
-  //     onTap: () {
-  //       // Handle 'Leaderboard' tapped
-  //     },
-  //   ),
-  // ];
-
   @override
   void initState() {
     super.initState();
     quizLength = widget.quizData.length;
-    print(widget.quizData);
-    print(widget.selectedArray);
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -373,10 +319,10 @@ class _QuizResultPageState extends State<QuizResultPage>
                                     size: 25.0,
                                   ),
                                 ),
-                                const SizedBox(height: 2.0),
+                                SizedBox(height: 2.0),
                                 Text(
                                   'Play again',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14.0,
                                     color: Colors.black,
                                   ),
@@ -406,10 +352,10 @@ class _QuizResultPageState extends State<QuizResultPage>
                                     size: 25.0,
                                   ),
                                 ),
-                                const SizedBox(height: 2.0),
+                                SizedBox(height: 2.0),
                                 Text(
                                   'Review answer',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14.0,
                                     color: Colors.black,
                                   ),
@@ -433,10 +379,10 @@ class _QuizResultPageState extends State<QuizResultPage>
                                     size: 25.0,
                                   ),
                                 ),
-                                const SizedBox(height: 2.0),
+                                SizedBox(height: 2.0),
                                 Text(
                                   'Share score',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14.0,
                                     color: Colors.black,
                                   ),
@@ -460,10 +406,10 @@ class _QuizResultPageState extends State<QuizResultPage>
                                     size: 25.0,
                                   ),
                                 ),
-                                const SizedBox(height: 2.0),
+                                SizedBox(height: 2.0),
                                 Text(
                                   'Generate PDF',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14.0,
                                     color: Colors.black,
                                   ),
@@ -487,10 +433,10 @@ class _QuizResultPageState extends State<QuizResultPage>
                                     size: 25.0,
                                   ),
                                 ),
-                                const SizedBox(height: 2.0),
+                                SizedBox(height: 2.0),
                                 Text(
                                   'Home',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14.0,
                                     color: Colors.black,
                                   ),
@@ -514,10 +460,10 @@ class _QuizResultPageState extends State<QuizResultPage>
                                     size: 25.0,
                                   ),
                                 ),
-                                const SizedBox(height: 2.0),
+                                SizedBox(height: 2.0),
                                 Text(
                                   'Leaderboard',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14.0,
                                     color: Colors.black,
                                   ),

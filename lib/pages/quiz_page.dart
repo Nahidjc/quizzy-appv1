@@ -22,72 +22,72 @@ class _QuizPageState extends State<QuizPage> {
       "options": ["Sydney", "Melbourne", "Canberra", "Perth"],
       "correctAnswer": 2
     },
-    // {
-    //   "question": "Who painted the Mona Lisa?",
-    //   "options": [
-    //     "Leonardo da Vinci",
-    //     "Vincent van Gogh",
-    //     "Pablo Picasso",
-    //     "Michelangelo"
-    //   ],
-    //   "correctAnswer": 0
-    // },
-    // {
-    //   "question": "Which country won the FIFA World Cup in 2018?",
-    //   "options": ["France", "Brazil", "Germany", "Spain"],
-    //   "correctAnswer": 0
-    // },
-    // {
-    //   "question": "What is the chemical symbol for gold?",
-    //   "options": ["Au", "Ag", "Fe", "Cu"],
-    //   "correctAnswer": 0
-    // },
-    // {
-    //   "question": "Which planet is known as the Red Planet?",
-    //   "options": ["Mars", "Venus", "Jupiter", "Mercury"],
-    //   "correctAnswer": 0
-    // },
-    // {
-    //   "question": "Who wrote the novel 'To Kill a Mockingbird'?",
-    //   "options": [
-    //     "Harper Lee",
-    //     "Jane Austen",
-    //     "F. Scott Fitzgerald",
-    //     "George Orwell"
-    //   ],
-    //   "correctAnswer": 0
-    // },
-    // {
-    //   "question": "What is the tallest mountain in the world?",
-    //   "options": ["Mount Everest", "K2", "Kangchenjunga", "Makalu"],
-    //   "correctAnswer": 0
-    // },
-    // {
-    //   "question":
-    //       "Which programming language is known as the 'mother of all languages'?",
-    //   "options": ["C", "Java", "Python", "Assembly"],
-    //   "correctAnswer": 0
-    // },
-    // {
-    //   "question": "Who is the author of the Harry Potter book series?",
-    //   "options": [
-    //     "J.K. Rowling",
-    //     "Stephen King",
-    //     "George R.R. Martin",
-    //     "Dan Brown"
-    //   ],
-    //   "correctAnswer": 0
-    // },
-    // {
-    //   "question": "What is the largest ocean on Earth?",
-    //   "options": [
-    //     "Pacific Ocean",
-    //     "Atlantic Ocean",
-    //     "Indian Ocean",
-    //     "Arctic Ocean"
-    //   ],
-    //   "correctAnswer": 0
-    // },
+    {
+      "question": "Who painted the Mona Lisa?",
+      "options": [
+        "Leonardo da Vinci",
+        "Vincent van Gogh",
+        "Pablo Picasso",
+        "Michelangelo"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "question": "Which country won the FIFA World Cup in 2018?",
+      "options": ["France", "Brazil", "Germany", "Spain"],
+      "correctAnswer": 0
+    },
+    {
+      "question": "What is the chemical symbol for gold?",
+      "options": ["Au", "Ag", "Fe", "Cu"],
+      "correctAnswer": 0
+    },
+    {
+      "question": "Which planet is known as the Red Planet?",
+      "options": ["Mars", "Venus", "Jupiter", "Mercury"],
+      "correctAnswer": 0
+    },
+    {
+      "question": "Who wrote the novel 'To Kill a Mockingbird'?",
+      "options": [
+        "Harper Lee",
+        "Jane Austen",
+        "F. Scott Fitzgerald",
+        "George Orwell"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "question": "What is the tallest mountain in the world?",
+      "options": ["Mount Everest", "K2", "Kangchenjunga", "Makalu"],
+      "correctAnswer": 0
+    },
+    {
+      "question":
+          "Which programming language is known as the 'mother of all languages'?",
+      "options": ["C", "Java", "Python", "Assembly"],
+      "correctAnswer": 0
+    },
+    {
+      "question": "Who is the author of the Harry Potter book series?",
+      "options": [
+        "J.K. Rowling",
+        "Stephen King",
+        "George R.R. Martin",
+        "Dan Brown"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "question": "What is the largest ocean on Earth?",
+      "options": [
+        "Pacific Ocean",
+        "Atlantic Ocean",
+        "Indian Ocean",
+        "Arctic Ocean"
+      ],
+      "correctAnswer": 0
+    },
     {
       "question": "Which of the following are programming paradigms?",
       "options": ["Imperative", "Declarative", "Functional", "Procedural"],
@@ -99,7 +99,7 @@ class _QuizPageState extends State<QuizPage> {
   int score = 0;
   int points = 0;
   bool isSubmitting = false;
-  int timeRemaining = 20;
+  int timeRemaining = 5;
   Timer? timer;
   int currentQuestionIndex = 0;
 
@@ -107,7 +107,11 @@ class _QuizPageState extends State<QuizPage> {
     List<dynamic> selectedAnswersArray = [];
     for (int i = 0; i < quizData.length; i++) {
       if (!selectedAnswers.containsKey(i)) {
-        selectedAnswersArray.add(quizData[i]['options'].length);
+        if (quizData[i].containsKey('correctAnswers')) {
+          selectedAnswersArray.add([quizData[i]['options'].length]);
+        } else {
+          selectedAnswersArray.add(quizData[i]['options'].length);
+        }
       } else {
         dynamic answer = selectedAnswers[i];
         selectedAnswersArray.add(answer);
@@ -155,7 +159,6 @@ class _QuizPageState extends State<QuizPage> {
           }
         }
       }
-      selectedAnswers = {};
 
       final quizPoint = QuizPoints();
       int quizpoint = quizPoint.calculatePoints(
@@ -166,7 +169,7 @@ class _QuizPageState extends State<QuizPage> {
         isSubmitting = false;
       });
       List<dynamic> selectedArray = getSelectedAnswer(selectedAnswers);
-      print(selectedArray);
+      selectedAnswers = {};
       Navigator.push(
         context,
         MaterialPageRoute(
