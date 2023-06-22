@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quizzy/pages/home_page.dart';
+import 'package:quizzy/pages/leaderboard.dart';
 import 'package:quizzy/pages/result_review.dart';
 
 class ContentItem {
@@ -420,7 +422,11 @@ class _QuizResultPageState extends State<QuizResultPage>
                           ),
                           GestureDetector(
                             onTap: () {
-                              // Handle 'Home' tapped
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const HomePage()),
+                              );
                             },
                             child: const Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -447,7 +453,11 @@ class _QuizResultPageState extends State<QuizResultPage>
                           ),
                           GestureDetector(
                             onTap: () {
-                              // Handle 'Leaderboard' tapped
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LeaderboardPage()),
+                              );
                             },
                             child: const Column(
                               mainAxisAlignment: MainAxisAlignment.center,

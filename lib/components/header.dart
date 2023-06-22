@@ -28,6 +28,8 @@ class _MyAppBarState extends State<MyAppBar>
   Widget build(BuildContext context) {
     return AppBar(
         toolbarHeight: 190.0,
+        automaticallyImplyLeading: false,
+        leading: null,
         backgroundColor: const Color(0xFF5826E5),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
@@ -39,58 +41,81 @@ class _MyAppBarState extends State<MyAppBar>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(children: [
-                  Container(
-                    margin: const EdgeInsets.only(right: 8.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(40.0),
-                    ),
-                    child: const CircleAvatar(
-                      radius: 20.0,
-                      backgroundImage: AssetImage("assets/images/avatar.png"),
-                    ),
-                  ),
-                  const Column(children: [
-                    Text(
-                      "Hello",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w300),
-                    ),
-                    Text("Pradyut",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.bold))
-                  ])
-                ]),
                 Row(
                   children: [
                     Container(
-                        height: 30.0,
-                        child: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  const Color(0xFF5826E5)),
-                              shape: MaterialStateProperty.all<OutlinedBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                  side: const BorderSide(
-                                    color: Colors.white,
-                                    width: 1.2,
+                      margin: const EdgeInsets.only(right: 8.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(40.0),
+                      ),
+                      child: const CircleAvatar(
+                        radius: 20.0,
+                        backgroundImage: AssetImage("assets/images/avatar.png"),
+                      ),
+                    ),
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Hello",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                        Text(
+                          "Nahid",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 30.0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF5826E5),
+                          borderRadius: BorderRadius.circular(12.0),
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 1.2,
+                          ),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.only(left: 8.0, right: 8.0),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.emoji_events,
+                                  color: const Color(0xFFFFD700),
+                                  size: 20.0,
+                                ),
+                                const SizedBox(
+                                    width:
+                                        4.0), // Add some spacing between the icon and text
+                                Text(
+                                  "100",
+                                  style: TextStyle(
+                                    color: const Color(0xFFFFD700),
+                                    fontSize: 14.0,
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
-                            onPressed: () {},
-                            child: const Row(children: [
-                              Icon(Icons.emoji_events,
-                                  color: Color(0xFFFFD700), size: 20.0),
-                              Text("100",
-                                  style: TextStyle(
-                                      color: Color(0xFFFFD700), fontSize: 14.0))
-                            ]))),
+                          ),
+                        ),
+                      ),
+                    ),
                     IconButton(
                       onPressed: () {},
                       icon: const Icon(Icons.notifications_outlined,
