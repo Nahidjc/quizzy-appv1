@@ -66,7 +66,7 @@ class _QuizPageState extends State<QuizPage> {
       "question":
           "Which programming language is known as the 'mother of all languages'?",
       "options": ["C", "Java", "Python", "Assembly"],
-      "correctAnswer": 3
+      "correctAnswer": 0
     },
     {
       "question": "Who is the author of the Harry Potter book series?",
@@ -99,9 +99,26 @@ class _QuizPageState extends State<QuizPage> {
   int score = 0;
   int points = 0;
   bool isSubmitting = false;
-  int timeRemaining = 600;
+  int timeRemaining = 5;
   Timer? timer;
   int currentQuestionIndex = 0;
+
+  List<dynamic> getSelectedAnswer(Map<int, dynamic> selectedAnswers) {
+    List<dynamic> selectedAnswersArray = [];
+    for (int i = 0; i < quizData.length; i++) {
+      if (!selectedAnswers.containsKey(i)) {
+        if (quizData[i].containsKey('correctAnswers')) {
+          selectedAnswersArray.add([quizData[i]['options'].length]);
+        } else {
+          selectedAnswersArray.add(quizData[i]['options'].length);
+        }
+      } else {
+        dynamic answer = selectedAnswers[i];
+        selectedAnswersArray.add(answer);
+      }
+    }
+    return selectedAnswersArray;
+  }
 
   void startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
@@ -122,7 +139,7 @@ class _QuizPageState extends State<QuizPage> {
       isSubmitting = true;
     });
 
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 2), () {
       int correctAnswers = 0;
       for (int i = 0; i < quizData.length; i++) {
         final question = quizData[i];
@@ -142,7 +159,6 @@ class _QuizPageState extends State<QuizPage> {
           }
         }
       }
-      selectedAnswers = {};
 
       final quizPoint = QuizPoints();
       int quizpoint = quizPoint.calculatePoints(
@@ -152,14 +168,17 @@ class _QuizPageState extends State<QuizPage> {
         points = quizpoint;
         isSubmitting = false;
       });
+      List<dynamic> selectedArray = getSelectedAnswer(selectedAnswers);
+      selectedAnswers = {};
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => QuizResultPage(
-              quizLength: quizData.length,
+              quizData: quizData,
               correctAnswers: correctAnswers,
               percentage: (correctAnswers / quizData.length) * 100,
-              quizpoint: quizpoint),
+              quizpoint: quizpoint,
+              selectedArray: selectedArray),
         ),
       );
     });
@@ -221,9 +240,7 @@ class _QuizPageState extends State<QuizPage> {
     final List<dynamic> questionOptions = getOptions();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Quiz Page'),
-      ),
+      appBar: AppBar(),
       body: isSubmitting
           ? const Center(
               child: CircularProgressIndicator(),
@@ -241,10 +258,91 @@ class _QuizPageState extends State<QuizPage> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Text(
-                    'Question ${currentQuestionIndex + 1}: ${currentQuestion['question']}',
-                    style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.bold),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '${currentQuestionIndex + 1}',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(width: 18),
+                            Expanded(
+                              child: Container(
+                                height: 10,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.orange,
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: LinearProgressIndicator(
+                                    value: (currentQuestionIndex + 1) /
+                                        quizData.length,
+                                    backgroundColor: Colors.transparent,
+                                    valueColor:
+                                        const AlwaysStoppedAnimation<Color>(
+                                            Colors.green),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 18),
+                            Text(
+                              ' ${quizData.length - currentQuestionIndex - 1}',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.orange,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Center(
+                          child: Text(
+                            'Question ${currentQuestionIndex + 1}/${quizData.length}',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.purple,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Center(
+                          child: Text(
+                            currentQuestion['question'],
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 20),
                   if (currentQuestion.containsKey('correctAnswers'))

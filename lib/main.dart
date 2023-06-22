@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quizzy/pages/home_page.dart';
 import 'package:quizzy/pages/leaderboard.dart';
 import 'package:quizzy/pages/quiz_category.dart';
+import 'package:quizzy/pages/result_review.dart';
 
 void main() {
   runApp(const MyApp());

@@ -24,11 +24,12 @@ class SingleCorrectAnswerQuestionWidget extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 5),
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
-              color: selectedAnswer == index ? Colors.green : Colors.white,
-              borderRadius: BorderRadius.circular(8),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: Colors.grey[300]!,
-                width: 1,
+                color:
+                    selectedAnswer == index ? Colors.purple : Colors.grey[300]!,
+                width: 2, 
               ),
             ),
             child: Row(
@@ -46,7 +47,7 @@ class SingleCorrectAnswerQuestionWidget extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     color:
-                        selectedAnswer == index ? Colors.white : Colors.black,
+                        selectedAnswer == index ? Colors.purple : Colors.black,
                   ),
                 ),
               ],
