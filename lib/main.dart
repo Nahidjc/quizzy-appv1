@@ -10,25 +10,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = ThemeData.light().textTheme.copyWith(
-          bodyLarge: const TextStyle(
-            fontFamily: 'Roboto',
-          ),
-          bodyMedium: const TextStyle(
-            fontFamily: 'Roboto',
-          ),
-        );
-
     return MaterialApp(
       title: 'Demo Quiz',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        textTheme: textTheme,
         useMaterial3: true,
       ),
       home: const HomePage(),
     );
   }
 }
-
