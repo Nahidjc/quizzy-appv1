@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:quizzy/api_caller/app_url.dart';
 import 'dart:async';
 import 'package:quizzy/models/user_model.dart';
-import 'package:quizzy/models/jwt_token_util.dart';
 
 class AuthProvider extends ChangeNotifier {
   UserDetails? _userDetails;
@@ -48,8 +47,6 @@ class AuthProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
         notifyListeners();
-        final decryptedData =
-            JwtTokenUtil.decryptJwtToken(jsonResponse['token']);
         setLoading(false);
         setAuthenticated(true);
         _errorMessage = '';
