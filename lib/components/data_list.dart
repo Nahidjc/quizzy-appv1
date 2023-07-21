@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:breadcrumbs/breadcrumbs.dart';
 import 'package:quizzy/pages/subject_list_page.dart';
 
 class DataList extends StatelessWidget {
@@ -14,11 +15,15 @@ class DataList extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.purple,
         iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text('SSC',
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: 22.0,
-                fontWeight: FontWeight.bold)),
+        title: Breadcrumbs(
+          crumbs: const [
+            TextSpan(text: 'SSC'),
+            TextSpan(text: 'Chemistry'),
+            TextSpan(text: 'Level-1'),
+          ],
+          separator: ' > ',
+          style: const TextStyle(color: Colors.white, fontSize: 18.0),
+        ),
       ),
       body: ListView.builder(
         itemCount: dataList.length,
