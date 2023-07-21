@@ -5,6 +5,7 @@ import 'package:quizzy/pages/quiz_result.dart';
 import 'dart:async';
 import 'package:quizzy/utils/quiz_points.dart';
 import 'package:quizzy/widget/circular_progress.dart';
+import 'package:panara_dialogs/panara_dialogs.dart';
 
 class QuizPage extends StatefulWidget {
  
@@ -98,7 +99,7 @@ class _QuizPageState extends State<QuizPage> {
   int score = 0;
   int points = 0;
   bool isSubmitting = false;
-  int timeRemaining = 20;
+  int timeRemaining = 600;
   Timer? timer;
   int currentQuestionIndex = 0;
 
@@ -130,6 +131,30 @@ class _QuizPageState extends State<QuizPage> {
         }
       });
     });
+  }
+
+  void showWarningIfQuestionsNotFilled() {
+    if (!allQuestionsAnswered) {
+      PanaraConfirmDialog.show(
+        context,
+        title: "Warning",
+        message:
+            "You have not answered all questions. Do you want to submit anyway?",
+        confirmButtonText: "Submit",
+        cancelButtonText: "Cancel",
+        onTapCancel: () {
+          Navigator.pop(context);
+        },
+        onTapConfirm: () {
+          Navigator.pop(context);
+          submitQuiz();
+        },
+        panaraDialogType: PanaraDialogType.warning,
+        barrierDismissible: false,
+      );
+    } else {
+      submitQuiz();
+    }
   }
 
   void submitQuiz() {
@@ -385,9 +410,9 @@ class _QuizPageState extends State<QuizPage> {
                           child: const Text('Next'),
                         ),
                       const SizedBox(width: 20),
-                      if (allQuestionsAnswered)
+                      if (currentQuestionIndex == quizData.length - 1)
                         ElevatedButton(
-                          onPressed: submitQuiz,
+                          onPressed: showWarningIfQuestionsNotFilled,
                           child: const Text('Submit Quiz'),
                         ),
                     ],

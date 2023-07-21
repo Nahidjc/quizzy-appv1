@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class LeaderboardPage extends StatefulWidget {
+  const LeaderboardPage({super.key});
   @override
-  _LeaderboardPageState createState() => _LeaderboardPageState();
+  State<LeaderboardPage> createState() => _LeaderboardPageState();
 }
 
 class _LeaderboardPageState extends State<LeaderboardPage> {
@@ -78,8 +79,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   ];
 
   late List<LeaderboardEntry> currentLeaderboardData;
-
   bool showTodayLeaderboard = true;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -90,43 +91,33 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Leaderboard'),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildLeaderboardOption('Today', showTodayLeaderboard),
-                const SizedBox(width: 10),
-                _buildLeaderboardOption('Weekly', !showTodayLeaderboard),
-              ],
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildLeaderboardOption('Today', showTodayLeaderboard),
+                  const SizedBox(width: 10),
+                  _buildLeaderboardOption('Weekly', !showTodayLeaderboard),
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // SizedBox(
-                //   height: 20,
-                //   child: Text(
-                //     'Top Performers',
-                //     style: TextStyle(
-                //       fontSize: 18,
-                //       fontWeight: FontWeight.bold,
-                //     ),
-                //   ),
-                // ),
-                _buildTopPerformers(),
-              ],
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: isLoading
+                      ? _buildSkeletonLoader()
+                      : _buildTopPerformers(),
+                ),
+              ),
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -139,13 +130,30 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           currentLeaderboardData = showTodayLeaderboard
               ? todayLeaderboardData
               : weeklyLeaderboardData;
+          isLoading = true;
+          Future.delayed(const Duration(seconds: 1), () {
+            setState(() {
+              isLoading = false;
+            });
+          });
         });
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blue : Colors.transparent,
+          color: isSelected ? Colors.blue : Colors.white,
           borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: Colors.blue,
+            width: isSelected ? 2.0 : 1.0,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              blurRadius: 3,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Text(
           title,
@@ -159,69 +167,107 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   }
 
   Widget _buildTopPerformers() {
-    return Container(
-      child: Column(
-        children: currentLeaderboardData
-            .sublist(0, currentLeaderboardData.length)
-            .asMap()
-            .entries
-            .map((entry) => _buildTopPerformerRow(
-                  entry.key + 1,
-                  entry.value.profilePic,
-                  entry.value.name,
-                  entry.value.points,
-                ))
-            .toList(),
-      ),
+    return Column(
+      children: currentLeaderboardData
+          .sublist(0, currentLeaderboardData.length)
+          .asMap()
+          .entries
+          .map((entry) => _buildTopPerformerRow(entry.value, entry.key + 1))
+          .toList(),
     );
   }
 
-  Widget _buildTopPerformerRow(
-      int position, String profilePic, String name, int points) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+  Widget _buildTopPerformerRow(LeaderboardEntry entry, int position) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.grey[200],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.4),
+            spreadRadius: 2,
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Row(
         children: [
           Container(
+            width: 60,
+            height: 60,
+            margin: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.grey, width: 1.5),
+              border: Border.all(
+                color: Colors.grey,
+                width: 2,
+              ),
             ),
-            padding: const EdgeInsets.all(2),
             child: CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage(profilePic),
+              backgroundImage: AssetImage(entry.profilePic),
             ),
           ),
-          const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  name,
+                  entry.name,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
+                    fontSize: 16,
                   ),
                 ),
                 Text(
-                  '$points Points',
+                  '${entry.points} Points',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.grey[600],
+                    fontSize: 14,
                   ),
                 ),
               ],
             ),
           ),
-          Text(
-            '$position' + _getOrdinalIndicator(position),
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.grey[600],
+          Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(20),
             ),
+            child: Text(
+              '$position${_getOrdinalIndicator(position)}',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                fontSize: 14,
+              ),
+            ),
+
           ),
+          const SizedBox(width: 10),
         ],
+      ),
+    );
+  }
+
+  Widget _buildSkeletonLoader() {
+    return Column(
+      children: List.generate(
+        5,
+        (index) => Container(
+          margin: const EdgeInsets.symmetric(vertical: 8),
+          height: 80,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.grey[300],
+          ),
+        ),
       ),
     );
   }

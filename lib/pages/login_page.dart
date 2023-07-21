@@ -44,7 +44,9 @@ class _LoginPageState extends State<LoginPage> {
       return const HomePage();
     }
     return Scaffold(
-      body: SingleChildScrollView(
+      body: authState.isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
           child: Form(

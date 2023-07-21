@@ -30,9 +30,9 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> loginProvider(String email, String password) async {
+    final url = Uri.parse('${AppUrl.baseUrl}/auth/login');
+    setLoading(true);
     try {
-      final url = Uri.parse('${AppUrl.baseUrl}/auth/login');
-      setLoading(true);
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
@@ -65,6 +65,7 @@ class AuthProvider extends ChangeNotifier {
       setLoading(false);
     }
   }
+
 
   Future<void> register(String firstName, String lastName, String email,
       String mobileNo, String password) async {
