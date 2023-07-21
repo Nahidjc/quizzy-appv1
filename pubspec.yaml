@@ -20,6 +20,7 @@ dependencies:
   provider: ^6.0.5
   http: ^0.13.0
   panara_dialogs: ^0.1.4
+  breadcrumbs: ^0.1.0
 
 dev_dependencies:
   flutter_test:
