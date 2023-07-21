@@ -27,7 +27,7 @@ class Categories extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => QuizPage(),
+            builder: (context) => const QuizPage(),
           ),
         );
       },
