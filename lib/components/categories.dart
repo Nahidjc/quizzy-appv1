@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quizzy/components/data_list.dart';
+import 'package:quizzy/pages/subject_list_page.dart';
 import 'package:quizzy/pages/quiz_page.dart';
 
 class Category {
@@ -20,9 +22,9 @@ class Categories extends StatelessWidget {
 
   final List<Category> categories = [
     Category(
-      name: 'Technical',
+      name: 'PSC',
       color: Colors.blue,
-      icon: Icons.code,
+      icon: Icons.school,
       onTap: (BuildContext context) {
         Navigator.push(
           context,
@@ -33,35 +35,55 @@ class Categories extends StatelessWidget {
       },
     ),
     Category(
-      name: 'Arts',
+      name: 'JSC',
       color: Colors.green,
-      icon: Icons.balance,
+      icon: Icons.school,
       onTap: (BuildContext context) {
-        // Handle 'Arts' category tapped
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SubjectList(),
+          ),
+        );
       },
     ),
     Category(
-      name: 'UI/UX',
+      name: 'SSC',
       color: Colors.orange,
-      icon: Icons.design_services,
+      icon: Icons.school,
       onTap: (BuildContext context) {
-        // Handle 'UI/UX' category tapped
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SubjectList(),
+          ),
+        );
       },
     ),
     Category(
-      name: 'Sports',
+      name: 'HSC',
       color: Colors.teal,
-      icon: Icons.sports_soccer,
+      icon: Icons.school,
       onTap: (BuildContext context) {
-        // Handle 'Sports' category tapped
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SubjectList(),
+          ),
+        );
       },
     ),
     Category(
-      name: 'GK',
+      name: 'BCS',
       color: Colors.blue,
       icon: Icons.school,
       onTap: (BuildContext context) {
-        // Handle 'GK' category tapped
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SubjectList(),
+          ),
+        );
       },
     ),
     Category(
@@ -69,7 +91,12 @@ class Categories extends StatelessWidget {
       color: Colors.green,
       icon: Icons.science,
       onTap: (BuildContext context) {
-        // Handle 'Science' category tapped
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SubjectList(),
+          ),
+        );
       },
     ),
   ];
