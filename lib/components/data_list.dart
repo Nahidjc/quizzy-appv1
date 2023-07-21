@@ -10,11 +10,10 @@ class DataList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: null,
         toolbarHeight: 80.0,
         centerTitle: true,
         backgroundColor: Colors.purple,
+        iconTheme: const IconThemeData(color: Colors.white),
         title: const Text('SSC',
             style: TextStyle(
                 color: Colors.white,
@@ -25,7 +24,7 @@ class DataList extends StatelessWidget {
         itemCount: dataList.length,
         itemBuilder: (context, index) {
           return Card(
-            margin: const EdgeInsets.all(3),
+            margin: const EdgeInsets.all(5.0),
             color: Colors.white,
             child: ListTile(
               onTap: () => dataList[index].onTap(context),
