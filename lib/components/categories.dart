@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quizzy/components/data_list.dart';
 import 'package:quizzy/pages/subject_list_page.dart';
-import 'package:quizzy/pages/quiz_page.dart';
 
 class Category {
   final String name;
@@ -29,7 +27,7 @@ class Categories extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const QuizPage(),
+            builder: (context) => SubjectList(),
           ),
         );
       },
