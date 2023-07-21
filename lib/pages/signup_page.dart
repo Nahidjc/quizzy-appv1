@@ -10,12 +10,13 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  TextEditingController _firstNameController = TextEditingController();
-  TextEditingController _lastNameController = TextEditingController();
-  TextEditingController _mobileNoController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _mobileNoController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -150,8 +151,8 @@ class _SignupPageState extends State<SignupPage> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your mobile number';
                     }
-                    if (value.length != 10) {
-                      return 'Mobile number must be exactly 10 digits';
+                    if (value.length != 11) {
+                      return 'Mobile number must be exactly 11 digits';
                     }
                     return null;
                   },
