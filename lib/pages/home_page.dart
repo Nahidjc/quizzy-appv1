@@ -22,8 +22,13 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       // isLoading = true;
     });
-    final list = await CategoryList().fetchData();
-    categoryList = list;
+    List<dynamic> levels = await CategoryList().fetchData();
+    for (var level in levels) {
+      print('Level Name: ${level.id}');
+      print('Display Name: ${level.displayName}');
+      print("=========================================");
+    }
+    categoryList = levels;
     setState(() {
       // isLoading = false;
     });

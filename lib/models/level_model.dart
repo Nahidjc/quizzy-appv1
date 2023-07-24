@@ -1,10 +1,37 @@
+class QuizLevel {
+  String id;
+  String levelName;
+  String displayName;
+  List<Subject> subjectList;
+
+  QuizLevel({
+    required this.id,
+    required this.levelName,
+    required this.displayName,
+    required this.subjectList,
+  });
+
+  factory QuizLevel.fromJson(Map<String, dynamic> json) {
+    var subjectListData = json['subjectList'] as List<dynamic>;
+    List<Subject> subjects =
+        subjectListData.map((data) => Subject.fromJson(data)).toList();
+
+    return QuizLevel(
+      id: json['id'],
+      levelName: json['levelName'],
+      displayName: json['displayName'],
+      subjectList: subjects,
+    );
+  }
+}
+
 class Subject {
-  final String id;
-  final int subjectId;
-  final String classId;
-  final String subjectName;
-  final String created;
-  final String? modified;
+  String id;
+  int subjectId;
+  String classId;
+  String subjectName;
+  String created;
+  String? modified;
 
   Subject({
     required this.id,
@@ -27,30 +54,20 @@ class Subject {
   }
 }
 
+class QuizLevelResponse {
+  List<QuizLevel> data;
 
-class Level {
-  final String id;
-  final String levelName;
-  final String displayName;
-  final List<Subject> subjectList;
-
-  Level({
-    required this.id,
-    required this.levelName,
-    required this.displayName,
-    required this.subjectList,
+  QuizLevelResponse({
+    required this.data,
   });
 
-  factory Level.fromJson(Map<String, dynamic> json) {
-    var subjectListData = json['subjectList'] as List<dynamic>;
-    List<Subject> subjectList =
-        subjectListData.map((subjectData) => Subject.fromJson(subjectData)).toList();
+  factory QuizLevelResponse.fromJson(Map<String, dynamic> json) {
+    var levelListData = json['data'] as List<dynamic>;
+    List<QuizLevel> levels =
+        levelListData.map((data) => QuizLevel.fromJson(data)).toList();
 
-    return Level(
-      id: json['id'],
-      levelName: json['levelName'],
-      displayName: json['displayName'],
-      subjectList: subjectList,
+    return QuizLevelResponse(
+      data: levels,
     );
   }
 }
