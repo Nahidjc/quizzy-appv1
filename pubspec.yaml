@@ -21,6 +21,7 @@ dependencies:
   http: ^0.13.0
   panara_dialogs: ^0.1.4
   breadcrumbs: ^0.1.0
+  quickalert: ^1.0.1
 
 dev_dependencies:
   flutter_test:

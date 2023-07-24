@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  breadcrumbs:
+    dependency: "direct main"
+    description:
+      name: breadcrumbs
+      sha256: "0b5fa2d5663e849d52ce9664204094aca1c17197bf5c22d29eb133c2e2002688"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   characters:
     dependency: transitive
     description:
@@ -131,6 +139,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.1"
+  nested:
+    dependency: transitive
+    description:
+      name: nested
+      sha256: "03bac4c528c64c95c722ec99280375a6f2fc708eec17c7b3f07253b626cd2a20"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
+  panara_dialogs:
+    dependency: "direct main"
+    description:
+      name: panara_dialogs
+      sha256: "0260305ffecc4c7e00655dd8824aa9ad4dc3fcb6ec9fcd97cd9fcf303db8205c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.4"
   path:
     dependency: transitive
     description:
@@ -147,6 +171,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.5"
+  quickalert:
+    dependency: "direct main"
+    description:
+      name: quickalert
+      sha256: "33a52870b2a87c55d0649d0cd228efaa2368d5df39231fdecebb71f349a9b221"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -218,3 +250,4 @@ packages:
     version: "2.1.4"
 sdks:
   dart: ">=3.0.2 <4.0.0"
+  flutter: ">=1.17.0"
