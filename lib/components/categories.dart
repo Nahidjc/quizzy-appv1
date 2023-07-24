@@ -1,110 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:quizzy/pages/subject_list_page.dart';
-
-class Category {
-  final String name;
-  final Color color;
-  final IconData icon;
-  final void Function(BuildContext) onTap;
-
-  const Category({
-    required this.name,
-    required this.color,
-    required this.icon,
-    required this.onTap,
-  });
-}
+import 'package:quizzy/models/level_model.dart';
 
 class Categories extends StatelessWidget {
-  Categories({Key? key}) : super(key: key);
+  // Categories({Key? key}) : super(key: key);
+  final List<dynamic> categoryList;
 
-  final List<Category> categories = [
-    Category(
-      name: 'PSC',
-      color: Colors.blue,
-      icon: Icons.school,
-      onTap: (BuildContext context) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SubjectList(),
-          ),
-        );
-      },
-    ),
-    Category(
-      name: 'JSC',
-      color: Colors.green,
-      icon: Icons.school,
-      onTap: (BuildContext context) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SubjectList(),
-          ),
-        );
-      },
-    ),
-    Category(
-      name: 'SSC',
-      color: Colors.orange,
-      icon: Icons.school,
-      onTap: (BuildContext context) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SubjectList(),
-          ),
-        );
-      },
-    ),
-    Category(
-      name: 'HSC',
-      color: Colors.teal,
-      icon: Icons.school,
-      onTap: (BuildContext context) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SubjectList(),
-          ),
-        );
-      },
-    ),
-    Category(
-      name: 'BCS',
-      color: Colors.blue,
-      icon: Icons.school,
-      onTap: (BuildContext context) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SubjectList(),
-          ),
-        );
-      },
-    ),
-    Category(
-      name: 'Science',
-      color: Colors.green,
-      icon: Icons.science,
-      onTap: (BuildContext context) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SubjectList(),
-          ),
-        );
-      },
-    ),
-  ];
+  Categories({super.key, required this.categoryList});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: GridView.builder(
         padding: const EdgeInsets.all(16.0),
-        itemCount: categories.length,
+        itemCount: categoryList.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           childAspectRatio: 1.0,
@@ -112,9 +21,14 @@ class Categories extends StatelessWidget {
           mainAxisSpacing: 16.0,
         ),
         itemBuilder: (BuildContext context, int index) {
-          Category category = categories[index];
+          QuizLevel category = categoryList[index];
           return GestureDetector(
-            onTap: () => category.onTap(context),
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SubjectList(),
+              ),
+            ),
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -131,15 +45,15 @@ class Categories extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    category.icon,
+                  const Icon(
+                    Icons.school,
                     size: 48.0,
-                    color: category.color,
+                    color: Colors.blue,
                   ),
                   const SizedBox(height: 8.0),
                   Center(
                     child: Text(
-                      category.name,
+                      category.displayName,
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 16.0,

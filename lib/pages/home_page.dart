@@ -23,11 +23,6 @@ class _HomePageState extends State<HomePage> {
       // isLoading = true;
     });
     List<dynamic> levels = await CategoryList().fetchData();
-    for (var level in levels) {
-      print('Level Name: ${level.id}');
-      print('Display Name: ${level.displayName}');
-      print("=========================================");
-    }
     categoryList = levels;
     setState(() {
       // isLoading = false;
@@ -45,7 +40,7 @@ class _HomePageState extends State<HomePage> {
             child: const Text("Competitions Categories",
                 textAlign: TextAlign.start,
                 style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold))),
-        Expanded(child: Categories())
+        Expanded(child: Categories(categoryList: categoryList))
       ]),
       bottomNavigationBar: const BottomNav(),
     );
