@@ -51,6 +51,7 @@ class AuthProvider extends ChangeNotifier {
         UserDetails userDetails = UserDetails.fromJson(jsonResponse['data']);
         _name = userDetails.name;
         _coin = userDetails.coin;
+        _userId = userDetails.id;
         notifyListeners();
         setLoading(false);
         setAuthenticated(true);
