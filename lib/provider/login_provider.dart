@@ -6,8 +6,6 @@ import 'dart:async';
 import 'package:quizzy/models/user_model.dart';
 
 class AuthProvider extends ChangeNotifier {
-  UserDetails? _userDetails;
-  UserDetails? get userDetails => _userDetails;
   bool _isAuthenticated = false;
   bool _isRegistered = false;
   String _errorMessage = '';
@@ -18,6 +16,10 @@ class AuthProvider extends ChangeNotifier {
   bool get isAuthenticated => _isAuthenticated;
   bool get isLoading => _isLoading;
   bool get isRegistered => _isRegistered;
+  String _name = '';
+  String get name => _name;
+  int _coin = 0;
+  int get coin => _coin;
 
   setAuthenticated(bool value) {
     _isAuthenticated = value;
@@ -46,6 +48,9 @@ class AuthProvider extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
+        UserDetails userDetails = UserDetails.fromJson(jsonResponse['data']);
+        _name = userDetails.name;
+        _coin = userDetails.coin;
         notifyListeners();
         setLoading(false);
         setAuthenticated(true);
@@ -65,7 +70,6 @@ class AuthProvider extends ChangeNotifier {
       setLoading(false);
     }
   }
-
 
   Future<void> register(String firstName, String lastName, String email,
       String mobileNo, String password) async {

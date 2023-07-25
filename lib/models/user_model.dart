@@ -1,26 +1,15 @@
 class UserDetails {
-  String? firstName;
-  String? lastName;
-  String? email;
-  String? name;
-  String? mobileNo;
-  String? password;
+  final String token;
+  final String name;
+  final int coin;
 
-  UserDetails({
-    this.firstName,
-    this.lastName,
-    this.email,
-    this.mobileNo,
-    this.password,
-  });
+  UserDetails({required this.token, required this.name, required this.coin});
 
   factory UserDetails.fromJson(Map<String, dynamic> json) {
     return UserDetails(
-      firstName: json['firstName'] ?? '',
-      lastName: json['lastName'] ?? '',
-      email: json['email'] ?? '',
-      mobileNo: json['mobileNo'],
-      password: json['password'],
+      token: json['token'],
+      name: json['name'],
+      coin: json['coin'],
     );
   }
 }

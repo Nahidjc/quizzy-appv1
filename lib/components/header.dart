@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:quizzy/provider/login_provider.dart';
 
 class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
   const MyAppBar({super.key});
@@ -26,6 +28,10 @@ class _MyAppBarState extends State<MyAppBar>
 
   @override
   Widget build(BuildContext context) {
+    AuthProvider user = Provider.of<AuthProvider>(context);
+    String name = user.name;
+    int coin = user.coin;
+    String coinString = coin.toString();
     return AppBar(
         toolbarHeight: 190.0,
         automaticallyImplyLeading: false,
@@ -53,10 +59,10 @@ class _MyAppBarState extends State<MyAppBar>
                         backgroundImage: AssetImage("assets/images/avatar.png"),
                       ),
                     ),
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           "Hello",
                           style: TextStyle(
                             color: Colors.white,
@@ -65,8 +71,8 @@ class _MyAppBarState extends State<MyAppBar>
                           ),
                         ),
                         Text(
-                          "Nahid",
-                          style: TextStyle(
+                          name,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14.0,
                             fontWeight: FontWeight.bold,
@@ -89,24 +95,24 @@ class _MyAppBarState extends State<MyAppBar>
                             width: 1.2,
                           ),
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 8.0, right: 8.0),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                           child: Center(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.emoji_events,
-                                  color: const Color(0xFFFFD700),
+                                  color: Color(0xFFFFD700),
                                   size: 20.0,
                                 ),
                                 const SizedBox(
                                     width:
                                         4.0), // Add some spacing between the icon and text
                                 Text(
-                                  "100",
-                                  style: TextStyle(
-                                    color: const Color(0xFFFFD700),
+                                  coinString,
+                                  style: const TextStyle(
+                                    color: Color(0xFFFFD700),
                                     fontSize: 14.0,
                                   ),
                                 ),
