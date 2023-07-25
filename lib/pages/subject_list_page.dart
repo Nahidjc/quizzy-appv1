@@ -4,7 +4,9 @@ import 'package:quizzy/pages/quiz_level.dart';
 
 class SubjectList extends StatelessWidget {
   final List<dynamic> subjectList;
-  const SubjectList({super.key, required this.subjectList});
+  final String displayName;
+  const SubjectList(
+      {super.key, required this.subjectList, required this.displayName});
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +16,8 @@ class SubjectList extends StatelessWidget {
           centerTitle: true,
           backgroundColor: Colors.purple,
           iconTheme: const IconThemeData(color: Colors.white),
-          title: const Text("SSC",
-              style: TextStyle(
+          title: Text(displayName,
+              style: const TextStyle(
                   color: Colors.white,
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold))),
@@ -30,7 +32,9 @@ class SubjectList extends StatelessWidget {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => QuizLevelList(),
+                  builder: (context) => QuizLevelList(
+                      subjectName: subjects.subjectName,
+                      displayName: displayName),
                 ),
               ),
               title: Text(

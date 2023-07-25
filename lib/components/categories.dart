@@ -25,8 +25,9 @@ class Categories extends StatelessWidget {
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    SubjectList(subjectList: category.subjectList),
+                builder: (context) => SubjectList(
+                    subjectList: category.subjectList,
+                    displayName: category.displayName),
               ),
             ),
             child: Container(

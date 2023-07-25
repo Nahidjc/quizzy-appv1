@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:quizzy/pages/quiz_list.dart';
+import 'package:breadcrumbs/breadcrumbs.dart';
 
 class QuizLevelList extends StatefulWidget {
+  final String subjectName;
+  final String displayName;
+  QuizLevelList(
+      {super.key, required this.subjectName, required this.displayName});
   @override
   _QuizLevelListState createState() => _QuizLevelListState();
 }
@@ -20,7 +25,18 @@ class _QuizLevelListState extends State<QuizLevelList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Quiz Levels'),
+        toolbarHeight: 80.0,
+        centerTitle: true,
+        backgroundColor: Colors.purple,
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: Breadcrumbs(
+          crumbs: [
+            TextSpan(text: widget.displayName),
+            TextSpan(text: widget.subjectName),
+          ],
+          separator: ' > ',
+          style: const TextStyle(color: Colors.white, fontSize: 18.0),
+        ),
       ),
       body: Center(
         child: Column(
@@ -52,11 +68,15 @@ class _QuizLevelListState extends State<QuizLevelList> {
       padding: EdgeInsets.symmetric(vertical: 8.0),
       child: InkWell(
         onTap: () {
+          int levelName = level;
           if (isUnlocked) {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => QuizList(),
+                builder: (context) => QuizList(
+                    displayName: widget.displayName,
+                    subjectName: widget.subjectName,
+                    levelName: levelName),
               ),
             );
           } else {
@@ -93,7 +113,7 @@ class _QuizLevelListState extends State<QuizLevelList> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Level $level',
+                    'Level-$level',
                     style: TextStyle(
                       color: textColor,
                       fontSize: 18.0,
