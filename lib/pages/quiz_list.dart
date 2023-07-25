@@ -13,6 +13,14 @@ class ListTable {
 }
 
 class QuizList extends StatelessWidget {
+  final String displayName;
+  final String subjectName;
+  final int levelName;
+  QuizList(
+      {super.key,
+      required this.displayName,
+      required this.subjectName,
+      required this.levelName});
   final List<ListTable> dataList = [
     ListTable(
       title: 'Quiz-1',
@@ -68,10 +76,10 @@ class QuizList extends StatelessWidget {
         backgroundColor: Colors.purple,
         iconTheme: const IconThemeData(color: Colors.white),
         title: Breadcrumbs(
-          crumbs: const [
-            TextSpan(text: 'SSC'),
-            TextSpan(text: 'Chemistry'),
-            TextSpan(text: 'Level-1'),
+          crumbs: [
+            TextSpan(text: displayName),
+            TextSpan(text: subjectName),
+            TextSpan(text: 'Level-$levelName'),
           ],
           separator: ' > ',
           style: const TextStyle(color: Colors.white, fontSize: 18.0),
