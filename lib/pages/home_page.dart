@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quizzy/components/bottom-navigation.dart';
 import 'package:quizzy/components/categories.dart';
 import 'package:quizzy/components/header.dart';
+import 'package:quizzy/api_caller/categories.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,6 +11,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    fetchCategoryList();
+  }
+
+  List categoryList = [];
+  Future<void> fetchCategoryList() async {
+    setState(() {
+      // isLoading = true;
+    });
+    List<dynamic> levels = await CategoryList().fetchData();
+    categoryList = levels;
+    setState(() {
+      // isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +40,7 @@ class _HomePageState extends State<HomePage> {
             child: const Text("Competitions Categories",
                 textAlign: TextAlign.start,
                 style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold))),
-        Expanded(child: Categories())
+        Expanded(child: Categories(categoryList: categoryList))
       ]),
       bottomNavigationBar: const BottomNav(),
     );

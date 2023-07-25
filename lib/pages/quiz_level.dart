@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:quizzy/pages/quiz_list.dart';
 
 class QuizLevelList extends StatefulWidget {
   @override
@@ -52,6 +53,12 @@ class _QuizLevelListState extends State<QuizLevelList> {
       child: InkWell(
         onTap: () {
           if (isUnlocked) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => QuizList(),
+              ),
+            );
           } else {
             QuickAlert.show(
               context: context,
@@ -108,4 +115,3 @@ class _QuizLevelListState extends State<QuizLevelList> {
     );
   }
 }
-
