@@ -1,17 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizzy/models/level_model.dart';
 import 'package:quizzy/pages/quiz_level.dart';
-import 'package:breadcrumbs/breadcrumbs.dart';
-
-class ListTable {
-  final String title;
-  final void Function(BuildContext) onTap;
-
-  const ListTable({
-    required this.title,
-    required this.onTap,
-  });
-}
 
 class SubjectList extends StatelessWidget {
   final List<dynamic> subjectList;
@@ -21,19 +10,15 @@ class SubjectList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 80.0,
-        centerTitle: true,
-        backgroundColor: Colors.purple,
-        iconTheme: const IconThemeData(color: Colors.white),
-        title: Breadcrumbs(
-          crumbs: const [
-            TextSpan(text: 'SSC'),
-            TextSpan(text: 'Chemistry'),
-          ],
-          separator: ' > ',
-          style: const TextStyle(color: Colors.white, fontSize: 18.0),
-        ),
-      ),
+          toolbarHeight: 80.0,
+          centerTitle: true,
+          backgroundColor: Colors.purple,
+          iconTheme: const IconThemeData(color: Colors.white),
+          title: const Text("SSC",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold))),
       body: ListView.builder(
         itemCount: subjectList.length,
         itemBuilder: (context, index) {
