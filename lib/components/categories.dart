@@ -3,10 +3,9 @@ import 'package:quizzy/pages/subject_list_page.dart';
 import 'package:quizzy/models/level_model.dart';
 
 class Categories extends StatelessWidget {
-  // Categories({Key? key}) : super(key: key);
   final List<dynamic> categoryList;
 
-  Categories({super.key, required this.categoryList});
+  const Categories({super.key, required this.categoryList});
 
   @override
   Widget build(BuildContext context) {
