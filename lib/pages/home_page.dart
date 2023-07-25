@@ -11,6 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool isLoading = false;
   @override
   void initState() {
     super.initState();
@@ -20,12 +21,12 @@ class _HomePageState extends State<HomePage> {
   List categoryList = [];
   Future<void> fetchCategoryList() async {
     setState(() {
-      // isLoading = true;
+      isLoading = true;
     });
     List<dynamic> levels = await CategoryList().fetchData();
     categoryList = levels;
     setState(() {
-      // isLoading = false;
+      isLoading = false;
     });
   }
 
@@ -40,7 +41,10 @@ class _HomePageState extends State<HomePage> {
             child: const Text("Competitions Categories",
                 textAlign: TextAlign.start,
                 style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold))),
-        Expanded(child: Categories(categoryList: categoryList))
+        Expanded(
+            child: isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : Categories(categoryList: categoryList))
       ]),
       bottomNavigationBar: const BottomNav(),
     );

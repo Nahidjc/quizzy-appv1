@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:quizzy/api_caller/stage.dart';
 import 'package:quizzy/pages/quiz_list.dart';
 import 'package:breadcrumbs/breadcrumbs.dart';
+import 'package:quizzy/provider/login_provider.dart';
 
 class QuizLevelList extends StatefulWidget {
   final String subjectName;
@@ -9,17 +12,37 @@ class QuizLevelList extends StatefulWidget {
   QuizLevelList(
       {super.key, required this.subjectName, required this.displayName});
   @override
-  _QuizLevelListState createState() => _QuizLevelListState();
+  State<QuizLevelList> createState() => _QuizLevelListState();
 }
 
 class _QuizLevelListState extends State<QuizLevelList> {
-  final List<Map<String, dynamic>> levelList = [
-    {'level': 1, 'isUnlocked': true},
-    {'level': 2, 'isUnlocked': false},
-    {'level': 3, 'isUnlocked': false},
-    {'level': 4, 'isUnlocked': false},
-    {'level': 5, 'isUnlocked': false},
-  ];
+  final StageList _stageList = StageList();
+  List<dynamic> _stages = [];
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchStages();
+  }
+
+  Future<void> _fetchStages() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      String userId = Provider.of<AuthProvider>(context, listen: false).userId;
+      List<dynamic> stageData = await _stageList.fetchStage(userId);
+      setState(() {
+        _stages = stageData;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,36 +62,37 @@ class _QuizLevelListState extends State<QuizLevelList> {
         ),
       ),
       body: Center(
-        child: Column(
+        child: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: levelList.map((levelData) {
-            int level = levelData['level'];
-            bool isUnlocked = levelData['isUnlocked'];
-
-            return buildLevelButton(context, level, isUnlocked);
+                children: _stages.map((levelData) {
+                  String levelName = levelData.levelName;
+                  bool isUnlocked = levelData.isAccessible;
+                  return buildLevelButton(context, levelName, isUnlocked);
           }).toList(),
         ),
       ),
     );
   }
 
-  Widget buildLevelButton(BuildContext context, int level, bool isUnlocked) {
-    final double buttonWidth = 180.0;
-    final double buttonHeight = 60.0;
-    final double borderRadius = 10.0;
-    final EdgeInsetsGeometry buttonPadding =
+  Widget buildLevelButton(
+      BuildContext context, String levelName, bool isUnlocked) {
+    const double buttonWidth = 180.0;
+    const double buttonHeight = 60.0;
+    const double borderRadius = 10.0;
+    const EdgeInsetsGeometry buttonPadding =
         EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0);
-    final Color unlockedColor = Colors.teal;
-    final Color lockedColor = Colors.purple;
-    final Color textColor = Colors.white;
-    final Color boxShadowColor = Colors.black.withOpacity(0.3);
+    const Color unlockedColor = Colors.teal;
+    const Color lockedColor = Colors.purple;
+    const Color textColor = Colors.white;
+    Color boxShadowColor = Colors.black.withOpacity(0.3);
 
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: InkWell(
         onTap: () {
-          int levelName = level;
           if (isUnlocked) {
             Navigator.push(
               context,
@@ -99,7 +123,7 @@ class _QuizLevelListState extends State<QuizLevelList> {
                 color: boxShadowColor,
                 spreadRadius: 1,
                 blurRadius: 3,
-                offset: Offset(0, 2),
+                offset: const Offset(0, 2),
               ),
             ],
             color: isUnlocked
@@ -113,15 +137,15 @@ class _QuizLevelListState extends State<QuizLevelList> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Level-$level',
-                    style: TextStyle(
+                    levelName,
+                    style: const TextStyle(
                       color: textColor,
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   if (!isUnlocked)
-                    Icon(
+                    const Icon(
                       Icons.lock,
                       color: textColor,
                       size: 24.0,

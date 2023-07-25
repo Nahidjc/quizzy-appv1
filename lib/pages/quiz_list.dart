@@ -15,7 +15,7 @@ class ListTable {
 class QuizList extends StatelessWidget {
   final String displayName;
   final String subjectName;
-  final int levelName;
+  final String levelName;
   QuizList(
       {super.key,
       required this.displayName,
@@ -79,7 +79,7 @@ class QuizList extends StatelessWidget {
           crumbs: [
             TextSpan(text: displayName),
             TextSpan(text: subjectName),
-            TextSpan(text: 'Level-$levelName'),
+            TextSpan(text: levelName),
           ],
           separator: ' > ',
           style: const TextStyle(color: Colors.white, fontSize: 18.0),
