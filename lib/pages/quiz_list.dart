@@ -35,52 +35,6 @@ class QuizList extends StatefulWidget {
 }
 
 class _QuizListState extends State<QuizList> {
-  final List<ListTable> dataList = [
-    ListTable(
-      title: 'Quiz-1',
-      onTap: (BuildContext context) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const QuizPage(),
-          ),
-        );
-      },
-    ),
-    ListTable(
-      title: 'Quiz-2',
-      onTap: (BuildContext context) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const QuizPage(),
-          ),
-        );
-      },
-    ),
-    ListTable(
-      title: 'Quiz-3',
-      onTap: (BuildContext context) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const QuizPage(),
-          ),
-        );
-      },
-    ),
-    ListTable(
-      title: 'Quiz-4',
-      onTap: (BuildContext context) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const QuizPage(),
-          ),
-        );
-      },
-    ),
-  ];
   List<QuizData> quizzes = [];
   @override
   void initState() {
@@ -182,7 +136,8 @@ class _QuizListState extends State<QuizList> {
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const QuizPage(),
+                            builder: (context) =>
+                                QuizPage(quiz: quizzes[index]),
                           ),
                         ),
               title: Text(
