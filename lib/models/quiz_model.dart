@@ -47,23 +47,35 @@ class Question {
   String question;
   List<String> options;
   dynamic correctAnswer;
+  List<int>? correctAnswers;
+
   String id;
 
   Question({
     required this.question,
     required this.options,
-    required this.correctAnswer,
+    this.correctAnswer,
     required this.id,
+    this.correctAnswers,
   });
 
-  factory Question.fromJson(Map<String, dynamic> json) {
+factory Question.fromJson(Map<String, dynamic> json) {
+    final hasCorrectAnswer = json.containsKey('correctAnswer');
+    final hasCorrectAnswers = json.containsKey('correctAnswers');
+
+    if (hasCorrectAnswer && hasCorrectAnswers) {
+      throw ArgumentError(
+          'Both correctAnswer and correctAnswers are present. Only one should be provided.');
+    }
     return Question(
       question: json['question'],
       options:
           List<String>.from(json['options'].map((option) => option.toString())),
-      correctAnswer:
-          json.containsKey('correctAnswer') ? json['correctAnswer'] : null,
+      correctAnswer: hasCorrectAnswer ? json['correctAnswer'] : null,
+      correctAnswers:
+          hasCorrectAnswers ? List<int>.from(json['correctAnswers']) : null,
       id: json['_id'],
     );
   }
+
 }

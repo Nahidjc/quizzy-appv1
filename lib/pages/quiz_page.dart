@@ -284,44 +284,65 @@ class _QuizPageState extends State<QuizPage> {
                         ),
                         const SizedBox(height: 8),
                         Center(
-                          child: Text(
-                            currentQuestion['question'],
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
+                          child: SizedBox(
+                            height: 80, // Set the desired fixed height
+                            child: SingleChildScrollView(
+                              child: Text(
+                                currentQuestion['question'],
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                         ),
+                     
                       ],
                     ),
                   ),
                   const SizedBox(height: 20),
-                  if (currentQuestion.containsKey('correctAnswers'))
-                    MultipleCorrectAnswerQuestionWidget(
-                      options: questionOptions,
-                      selectedAnswers:
-                          selectedAnswers[currentQuestionIndex] ?? [],
-                      onAnswerSelected: (selectedOptions) {
-                        setState(() {
-                          selectedAnswers[currentQuestionIndex] =
-                              selectedOptions;
-                          allQuestionsAnswered = checkAllQuestionsAnswered();
-                        });
-                      },
-                    )
-                  else
-                    SingleCorrectAnswerQuestionWidget(
-                      options: questionOptions,
-                      selectedAnswer: selectedAnswers[currentQuestionIndex],
-                      onAnswerSelected: (selectedOption) {
-                        setState(() {
-                          selectedAnswers[currentQuestionIndex] =
-                              selectedOption;
-                          allQuestionsAnswered = checkAllQuestionsAnswered();
-                        });
-                      },
+                  Expanded(
+                    child: FractionallySizedBox(
+                      alignment: Alignment.center,
+                      widthFactor: 1.0,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            if (currentQuestion.containsKey('correctAnswers'))
+                              MultipleCorrectAnswerQuestionWidget(
+                                options: questionOptions,
+                                selectedAnswers:
+                                    selectedAnswers[currentQuestionIndex] ?? [],
+                                onAnswerSelected: (selectedOptions) {
+                                  setState(() {
+                                    selectedAnswers[currentQuestionIndex] =
+                                        selectedOptions;
+                                    allQuestionsAnswered =
+                                        checkAllQuestionsAnswered();
+                                  });
+                                },
+                              )
+                            else
+                              SingleCorrectAnswerQuestionWidget(
+                                options: questionOptions,
+                                selectedAnswer:
+                                    selectedAnswers[currentQuestionIndex],
+                                onAnswerSelected: (selectedOption) {
+                                  setState(() {
+                                    selectedAnswers[currentQuestionIndex] =
+                                        selectedOption;
+                                    allQuestionsAnswered =
+                                        checkAllQuestionsAnswered();
+                                  });
+                                },
+                              ),
+                          ],
+                        ),
+                      ),
                     ),
+                  ),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

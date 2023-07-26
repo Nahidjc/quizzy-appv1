@@ -6,7 +6,10 @@ List<Map<String, dynamic>> convertToQuizData(List<Question> quizList) {
     Map<String, dynamic> quizMap = {
       "question": quiz.question,
       "options": quiz.options,
-      "correctAnswer": quiz.correctAnswer,
+      if (quiz.correctAnswers != null)
+        "correctAnswers": quiz.correctAnswers
+      else if (quiz.correctAnswer != null)
+        "correctAnswer": quiz.correctAnswer,
     };
     quizData.add(quizMap);
   }
