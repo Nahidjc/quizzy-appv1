@@ -13,7 +13,6 @@ class QuizApi {
       var jsonData = json.decode(response.body);
       var quizModelData = QuizModel.fromJson(jsonData);
       List<QuizData> quizzes = quizModelData.data;
-      print(quizzes);
       return quizzes;
     } else {
       throw Exception('Failed to load data from API');
