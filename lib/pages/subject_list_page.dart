@@ -26,7 +26,7 @@ class SubjectList extends StatelessWidget {
             ? ListView.builder(
                 itemCount: subjectList.length,
                 itemBuilder: (context, index) {
-                  Subject subjects = subjectList[index];
+                  Subject subject = subjectList[index];
                   return Card(
                     margin: const EdgeInsets.all(5.0),
                     color: Colors.white,
@@ -35,12 +35,13 @@ class SubjectList extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => QuizLevelList(
-                              subjectName: subjects.subjectName,
-                              displayName: displayName),
+                              subjectName: subject.subjectName,
+                              displayName: displayName,
+                              subjectId: subject.id),
                         ),
                       ),
                       title: Text(
-                        subjects.subjectName,
+                        subject.subjectName,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                             fontSize: 16,
