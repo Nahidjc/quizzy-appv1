@@ -112,6 +112,8 @@ class AuthProvider extends ChangeNotifier {
   void logout() {
     _errorMessage = '';
     _userId = '';
+    _name = '';
+    _coin = 0;
     setAuthenticated(false);
     notifyListeners();
   }

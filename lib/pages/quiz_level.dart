@@ -9,8 +9,12 @@ import 'package:quizzy/provider/login_provider.dart';
 class QuizLevelList extends StatefulWidget {
   final String subjectName;
   final String displayName;
-  QuizLevelList(
-      {super.key, required this.subjectName, required this.displayName});
+  final String subjectId;
+  const QuizLevelList(
+      {super.key,
+      required this.subjectName,
+      required this.displayName,
+      required this.subjectId});
   @override
   State<QuizLevelList> createState() => _QuizLevelListState();
 }
@@ -65,25 +69,27 @@ class _QuizLevelListState extends State<QuizLevelList> {
         child: isLoading
             ? const Center(child: CircularProgressIndicator())
             : Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+                // mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: _stages.map((levelData) {
                   String levelName = levelData.levelName;
                   bool isUnlocked = levelData.isAccessible;
-                  return buildLevelButton(context, levelName, isUnlocked);
-          }).toList(),
-        ),
+                  String stageId = levelData.id;
+                  return buildLevelButton(
+                      context, levelName, isUnlocked, stageId);
+                }).toList(),
+              ),
       ),
     );
   }
 
   Widget buildLevelButton(
-      BuildContext context, String levelName, bool isUnlocked) {
+      BuildContext context, String levelName, bool isUnlocked, String stageId) {
     const double buttonWidth = 180.0;
     const double buttonHeight = 60.0;
     const double borderRadius = 10.0;
-    const EdgeInsetsGeometry buttonPadding =
-        EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0);
+    // const EdgeInsetsGeometry buttonPadding =
+    //     EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0);
     const Color unlockedColor = Colors.teal;
     const Color lockedColor = Colors.purple;
     const Color textColor = Colors.white;
@@ -100,7 +106,10 @@ class _QuizLevelListState extends State<QuizLevelList> {
                 builder: (context) => QuizList(
                     displayName: widget.displayName,
                     subjectName: widget.subjectName,
-                    levelName: levelName),
+                  levelName: levelName,
+                  subjectId: widget.subjectId,
+                  stageId: stageId
+                ),
               ),
             );
           } else {
@@ -126,9 +135,7 @@ class _QuizLevelListState extends State<QuizLevelList> {
                 offset: const Offset(0, 2),
               ),
             ],
-            color: isUnlocked
-                ? unlockedColor
-                : lockedColor, // Use different colors for unlocked and locked levels
+            color: isUnlocked ? unlockedColor : lockedColor,
           ),
           child: Stack(
             alignment: Alignment.center,

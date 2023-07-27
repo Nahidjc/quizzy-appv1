@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quizzy/components/multiple_answer_quiz.dart';
 import 'package:quizzy/components/single_answer_quiz.dart';
+import 'package:quizzy/models/quiz_convert.dart';
+import 'package:quizzy/models/quiz_model.dart';
 import 'package:quizzy/pages/quiz_result.dart';
 import 'dart:async';
 import 'package:quizzy/utils/quiz_points.dart';
@@ -8,92 +10,24 @@ import 'package:quizzy/widget/circular_progress.dart';
 import 'package:panara_dialogs/panara_dialogs.dart';
 
 class QuizPage extends StatefulWidget {
- 
-  const QuizPage({Key? key}) : super(key: key);
+  final QuizData quiz;
+  const QuizPage({Key? key, required this.quiz}) : super(key: key);
 
   @override
   State<QuizPage> createState() => _QuizPageState();
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List<Map<String, dynamic>> quizData = [
-    {
-      "question": "What is the capital of Australia?",
-      "options": ["Sydney", "Melbourne", "Canberra", "Perth"],
-      "correctAnswer": 2
-    },
-    {
-      "question": "Who painted the Mona Lisa?",
-      "options": [
-        "Leonardo da Vinci",
-        "Vincent van Gogh",
-        "Pablo Picasso",
-        "Michelangelo"
-      ],
-      "correctAnswer": 0
-    },
-    {
-      "question": "Which country won the FIFA World Cup in 2018?",
-      "options": ["France", "Brazil", "Germany", "Spain"],
-      "correctAnswer": 0
-    },
-    {
-      "question": "What is the chemical symbol for gold?",
-      "options": ["Au", "Ag", "Fe", "Cu"],
-      "correctAnswer": 0
-    },
-    {
-      "question": "Which planet is known as the Red Planet?",
-      "options": ["Mars", "Venus", "Jupiter", "Mercury"],
-      "correctAnswer": 0
-    },
-    {
-      "question": "Who wrote the novel 'To Kill a Mockingbird'?",
-      "options": [
-        "Harper Lee",
-        "Jane Austen",
-        "F. Scott Fitzgerald",
-        "George Orwell"
-      ],
-      "correctAnswer": 0
-    },
-    {
-      "question": "What is the tallest mountain in the world?",
-      "options": ["Mount Everest", "K2", "Kangchenjunga", "Makalu"],
-      "correctAnswer": 0
-    },
-    {
-      "question":
-          "Which programming language is known as the 'mother of all languages'?",
-      "options": ["C", "Java", "Python", "Assembly"],
-      "correctAnswer": 0
-    },
-    {
-      "question": "Who is the author of the Harry Potter book series?",
-      "options": [
-        "J.K. Rowling",
-        "Stephen King",
-        "George R.R. Martin",
-        "Dan Brown"
-      ],
-      "correctAnswer": 0
-    },
-    {
-      "question": "What is the largest ocean on Earth?",
-      "options": [
-        "Pacific Ocean",
-        "Atlantic Ocean",
-        "Indian Ocean",
-        "Arctic Ocean"
-      ],
-      "correctAnswer": 0
-    },
-    {
-      "question": "Which of the following are programming paradigms?",
-      "options": ["Imperative", "Declarative", "Functional", "Procedural"],
-      "correctAnswers": [0, 1, 2],
-    },
-  ];
+  List<Map<String, dynamic>> quizData = [];
+  @override
+  void initState() {
+    super.initState();
+
+    setState(() {
+      quizData = convertToQuizData(widget.quiz.questions);
+    });
+    startTimer();
+  }
 
   Map<int, dynamic> selectedAnswers = {};
   int score = 0;
@@ -235,12 +169,6 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    startTimer();
-  }
-
-  @override
   void dispose() {
     timer?.cancel();
     super.dispose();
@@ -356,44 +284,65 @@ class _QuizPageState extends State<QuizPage> {
                         ),
                         const SizedBox(height: 8),
                         Center(
-                          child: Text(
-                            currentQuestion['question'],
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
+                          child: SizedBox(
+                            height: 80, // Set the desired fixed height
+                            child: SingleChildScrollView(
+                              child: Text(
+                                currentQuestion['question'],
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                         ),
+                     
                       ],
                     ),
                   ),
                   const SizedBox(height: 20),
-                  if (currentQuestion.containsKey('correctAnswers'))
-                    MultipleCorrectAnswerQuestionWidget(
-                      options: questionOptions,
-                      selectedAnswers:
-                          selectedAnswers[currentQuestionIndex] ?? [],
-                      onAnswerSelected: (selectedOptions) {
-                        setState(() {
-                          selectedAnswers[currentQuestionIndex] =
-                              selectedOptions;
-                          allQuestionsAnswered = checkAllQuestionsAnswered();
-                        });
-                      },
-                    )
-                  else
-                    SingleCorrectAnswerQuestionWidget(
-                      options: questionOptions,
-                      selectedAnswer: selectedAnswers[currentQuestionIndex],
-                      onAnswerSelected: (selectedOption) {
-                        setState(() {
-                          selectedAnswers[currentQuestionIndex] =
-                              selectedOption;
-                          allQuestionsAnswered = checkAllQuestionsAnswered();
-                        });
-                      },
+                  Expanded(
+                    child: FractionallySizedBox(
+                      alignment: Alignment.center,
+                      widthFactor: 1.0,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            if (currentQuestion.containsKey('correctAnswers'))
+                              MultipleCorrectAnswerQuestionWidget(
+                                options: questionOptions,
+                                selectedAnswers:
+                                    selectedAnswers[currentQuestionIndex] ?? [],
+                                onAnswerSelected: (selectedOptions) {
+                                  setState(() {
+                                    selectedAnswers[currentQuestionIndex] =
+                                        selectedOptions;
+                                    allQuestionsAnswered =
+                                        checkAllQuestionsAnswered();
+                                  });
+                                },
+                              )
+                            else
+                              SingleCorrectAnswerQuestionWidget(
+                                options: questionOptions,
+                                selectedAnswer:
+                                    selectedAnswers[currentQuestionIndex],
+                                onAnswerSelected: (selectedOption) {
+                                  setState(() {
+                                    selectedAnswers[currentQuestionIndex] =
+                                        selectedOption;
+                                    allQuestionsAnswered =
+                                        checkAllQuestionsAnswered();
+                                  });
+                                },
+                              ),
+                          ],
+                        ),
+                      ),
                     ),
+                  ),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
