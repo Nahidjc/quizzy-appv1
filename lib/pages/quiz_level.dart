@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:quizzy/api_caller/stage.dart';
+import 'package:quizzy/pages/login_page.dart';
 import 'package:quizzy/pages/quiz_list.dart';
 import 'package:breadcrumbs/breadcrumbs.dart';
 import 'package:quizzy/provider/login_provider.dart';
+
+import 'package:panara_dialogs/panara_dialogs.dart';
 
 class QuizLevelList extends StatefulWidget {
   final String subjectName;
@@ -21,6 +24,7 @@ class QuizLevelList extends StatefulWidget {
 
 class _QuizLevelListState extends State<QuizLevelList> {
   final StageList _stageList = StageList();
+  final AuthProvider authState = AuthProvider();
   List<dynamic> _stages = [];
   bool isLoading = false;
 
@@ -48,8 +52,31 @@ class _QuizLevelListState extends State<QuizLevelList> {
     }
   }
 
+  Future<void> _stageSubscribe(String userId, String stageId) async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      await _stageList.subscribeStage(userId, stageId);
+      await authState.userDetails(userId);
+      _fetchStages();
+      setState(() {
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<AuthProvider>(context);
+
+    if (!user.isAuthenticated) {
+      return const LoginPage();
+    }
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 80.0,
@@ -69,27 +96,26 @@ class _QuizLevelListState extends State<QuizLevelList> {
         child: isLoading
             ? const Center(child: CircularProgressIndicator())
             : Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: _stages.map((levelData) {
                   String levelName = levelData.levelName;
                   bool isUnlocked = levelData.isAccessible;
                   String stageId = levelData.id;
+                  int cost = levelData.cost;
                   return buildLevelButton(
-                      context, levelName, isUnlocked, stageId);
+                      context, levelName, isUnlocked, stageId, cost);
                 }).toList(),
               ),
       ),
     );
   }
 
-  Widget buildLevelButton(
-      BuildContext context, String levelName, bool isUnlocked, String stageId) {
+  Widget buildLevelButton(BuildContext context, String levelName,
+      bool isUnlocked, String stageId, int cost) {
+    final user = Provider.of<AuthProvider>(context);
     const double buttonWidth = 180.0;
     const double buttonHeight = 60.0;
     const double borderRadius = 10.0;
-    // const EdgeInsetsGeometry buttonPadding =
-    //     EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0);
     const Color unlockedColor = Colors.teal;
     const Color lockedColor = Colors.purple;
     const Color textColor = Colors.white;
@@ -106,19 +132,35 @@ class _QuizLevelListState extends State<QuizLevelList> {
                 builder: (context) => QuizList(
                     displayName: widget.displayName,
                     subjectName: widget.subjectName,
-                  levelName: levelName,
-                  subjectId: widget.subjectId,
-                  stageId: stageId
-                ),
+                    levelName: levelName,
+                    subjectId: widget.subjectId,
+                    stageId: stageId),
               ),
             );
           } else {
-            QuickAlert.show(
-              context: context,
-              type: QuickAlertType.info,
+            PanaraConfirmDialog.show(
+              context,
               title: "Level is locked",
-              text:
-                  'This level is locked. Subscribe to unlock more levels and enhance your quiz experience!',
+              message: "To unlock this level, you need to pay $cost coin.",
+              confirmButtonText: "Unlock",
+              cancelButtonText: "Cancel",
+              onTapCancel: () {
+                Navigator.pop(context);
+              },
+              onTapConfirm: () {
+                Navigator.pop(context);
+                if (user.coin < cost) {
+                  QuickAlert.show(
+                    context: context,
+                    type: QuickAlertType.warning,
+                    text: "You don't have enough coins to unlock this level",
+                  );
+                } else {
+                  _stageSubscribe(user.userId, stageId);
+                }
+              },
+              panaraDialogType: PanaraDialogType.normal,
+              barrierDismissible: false,
             );
           }
         },

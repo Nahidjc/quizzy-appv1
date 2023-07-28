@@ -109,6 +109,31 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+Future<void> userDetails(String userid) async {
+    final url = Uri.parse('${AppUrl.baseUrl}/user/details');
+    setLoading(true);
+    try {
+      final response = await http.get(
+        url,
+        headers: {'Content-Type': 'application/json', 'userid': userid},
+      );
+      if (response.statusCode == 200) {
+        var jsonResponse = json.decode(response.body);
+        UserData userData = UserData.fromJson(jsonResponse);
+        _coin = userData.coin;
+        _errorMessage = '';
+      } else {
+        _errorMessage = 'Failed to fetch user details.';
+      }
+    } catch (e) {
+      _errorMessage = 'An error occurred.';
+    } finally {
+      setLoading(false);
+      notifyListeners();
+    }
+  }
+
+
   void logout() {
     _errorMessage = '';
     _userId = '';

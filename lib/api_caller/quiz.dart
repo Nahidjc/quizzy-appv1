@@ -18,4 +18,19 @@ class QuizApi {
       throw Exception('Failed to load data from API');
     }
   }
+
+  Future<void> attemptQuiz(String quizId, String userId, int point) async {
+    final url = Uri.parse('${AppUrl.baseUrl}/quiz/attemp');
+    await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(
+        {
+          'quizId': quizId,
+          'userId': userId,
+          'point': point,
+        },
+      ),
+    );
+  }
 }

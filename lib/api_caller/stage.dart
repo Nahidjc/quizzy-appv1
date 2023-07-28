@@ -18,4 +18,24 @@ class StageList {
       throw Exception('Failed to load data from API');
     }
   }
+
+  Future subscribeStage(String userId, String stageId) async {
+    final url = Uri.parse('${AppUrl.baseUrl}/stage/subscribe');
+    final body = {'userId': userId, 'stageId': stageId};
+    final headers = {'Content-Type': 'application/json'};
+
+    try {
+      final response =
+          await http.post(url, headers: headers, body: jsonEncode(body));
+
+      if (response.statusCode == 200) {
+        // Successful API call
+        print("Subscription successful!");
+        print(response.body);
+        // You can handle the response data here if needed
+      }
+    } catch (e) {
+      throw Exception('Failed to load data from API');
+    }
+  }
 }
