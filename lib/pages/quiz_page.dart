@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:quizzy/api_caller/quiz.dart';
 import 'package:quizzy/components/multiple_answer_quiz.dart';
 import 'package:quizzy/components/single_answer_quiz.dart';
 import 'package:quizzy/models/quiz_convert.dart';
 import 'package:quizzy/models/quiz_model.dart';
 import 'package:quizzy/pages/quiz_result.dart';
+import 'package:quizzy/provider/login_provider.dart';
 import 'dart:async';
 import 'package:quizzy/utils/quiz_points.dart';
 import 'package:quizzy/widget/circular_progress.dart';
@@ -19,10 +22,13 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Map<String, dynamic>> quizData = [];
+  String userId = "";
   @override
   void initState() {
     super.initState();
-
+    AuthProvider authProvider =
+        Provider.of<AuthProvider>(context, listen: false);
+    userId = authProvider.userId;
     setState(() {
       quizData = convertToQuizData(widget.quiz.questions);
     });
@@ -91,55 +97,61 @@ class _QuizPageState extends State<QuizPage> {
     }
   }
 
-  void submitQuiz() {
+  Future submitQuiz() async {
     timer?.cancel();
     setState(() {
       isSubmitting = true;
     });
 
-    Future.delayed(const Duration(seconds: 2), () {
-      int correctAnswers = 0;
-      for (int i = 0; i < quizData.length; i++) {
-        final question = quizData[i];
-        final selectedAnswer = selectedAnswers[i];
+    int correctAnswers = 0;
+    for (int i = 0; i < quizData.length; i++) {
+      final question = quizData[i];
+      final selectedAnswer = selectedAnswers[i];
 
-        if (question.containsKey('correctAnswer')) {
-          final correctAnswer = question['correctAnswer'];
-          if (selectedAnswer == correctAnswer) {
-            correctAnswers++;
-          }
-        } else if (question.containsKey('correctAnswers')) {
-          final correctAnswersList = question['correctAnswers'];
-          if (selectedAnswer != null &&
-              selectedAnswer.length == correctAnswersList.length &&
-              selectedAnswer.toSet().containsAll(correctAnswersList)) {
-            correctAnswers++;
-          }
+      if (question.containsKey('correctAnswer')) {
+        final correctAnswer = question['correctAnswer'];
+        if (selectedAnswer == correctAnswer) {
+          correctAnswers++;
+        }
+      } else if (question.containsKey('correctAnswers')) {
+        final correctAnswersList = question['correctAnswers'];
+        if (selectedAnswer != null &&
+            selectedAnswer.length == correctAnswersList.length &&
+            selectedAnswer.toSet().containsAll(correctAnswersList)) {
+          correctAnswers++;
         }
       }
+    }
 
-      final quizPoint = QuizPoints();
-      int quizpoint = quizPoint.calculatePoints(
-          correctAnswers, timeRemaining, quizData.length);
-      setState(() {
-        score = correctAnswers;
-        points = quizpoint;
-        isSubmitting = false;
-      });
-      List<dynamic> selectedArray = getSelectedAnswer(selectedAnswers);
-      selectedAnswers = {};
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => QuizResultPage(
-              quizData: quizData,
-              correctAnswers: correctAnswers,
-              percentage: (correctAnswers / quizData.length) * 100,
-              quizpoint: quizpoint,
-              selectedArray: selectedArray),
-        ),
-      );
+    final quizPoint = QuizPoints();
+    int quizpoint = quizPoint.calculatePoints(
+        correctAnswers, timeRemaining, quizData.length);
+    setState(() {
+      score = correctAnswers;
+      points = quizpoint;
     });
+    List<dynamic> selectedArray = getSelectedAnswer(selectedAnswers);
+    selectedAnswers = {};
+    final quizApi = QuizApi();
+    await quizApi.attemptQuiz(widget.quiz.id, userId, points);
+    setState(() {
+      isSubmitting = false;
+    });
+    gottoNextPage(correctAnswers, quizpoint, selectedArray);
+  }
+
+  void gottoNextPage(correctAnswers, quizpoint, selectedArray) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => QuizResultPage(
+            quizData: quizData,
+            correctAnswers: correctAnswers,
+            percentage: (correctAnswers / quizData.length) * 100,
+            quizpoint: quizpoint,
+            selectedArray: selectedArray),
+      ),
+    );
   }
 
   void nextQuestion() {
@@ -298,7 +310,6 @@ class _QuizPageState extends State<QuizPage> {
                             ),
                           ),
                         ),
-                     
                       ],
                     ),
                   ),

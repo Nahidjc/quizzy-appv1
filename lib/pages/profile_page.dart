@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quizzy/pages/home_page.dart';
 import 'package:quizzy/pages/login_page.dart';
 import 'package:quizzy/provider/login_provider.dart';
 
