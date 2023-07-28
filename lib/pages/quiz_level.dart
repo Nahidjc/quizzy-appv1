@@ -24,13 +24,14 @@ class QuizLevelList extends StatefulWidget {
 
 class _QuizLevelListState extends State<QuizLevelList> {
   final StageList _stageList = StageList();
-  final AuthProvider authState = AuthProvider();
+  late AuthProvider user;
   List<dynamic> _stages = [];
   bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
+    user = Provider.of<AuthProvider>(context, listen: false);
     _fetchStages();
   }
 
@@ -52,13 +53,17 @@ class _QuizLevelListState extends State<QuizLevelList> {
     }
   }
 
+  void updateData() {
+    user.userDetails(user.userId);
+  }
+
   Future<void> _stageSubscribe(String userId, String stageId) async {
     setState(() {
       isLoading = true;
     });
     try {
       await _stageList.subscribeStage(userId, stageId);
-      await authState.userDetails(userId);
+      updateData();
       _fetchStages();
       setState(() {
         isLoading = false;

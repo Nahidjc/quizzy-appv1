@@ -109,7 +109,7 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-Future<void> userDetails(String userid) async {
+  Future<void> userDetails(String userid) async {
     final url = Uri.parse('${AppUrl.baseUrl}/user/details');
     setLoading(true);
     try {
@@ -121,9 +121,6 @@ Future<void> userDetails(String userid) async {
         var jsonResponse = json.decode(response.body);
         UserData userData = UserData.fromJson(jsonResponse);
         _coin = userData.coin;
-        _errorMessage = '';
-      } else {
-        _errorMessage = 'Failed to fetch user details.';
       }
     } catch (e) {
       _errorMessage = 'An error occurred.';
@@ -133,6 +130,10 @@ Future<void> userDetails(String userid) async {
     }
   }
 
+  void updateTask(data) {
+    _coin = data;
+    notifyListeners();
+  }
 
   void logout() {
     _errorMessage = '';
