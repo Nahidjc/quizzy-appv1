@@ -22,13 +22,12 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Map<String, dynamic>> quizData = [];
-  String userId = "";
+  late AuthProvider authProvider;
   @override
   void initState() {
     super.initState();
-    AuthProvider authProvider =
+    authProvider =
         Provider.of<AuthProvider>(context, listen: false);
-    userId = authProvider.userId;
     setState(() {
       quizData = convertToQuizData(widget.quiz.questions);
     });
@@ -133,11 +132,16 @@ class _QuizPageState extends State<QuizPage> {
     List<dynamic> selectedArray = getSelectedAnswer(selectedAnswers);
     selectedAnswers = {};
     final quizApi = QuizApi();
-    await quizApi.attemptQuiz(widget.quiz.id, userId, points);
+    await quizApi.attemptQuiz(widget.quiz.id, authProvider.userId, points);
+    updateData();
     setState(() {
       isSubmitting = false;
     });
     gottoNextPage(correctAnswers, quizpoint, selectedArray);
+  }
+
+  void updateData() {
+    authProvider.userDetails(authProvider.userId);
   }
 
   void gottoNextPage(correctAnswers, quizpoint, selectedArray) {

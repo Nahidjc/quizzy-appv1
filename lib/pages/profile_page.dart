@@ -11,10 +11,20 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  late AuthProvider user;
+
+  @override
+  void initState() {
+    super.initState();
+    user = Provider.of<AuthProvider>(context, listen: false);
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AuthProvider>(context);
 
+    final user = Provider.of<AuthProvider>(context);
+  
     if (!user.isAuthenticated) {
       return const LoginPage();
     }
