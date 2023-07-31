@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quizzy/components/bottom-navigation.dart';
 import 'package:quizzy/pages/login_page.dart';
 import 'package:quizzy/provider/login_provider.dart';
 import 'package:quizzy/routes/app_routes.dart';
@@ -109,6 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
       ),
+      bottomNavigationBar: const BottomNav(),
     );
   }
 }
