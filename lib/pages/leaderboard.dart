@@ -77,6 +77,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           ],
         ),
       ),
+      bottomNavigationBar: const BottomAppBar(),
     );
   }
 
