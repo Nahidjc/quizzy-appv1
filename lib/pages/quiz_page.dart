@@ -208,7 +208,30 @@ class _QuizPageState extends State<QuizPage> {
     final List<dynamic> questionOptions = getOptions();
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            PanaraConfirmDialog.show(
+              context,
+              title: 'Submit Quiz?',
+              message:
+                  'Are you sure you want to leave? Your quiz will be submitted.',
+              confirmButtonText: "OK",
+              cancelButtonText: "Cancel",
+              onTapCancel: () {
+                Navigator.pop(context);
+              },
+              onTapConfirm: () {
+                Navigator.pop(context);
+                submitQuiz();
+              },
+              panaraDialogType: PanaraDialogType.warning,
+              barrierDismissible: false,
+            );
+          },
+        ),
+      ),
       body: isSubmitting
           ? const Center(
               child: CircularProgressIndicator(),
