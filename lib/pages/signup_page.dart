@@ -74,7 +74,7 @@ class _SignupPageState extends State<SignupPage> {
             key: _formKey,
             child: Column(
               children: [
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 60.0),
                 Image.asset(
                   'assets/images/logo.png',
                   width: 80,
