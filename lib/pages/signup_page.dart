@@ -65,7 +65,9 @@ class _SignupPageState extends State<SignupPage> {
       return const LoginPage();
     }
     return Scaffold(
-      body: SingleChildScrollView(
+      body: authState.isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(20.0),
           child: Form(
