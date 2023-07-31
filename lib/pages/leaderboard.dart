@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quizzy/api_caller/leaderboard.dart';
+import 'package:quizzy/models/leaderboard.dart';
 
 class LeaderboardPage extends StatefulWidget {
   const LeaderboardPage({super.key});
@@ -7,85 +9,41 @@ class LeaderboardPage extends StatefulWidget {
 }
 
 class _LeaderboardPageState extends State<LeaderboardPage> {
-  List<LeaderboardEntry> todayLeaderboardData = [
-    LeaderboardEntry(
-      profilePic: 'assets/images/avatar.png',
-      name: 'John Doe',
-      points: 250,
-    ),
-    LeaderboardEntry(
-      profilePic: 'assets/images/avatar.png',
-      name: 'Jane Smith',
-      points: 200,
-    ),
-    LeaderboardEntry(
-      profilePic: 'assets/images/avatar.png',
-      name: 'David Johnson',
-      points: 180,
-    ),
-  ];
-
-  List<LeaderboardEntry> weeklyLeaderboardData = [
-    LeaderboardEntry(
-      profilePic: 'assets/images/avatar.png',
-      name: 'Emily Brown',
-      points: 300,
-    ),
-    LeaderboardEntry(
-      profilePic: 'assets/images/avatar.png',
-      name: 'Michael Wilson',
-      points: 280,
-    ),
-    LeaderboardEntry(
-      profilePic: 'assets/images/avatar.png',
-      name: 'Sarah Davis',
-      points: 260,
-    ),
-    LeaderboardEntry(
-      profilePic: 'assets/images/avatar.png',
-      name: 'John Smith',
-      points: 240,
-    ),
-    LeaderboardEntry(
-      profilePic: 'assets/images/avatar.png',
-      name: 'Jennifer Johnson',
-      points: 220,
-    ),
-    LeaderboardEntry(
-      profilePic: 'assets/images/avatar.png',
-      name: 'David Brown',
-      points: 200,
-    ),
-    LeaderboardEntry(
-      profilePic: 'assets/images/avatar.png',
-      name: 'Jessica Taylor',
-      points: 180,
-    ),
-    LeaderboardEntry(
-      profilePic: 'assets/images/avatar.png',
-      name: 'Andrew Davis',
-      points: 160,
-    ),
-    LeaderboardEntry(
-      profilePic: 'assets/images/avatar.png',
-      name: 'Sophia Wilson',
-      points: 140,
-    ),
-    LeaderboardEntry(
-      profilePic: 'assets/images/avatar.png',
-      name: 'James Smith',
-      points: 120,
-    ),
-  ];
-
-  late List<LeaderboardEntry> currentLeaderboardData;
+  List<dynamic> dailyLeaderboard = [];
+  List<dynamic> weeklyLeaderboard = [];
+  late List<dynamic> currentLeaderboardData;
   bool showTodayLeaderboard = true;
   bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    currentLeaderboardData = todayLeaderboardData;
+    fetchDailyLeaderboardData();
+    currentLeaderboardData = dailyLeaderboard;
+  }
+
+  Future<void> fetchDailyLeaderboardData() async {
+    setState(() {
+      isLoading = true;
+    });
+    LeaderboardAPi leaderboardApi = LeaderboardAPi();
+    dailyLeaderboard = await leaderboardApi.getDailyLeaderboard();
+    currentLeaderboardData = dailyLeaderboard;
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  Future<void> fetchWeeklyLeaderboardData() async {
+    setState(() {
+      isLoading = true;
+    });
+    LeaderboardAPi leaderboardApi = LeaderboardAPi();
+    weeklyLeaderboard = await leaderboardApi.getWeeklyLeaderboard();
+    currentLeaderboardData = weeklyLeaderboard;
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -127,15 +85,10 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
       onTap: () {
         setState(() {
           showTodayLeaderboard = title == 'Today';
-          currentLeaderboardData = showTodayLeaderboard
-              ? todayLeaderboardData
-              : weeklyLeaderboardData;
-          isLoading = true;
-          Future.delayed(const Duration(seconds: 1), () {
-            setState(() {
-              isLoading = false;
-            });
-          });
+          showTodayLeaderboard
+              ? fetchDailyLeaderboardData()
+              : fetchWeeklyLeaderboardData();
+        
         });
       },
       child: Container(
@@ -177,7 +130,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
     );
   }
 
-  Widget _buildTopPerformerRow(LeaderboardEntry entry, int position) {
+  Widget _buildTopPerformerRow(Leaderboard entry, int position) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
@@ -205,9 +158,9 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 width: 2,
               ),
             ),
-            child: CircleAvatar(
+            child: const CircleAvatar(
               radius: 20,
-              backgroundImage: AssetImage(entry.profilePic),
+              backgroundImage: AssetImage('assets/images/avatar.png'),
             ),
           ),
           Expanded(
@@ -216,14 +169,14 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  entry.name,
+                  entry.firstName,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
                 Text(
-                  '${entry.points} Points',
+                  '${entry.totalPoints} Points',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.grey[600],
@@ -248,7 +201,6 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 fontSize: 14,
               ),
             ),
-
           ),
           const SizedBox(width: 10),
         ],
@@ -286,12 +238,10 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
 }
 
 class LeaderboardEntry {
-  final String profilePic;
   final String name;
   final int points;
 
   LeaderboardEntry({
-    required this.profilePic,
     required this.name,
     required this.points,
   });
