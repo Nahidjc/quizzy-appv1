@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:quizzy/components/bottom-navigation.dart';
 import 'package:quizzy/pages/login_page.dart';
 import 'package:quizzy/provider/login_provider.dart';
+import 'package:quizzy/routes/app_routes.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -20,12 +21,10 @@ class _ProfilePageState extends State<ProfilePage> {
     user = Provider.of<AuthProvider>(context, listen: false);
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     final user = Provider.of<AuthProvider>(context);
-  
+
     if (!user.isAuthenticated) {
       return const LoginPage();
     }
@@ -51,6 +50,13 @@ class _ProfilePageState extends State<ProfilePage> {
             Navigator.of(context).pop(); // Navigate back to the previous page
           },
         ),
+        actions: [
+          IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () {
+                Navigator.pushNamed(context, AppRoutes.home);
+              }),
+        ],
       ),
       body: SafeArea(
         child: Stack(
@@ -104,7 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
       ),
-      bottomNavigationBar: const BottomNav(),
+      bottomNavigationBar: const BottomNav(currentIndex: 1,),
     );
   }
 }

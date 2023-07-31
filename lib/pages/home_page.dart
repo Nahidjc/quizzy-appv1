@@ -47,6 +47,6 @@ class _HomePageState extends State<HomePage> {
                   ? const Center(child: CircularProgressIndicator())
                   : Categories(categoryList: categoryList))
         ]),
-        bottomNavigationBar: const BottomNav());
+        bottomNavigationBar: const BottomNav(currentIndex: 0,));
   }
 }

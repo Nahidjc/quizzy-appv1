@@ -3,14 +3,21 @@ import 'package:quizzy/pages/home_page.dart';
 import 'package:quizzy/pages/profile_page.dart';
 
 class BottomNav extends StatefulWidget {
-  const BottomNav({Key? key}) : super(key: key);
+  final int currentIndex;
+  const BottomNav({Key? key, this.currentIndex = 0}) : super(key: key);
 
   @override
   State<BottomNav> createState() => _BottomNavState();
 }
 
 class _BottomNavState extends State<BottomNav> {
-  int _currentIndex = 0;
+   late int _currentIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.currentIndex;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,17 +29,17 @@ class _BottomNavState extends State<BottomNav> {
       onTap: (int index) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           setState(() {
-            _currentIndex = index;
-            if (index == 0) {
+            // _currentIndex = index;
+            if (index == 0 && index != _currentIndex) {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => const HomePage(),
               ));
             }
-            if (index == 1) {
+            if (index == 1 && index != _currentIndex) {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => const ProfilePage(),
               ));
-            } else if (index == 2) {}
+            } else if (index == 2 && index != _currentIndex) {}
           });
         });
       },
