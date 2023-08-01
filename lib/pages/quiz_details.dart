@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quizzy/models/quiz_model.dart';
+import 'package:quizzy/pages/practice_questions.dart';
 import 'package:quizzy/pages/quiz_page.dart';
+import 'package:quizzy/pages/result_review.dart';
 
 class QuizDetails extends StatefulWidget {
   final QuizData quiz;
@@ -160,7 +162,10 @@ class _QuizDetailsState extends State<QuizDetails> {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PracticeQuestionPage(quiz: widget.quiz)));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -183,7 +188,6 @@ class _QuizDetailsState extends State<QuizDetails> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => QuizPage(quiz: widget.quiz)));
-                  // QuizPage(quiz: quizzes[index]),
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueAccent,
