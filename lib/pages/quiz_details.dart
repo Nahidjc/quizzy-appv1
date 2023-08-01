@@ -16,7 +16,6 @@ class _QuizDetailsState extends State<QuizDetails> {
     double screenHeight = MediaQuery.of(context).size.height;
     double passageHeight = screenHeight * 0.37;
     int quizLength = widget.quiz.questions.length;
-    String lenght = quizLength.toString();
     return Scaffold(
       appBar: AppBar(),
       body: Column(
@@ -59,7 +58,7 @@ class _QuizDetailsState extends State<QuizDetails> {
                                 color: Colors.deepPurple),
                             SizedBox(width: 8),
                             Text(
-                              '$quizLength Questions',
+                              'Questions',
                               style: TextStyle(
                                 color: Colors.deepPurple,
                                 fontWeight: FontWeight.bold,
