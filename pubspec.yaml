@@ -22,6 +22,7 @@ dependencies:
   panara_dialogs: ^0.1.4
   breadcrumbs: ^0.1.0
   quickalert: ^1.0.1
+  flutter_custom_buttons: ^0.0.3
 
 dev_dependencies:
   flutter_test:

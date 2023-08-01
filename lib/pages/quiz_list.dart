@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quizzy/api_caller/quiz.dart';
 import 'package:quizzy/models/quiz_model.dart';
-import 'package:quizzy/pages/quiz_page.dart';
+import 'package:quizzy/pages/quiz_details.dart';
 import 'package:breadcrumbs/breadcrumbs.dart';
 
 class ListTable {
@@ -137,7 +137,7 @@ class _QuizListState extends State<QuizList> {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                QuizPage(quiz: quizzes[index]),
+                                QuizDetails(quiz: quizzes[index]),
                           ),
                         ),
               title: Text(
