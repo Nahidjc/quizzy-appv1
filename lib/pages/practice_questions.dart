@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quizzy/components/practice/practice_multple_answer_result.dart';
-import 'package:quizzy/components/review/single_answer_result.dart';
+import 'package:quizzy/components/practice/practice_single_answer_result.dart';
+import 'package:quizzy/models/quiz_convert.dart';
 import 'package:quizzy/models/quiz_model.dart';
 
 class PracticeQuestionPage extends StatefulWidget {
@@ -12,38 +13,47 @@ class PracticeQuestionPage extends StatefulWidget {
 }
 
 class _PracticeQuestionPageState extends State<PracticeQuestionPage> {
+  List<Map<String, dynamic>> quizData = [];
   @override
   void initState() {
     super.initState();
+    setState(() {
+      quizData = convertToQuizData(widget.quiz.questions);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Result Review'),
+        title: const Text(
+          "Related Questions for Practice",
+          style: TextStyle(fontSize: 18),
+        ),
+        centerTitle: true,
+        elevation: 4, 
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            for (int i = 0; i < widget.quiz.length; i++)
+            for (int i = 0; i < quizData.length; i++)
               Column(
                 children: [
-                  if (widget.quiz[i].containsKey('correctAnswer'))
-                    SingleCorrectAnswerWidget(
+                  if (quizData[i].containsKey('correctAnswer'))
+                    PracticeSingleCorrectAnswerWidget(
                       questionIndex: i + 1,
-                      question: widget.quiz[i]['question'] as String,
-                      options: widget.quiz[i]['options'] as List<String>,
-                      correctAnswer: widget.quiz[i]['correctAnswer'] as int,
+                        question: quizData[i]['question'] as String,
+                        options: quizData[i]['options'] as List<String>,
+                        correctAnswer: quizData[i]['correctAnswer'] as int
                     ),
-                  if (widget.quizData[i].containsKey('correctAnswers'))
+                  if (quizData[i].containsKey('correctAnswers'))
                     PracticeMultipleCorrectAnswerWidget(
                       questionIndex: i + 1,
-                      question: widget.quizData[i]['question'] as String,
-                      options: widget.quizData[i]['options'] as List<String>,
+                      question: quizData[i]['question'] as String,
+                      options: quizData[i]['options'] as List<String>,
                       correctAnswers:
-                          widget.quizData[i]['correctAnswers'] as List<int>,
+                          quizData[i]['correctAnswers'] as List<int>,
                     ),
                 ],
               ),

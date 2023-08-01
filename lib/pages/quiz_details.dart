@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:quizzy/models/quiz_model.dart';
 import 'package:quizzy/pages/practice_questions.dart';
 import 'package:quizzy/pages/quiz_page.dart';
-import 'package:quizzy/pages/result_review.dart';
 
 class QuizDetails extends StatefulWidget {
   final QuizData quiz;
@@ -14,10 +13,21 @@ class QuizDetails extends StatefulWidget {
 
 class _QuizDetailsState extends State<QuizDetails> {
   @override
+  void initState() {
+    super.initState();
+
+    // setState(() {
+    //   title = "Quiz Details";
+    // });
+  }
+
+  @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double passageHeight = screenHeight * 0.37;
     int quizLength = widget.quiz.questions.length;
+    var len = quizLength.toString();
+    var title = widget.quiz.title;
     return Scaffold(
       appBar: AppBar(),
       body: Column(
@@ -28,9 +38,9 @@ class _QuizDetailsState extends State<QuizDetails> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Quiz Title',
-                  style: TextStyle(
+                Text(
+                  title,
+                  style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
@@ -53,15 +63,15 @@ class _QuizDetailsState extends State<QuizDetails> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Expanded(
+                      Expanded(
                         child: Row(
                           children: [
-                            Icon(Icons.question_answer,
+                            const Icon(Icons.question_answer,
                                 color: Colors.deepPurple),
-                            SizedBox(width: 8),
+                            const SizedBox(width: 8),
                             Text(
-                              'Questions',
-                              style: TextStyle(
+                              "$len Questions",
+                              style: const TextStyle(
                                 color: Colors.deepPurple,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
@@ -165,7 +175,8 @@ class _QuizDetailsState extends State<QuizDetails> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => PracticeQuestionPage(quiz: widget.quiz)));
+                          builder: (context) =>
+                              PracticeQuestionPage(quiz: widget.quiz)));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -174,9 +185,9 @@ class _QuizDetailsState extends State<QuizDetails> {
                   ),
                 ),
                 child: const Text(
-                  'Cancel',
+                  "Prepare Yourself",
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -198,7 +209,7 @@ class _QuizDetailsState extends State<QuizDetails> {
                 child: const Text(
                   'Attempt Quiz',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),

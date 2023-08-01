@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
 
-class SingleCorrectAnswerWidget extends StatelessWidget {
+class PracticeSingleCorrectAnswerWidget extends StatelessWidget {
   final int questionIndex;
   final String question;
   final List<String> options;
   final int correctAnswer;
-  final int selectedAnswer;
 
-  const SingleCorrectAnswerWidget({
+  const PracticeSingleCorrectAnswerWidget(
+      {
     Key? key,
     required this.questionIndex,
     required this.question,
     required this.options,
-    required this.correctAnswer,
-    required this.selectedAnswer,
+      required this.correctAnswer
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final isCorrect = selectedAnswer == correctAnswer;
-    final optionColor =
-        isCorrect ? Colors.green : (selectedAnswer != -1 ? Colors.red : null);
-    final iconData = isCorrect ? Icons.check : Icons.close;
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -51,14 +46,6 @@ class SingleCorrectAnswerWidget extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                isCorrect ? 'Correct' : 'Incorrect',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: isCorrect ? Colors.green : Colors.red,
-                ),
-              ),
             ],
           ),
           const SizedBox(height: 8),
@@ -73,21 +60,18 @@ class SingleCorrectAnswerWidget extends StatelessWidget {
           Column(
             children: List.generate(options.length, (optionIndex) {
               final option = options[optionIndex];
-              final isSelected = selectedAnswer == optionIndex;
-              final isCorrectedOption =
-                  !isCorrect && correctAnswer == optionIndex;
+              final isCorrectedOption = correctAnswer == optionIndex;
 
               return InkWell(
                 child: Container(
                   margin: const EdgeInsets.symmetric(vertical: 4),
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: isSelected ? optionColor : null,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: isCorrectedOption
                           ? Colors.green[300]!
-                          : optionColor ?? Colors.grey[300]!,
+                          : Colors.grey[300]!,
                       width: 1,
                     ),
                   ),
@@ -96,9 +80,7 @@ class SingleCorrectAnswerWidget extends StatelessWidget {
                       Icon(
                         isCorrectedOption
                             ? Icons.check
-                            : isSelected
-                                ? iconData
-                                : null,
+                            : null,
                         color: isCorrectedOption ? Colors.green : Colors.white,
                       ),
                       const SizedBox(width: 8),
@@ -107,7 +89,8 @@ class SingleCorrectAnswerWidget extends StatelessWidget {
                           option,
                           style: TextStyle(
                             fontSize: 16,
-                            color: isSelected ? Colors.white : null,
+                            color:
+                                isCorrectedOption ? Colors.green : Colors.black,
                           ),
                         ),
                       ),
@@ -122,4 +105,3 @@ class SingleCorrectAnswerWidget extends StatelessWidget {
     );
   }
 }
-
