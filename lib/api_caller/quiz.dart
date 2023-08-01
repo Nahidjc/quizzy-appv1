@@ -19,6 +19,21 @@ class QuizApi {
     }
   }
 
+  Future<List<Question>> fetchRandomQuestions(String subject) async {
+    final url = Uri.parse('${AppUrl.baseUrl}/quiz/random/questions');
+    final headers = {'subject': subject};
+    final response = await http.get(url, headers: headers);
+    if (response.statusCode == 200) {
+      var jsonData = json.decode(response.body);
+      var questionList = jsonData['data'] as List;
+      var questions =
+          questionList.map((data) => Question.fromJson(data)).toList();
+      return questions;
+    } else {
+      throw Exception('Failed to load data from API');
+    }
+  }
+
   Future<void> attemptQuiz(String quizId, String userId, int point) async {
     final url = Uri.parse('${AppUrl.baseUrl}/quiz/attemp');
     await http.post(

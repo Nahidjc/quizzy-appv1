@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizzy/api_caller/quiz.dart';
 import 'package:quizzy/models/quiz_model.dart';
 import 'package:quizzy/pages/practice_questions.dart';
 import 'package:quizzy/pages/quiz_page.dart';
@@ -12,15 +13,11 @@ class QuizDetails extends StatefulWidget {
 }
 
 class _QuizDetailsState extends State<QuizDetails> {
+  QuizApi quizApi = QuizApi();
   @override
   void initState() {
     super.initState();
-
-    // setState(() {
-    //   title = "Quiz Details";
-    // });
   }
-
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -178,6 +175,7 @@ class _QuizDetailsState extends State<QuizDetails> {
                           builder: (context) =>
                               PracticeQuestionPage(quiz: widget.quiz)));
                 },
+
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   shape: RoundedRectangleBorder(

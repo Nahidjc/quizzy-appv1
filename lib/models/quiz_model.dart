@@ -49,13 +49,13 @@ class Question {
   dynamic correctAnswer;
   List<int>? correctAnswers;
 
-  String id;
+  String? id;
 
   Question({
     required this.question,
     required this.options,
     this.correctAnswer,
-    required this.id,
+    this.id,
     this.correctAnswers,
   });
 
