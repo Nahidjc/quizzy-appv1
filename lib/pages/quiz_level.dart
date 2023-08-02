@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:quizzy/api_caller/stage.dart';
+import 'package:quizzy/models/stage_model.dart';
 import 'package:quizzy/pages/login_page.dart';
 import 'package:quizzy/pages/quiz_list.dart';
 import 'package:breadcrumbs/breadcrumbs.dart';
@@ -107,8 +108,18 @@ class _QuizLevelListState extends State<QuizLevelList> {
                   bool isUnlocked = levelData.isAccessible;
                   String stageId = levelData.id;
                   int cost = levelData.cost;
-                  return buildLevelButton(
-                      context, levelName, isUnlocked, stageId, cost);
+                  int currentIndex = _stages.indexOf(levelData);
+                  // // Get the previous stage data
+                  StageData? previousStage;
+                  if (currentIndex > 0) {
+                    previousStage = _stages[currentIndex - 1];
+                  }
+
+                  bool isPreviousUnlocked =
+                      previousStage != null && previousStage.isAccessible;
+
+                  return buildLevelButton(context, levelName, isUnlocked,
+                      stageId, cost, isPreviousUnlocked);
                 }).toList(),
               ),
       ),
@@ -116,7 +127,7 @@ class _QuizLevelListState extends State<QuizLevelList> {
   }
 
   Widget buildLevelButton(BuildContext context, String levelName,
-      bool isUnlocked, String stageId, int cost) {
+      bool isUnlocked, String stageId, int cost, bool isPreviousUnlocked) {
     final user = Provider.of<AuthProvider>(context);
     const double buttonWidth = 180.0;
     const double buttonHeight = 60.0;
@@ -143,30 +154,38 @@ class _QuizLevelListState extends State<QuizLevelList> {
               ),
             );
           } else {
-            PanaraConfirmDialog.show(
-              context,
-              title: "Level is locked",
-              message: "To unlock this level, you need to pay $cost coin.",
-              confirmButtonText: "Unlock",
-              cancelButtonText: "Cancel",
-              onTapCancel: () {
-                Navigator.pop(context);
-              },
-              onTapConfirm: () {
-                Navigator.pop(context);
-                if (user.coin < cost) {
-                  QuickAlert.show(
-                    context: context,
-                    type: QuickAlertType.warning,
-                    text: "You don't have enough coins to unlock this level",
-                  );
-                } else {
-                  _stageSubscribe(user.userId, stageId);
-                }
-              },
-              panaraDialogType: PanaraDialogType.normal,
-              barrierDismissible: false,
-            );
+            if (!isPreviousUnlocked) {
+              QuickAlert.show(
+                context: context,
+                type: QuickAlertType.warning,
+                text: "You need to subscribe to the previous Level first.",
+              );
+            } else {
+              PanaraConfirmDialog.show(
+                context,
+                title: "Level is locked",
+                message: "To unlock this level, you need to pay $cost coin.",
+                confirmButtonText: "Unlock",
+                cancelButtonText: "Cancel",
+                onTapCancel: () {
+                  Navigator.pop(context);
+                },
+                onTapConfirm: () {
+                  Navigator.pop(context);
+                  if (user.coin < cost) {
+                    QuickAlert.show(
+                      context: context,
+                      type: QuickAlertType.warning,
+                      text: "You don't have enough coins to unlock this level",
+                    );
+                  } else {
+                    _stageSubscribe(user.userId, stageId);
+                  }
+                },
+                panaraDialogType: PanaraDialogType.normal,
+                barrierDismissible: false,
+              );
+            }
           }
         },
         child: Container(
