@@ -126,27 +126,27 @@ class _QuizDetailsState extends State<QuizDetails> {
                   ),
                 ),
                 const SizedBox(height: 24),
-                const Row(
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    CircleAvatar(
+                    const CircleAvatar(
                       backgroundImage: AssetImage('assets/images/avatar.png'),
                       radius: 24,
                     ),
-                    SizedBox(width: 12),
+                    const SizedBox(width: 12),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Creator Name',
+                        const Text(
+                          'Quiz Creator',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
-                          'Creator',
-                          style: TextStyle(
+                          widget.quiz.mentor,
+                          style: const TextStyle(
                             color: Colors.grey,
                             fontSize: 16,
                           ),
