@@ -45,7 +45,6 @@ class AuthProvider extends ChangeNotifier {
           },
         ),
       );
-
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
         UserDetails userDetails = UserDetails.fromJson(jsonResponse['data']);
