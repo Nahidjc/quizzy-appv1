@@ -61,19 +61,19 @@ class Categories extends StatelessWidget {
                           category.displayName,
                           style: TextStyle(
                             color: const Color.fromARGB(255, 204, 109,
-                                251), // Customize the text color to your preference
+                                251), 
                             fontSize: fontSize,
                             fontWeight: FontWeight.bold,
                             fontStyle:
-                                FontStyle.italic, // Use italic font style
+                                FontStyle.italic,
                             shadows: [
                               Shadow(
                                 color: Colors.black.withOpacity(
-                                    0.5), // Add a shadow with a dark color and transparency
+                                    0.5), 
                                 offset: const Offset(1,
-                                    1), // Offset the shadow to the bottom right
+                                    1), 
                                 blurRadius:
-                                    2.0, // Add a slight blur to the shadow
+                                    2.0, 
                               ),
                             ],
                           ),
