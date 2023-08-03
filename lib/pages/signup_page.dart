@@ -39,7 +39,7 @@ class _SignupPageState extends State<SignupPage> {
       String email = _emailController.text;
       String password = _passwordController.text;
       Provider.of<AuthProvider>(context, listen: false)
-          .register(firstName, lastName, email, mobileNo, password);
+          .register(context, firstName, lastName, email, mobileNo, password);
       _mobileNoController.clear();
       _emailController.clear();
       _passwordController.clear();

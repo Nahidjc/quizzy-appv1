@@ -31,7 +31,8 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> loginProvider(String email, String password) async {
+  Future<void> loginProvider(
+      BuildContext context, String email, String password) async {
     final url = Uri.parse('${AppUrl.baseUrl}/auth/login');
     setLoading(true);
     try {
@@ -57,7 +58,17 @@ class AuthProvider extends ChangeNotifier {
         _errorMessage = '';
       } else {
         setAuthenticated(false);
-        _errorMessage = 'Invalid mobile number or password';
+        final responseBody = json.decode(response.body);
+        _errorMessage = responseBody['message'] ?? 'Unknown error';
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(_errorMessage,
+                style: const TextStyle(color: Colors.white, fontSize: 18.0)),
+            duration: const Duration(seconds: 5),
+          ),
+        );
         Timer(const Duration(seconds: 3), () {
           _errorMessage = '';
           notifyListeners();
@@ -71,8 +82,8 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> register(String firstName, String lastName, String email,
-      String mobileNo, String password) async {
+  Future<void> register(BuildContext context, String firstName, String lastName,
+      String email, String mobileNo, String password) async {
     try {
       final url = Uri.parse('${AppUrl.baseUrl}/auth/signup');
       setLoading(true);
@@ -96,7 +107,17 @@ class AuthProvider extends ChangeNotifier {
         notifyListeners();
       } else {
         setLoading(false);
-        _errorMessage = 'Internal Server Error';
+        final responseBody = json.decode(response.body);
+        _errorMessage = responseBody['message'] ?? 'Unknown error';
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(_errorMessage,
+                style: const TextStyle(color: Colors.white, fontSize: 18.0)),
+            duration: const Duration(seconds: 5),
+          ),
+        );
         Timer(const Duration(seconds: 3), () {
           _errorMessage = '';
           notifyListeners();

@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
       String email = _emailController.text;
       String password = _passwordController.text;
       Provider.of<AuthProvider>(context, listen: false)
-          .loginProvider(email, password);
+          .loginProvider(context, email, password);
       _emailController.clear();
       _passwordController.clear();
     }
