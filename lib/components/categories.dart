@@ -56,12 +56,11 @@ class Categories extends StatelessWidget {
                     child: LayoutBuilder(
                       builder: (context, constraints) {
                         double fontSize = constraints.maxWidth *
-                            0.12; // Adjust this factor to control the font size
+                            0.12;
                         return Text(
                           category.displayName,
                           style: TextStyle(
-                            color: const Color.fromARGB(255, 204, 109,
-                                251), 
+                            color: Colors.blue,
                             fontSize: fontSize,
                             fontWeight: FontWeight.bold,
                             fontStyle:
@@ -69,11 +68,11 @@ class Categories extends StatelessWidget {
                             shadows: [
                               Shadow(
                                 color: Colors.black.withOpacity(
-                                    0.5), 
+                                    0.2), 
                                 offset: const Offset(1,
                                     1), 
                                 blurRadius:
-                                    2.0, 
+                                    1.0, 
                               ),
                             ],
                           ),
