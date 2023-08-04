@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quizzy/components/bottom-navigation.dart';
 import 'package:quizzy/components/categories.dart';
+import 'package:quizzy/components/custom_drawer.dart';
 import 'package:quizzy/components/header.dart';
 import 'package:quizzy/api_caller/categories.dart';
 
@@ -47,6 +48,7 @@ class _HomePageState extends State<HomePage> {
                   ? const Center(child: CircularProgressIndicator())
                   : Categories(categoryList: categoryList))
         ]),
+        endDrawer: const CustomDrawer(),
         bottomNavigationBar: const BottomNav(currentIndex: 0,));
   }
 }

@@ -39,7 +39,9 @@ class _BottomNavState extends State<BottomNav> {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => const ProfilePage(),
               ));
-            } else if (index == 2 && index != _currentIndex) {}
+            } else if (index == 2) {
+              Scaffold.of(context).openEndDrawer();
+            }
           });
         });
       },
@@ -53,7 +55,7 @@ class _BottomNavState extends State<BottomNav> {
           label: 'Profile',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
+          icon: Icon(Icons.menu_rounded),
           label: 'Settings',
         ),
       ],
