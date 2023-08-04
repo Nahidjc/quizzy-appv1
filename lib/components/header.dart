@@ -42,6 +42,7 @@ class _MyAppBarState extends State<MyAppBar>
             bottom: Radius.circular(20),
           ),
         ),
+        actions: [Container()],
         title: Column(
           children: [
             Row(
