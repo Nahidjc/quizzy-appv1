@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quizzy/pages/leaderboard.dart';
+import 'package:quizzy/pages/login_page.dart';
 import 'package:quizzy/provider/login_provider.dart';
-import 'package:quizzy/routes/app_routes.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-   AuthProvider user = Provider.of<AuthProvider>(context);
-    String name = user.name;
+    final user = Provider.of<AuthProvider>(context);
+    if (!user.isAuthenticated) {
+      return const LoginPage();
+    }
     return Drawer(
       child: Column(
         children: <Widget>[
@@ -30,13 +32,13 @@ class CustomDrawer extends StatelessWidget {
                         backgroundImage: AssetImage('assets/images/avatar.png'),
                       ),
                       Text(
-                        name,
+                        user.name,
                         style: const TextStyle(color: Colors.white, fontSize: 20),
                       ),
-                      const  Text(
-                        'test@email.com',
-                        style: TextStyle(color: Colors.white, fontSize: 12),
-                      ),
+                      // const  Text(
+                      //   'test@email.com',
+                      //   style: TextStyle(color: Colors.white, fontSize: 12),
+                      // ),
                     ],
                   ),
                 ),
@@ -89,14 +91,10 @@ class CustomDrawer extends StatelessWidget {
                     leading: const Icon(Icons.leaderboard),
                     title: const Text('Leader Board'),
                     onTap: () {
-                      // Handle the drawer item tap here
                       Navigator.pop(context);
-                        Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const LeaderboardPage()),
-                              );
-                      // Implement your logic here
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const LeaderboardPage(),
+                      ));
                     },
                   ),
                 ),
@@ -116,10 +114,13 @@ class CustomDrawer extends StatelessWidget {
                 style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
               ),
               onTap: () {
-                // Handle the drawer item tap here
                 // Navigator.pop(context);
-                user.logout();
-                // Implement your logic here
+
+                if (user.isAuthenticated) {
+                  user.logout();
+                  Navigator.popUntil(context, (route) => route.isFirst);
+                }
+                
               },
             ),
           ),

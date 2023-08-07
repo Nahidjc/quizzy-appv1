@@ -69,7 +69,7 @@ class _QuizListState extends State<QuizList> {
       appBar: AppBar(
         toolbarHeight: 80.0,
         centerTitle: true,
-        backgroundColor: Colors.purple,
+        backgroundColor: const Color.fromARGB(255, 144, 106, 250),
         iconTheme: const IconThemeData(color: Colors.white),
         title: Breadcrumbs(
           crumbs: [
