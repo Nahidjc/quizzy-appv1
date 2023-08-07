@@ -20,7 +20,6 @@ class SingleCorrectAnswerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final isCorrect = selectedAnswer == correctAnswer;
     final isSkiped = selectedAnswer == options.length;
-    print(isSkiped);
     final optionColor =
         isCorrect ? Colors.green : (selectedAnswer != -1 ? Colors.red : null);
     final iconData = isCorrect ? Icons.check : Icons.close;

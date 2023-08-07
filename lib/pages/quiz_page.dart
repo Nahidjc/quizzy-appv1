@@ -37,17 +37,22 @@ class _QuizPageState extends State<QuizPage> {
   int score = 0;
   int points = 0;
   bool isSubmitting = false;
-  int timeRemaining = 600;
+  int totalTime = 600;
+  late int timeRemaining;
   Timer? timer;
   int currentQuestionIndex = 0;
 
   List<dynamic> getSelectedAnswer(Map<int, dynamic> selectedAnswers) {
+    int skipQuestion = 0;
     List<dynamic> selectedAnswersArray = [];
+
     for (int i = 0; i < quizData.length; i++) {
       if (!selectedAnswers.containsKey(i)) {
         if (quizData[i].containsKey('correctAnswers')) {
+          skipQuestion++;
           selectedAnswersArray.add([quizData[i]['options'].length]);
         } else {
+          skipQuestion++;
           selectedAnswersArray.add(quizData[i]['options'].length);
         }
       } else {
@@ -55,10 +60,11 @@ class _QuizPageState extends State<QuizPage> {
         selectedAnswersArray.add(answer);
       }
     }
-    return selectedAnswersArray;
+    return [skipQuestion, selectedAnswersArray];
   }
 
   void startTimer() {
+    timeRemaining = totalTime;
     timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       setState(() {
         if (timeRemaining > 0) {
@@ -128,7 +134,10 @@ class _QuizPageState extends State<QuizPage> {
       score = correctAnswers;
       points = quizpoint;
     });
-    List<dynamic> selectedArray = getSelectedAnswer(selectedAnswers);
+    List<dynamic> result = getSelectedAnswer(selectedAnswers);
+    int skipQuestion = result[0];
+    int timeSpent = totalTime - timeRemaining;
+    List<dynamic> selectedArray = result[1];
     selectedAnswers = {};
     final quizApi = QuizApi();
     await quizApi.attemptQuiz(widget.quiz.id, authProvider.userId, points);
@@ -136,14 +145,16 @@ class _QuizPageState extends State<QuizPage> {
     setState(() {
       isSubmitting = false;
     });
-    gottoNextPage(correctAnswers, quizpoint, selectedArray);
+    gottoNextPage(
+        correctAnswers, quizpoint, selectedArray, skipQuestion, timeSpent);
   }
 
   void updateData() {
     authProvider.userDetails(authProvider.userId);
   }
 
-  void gottoNextPage(correctAnswers, quizpoint, selectedArray) {
+  void gottoNextPage(
+      correctAnswers, quizpoint, selectedArray, skipQuestion, timeSpent) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -152,7 +163,9 @@ class _QuizPageState extends State<QuizPage> {
             correctAnswers: correctAnswers,
             percentage: (correctAnswers / quizData.length) * 100,
             quizpoint: quizpoint,
-            selectedArray: selectedArray),
+            selectedArray: selectedArray,
+            skipQuestion: skipQuestion,
+            timeSpent: timeSpent),
       ),
     );
   }

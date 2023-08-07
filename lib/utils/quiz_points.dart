@@ -1,6 +1,6 @@
 class QuizPoints {
   int calculatePoints(int correctAnswers, int remainingTime, int quizLength) {
-    int basePoints = correctAnswers * 10;
+    int basePoints = correctAnswers * 1;
     double percentage = correctAnswers / quizLength;
     int timeBonus;
     if (percentage == 1.0) {
