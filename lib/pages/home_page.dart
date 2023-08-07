@@ -4,6 +4,7 @@ import 'package:quizzy/components/categories.dart';
 import 'package:quizzy/components/custom_drawer.dart';
 import 'package:quizzy/components/header.dart';
 import 'package:quizzy/api_caller/categories.dart';
+import 'package:quizzy/components/slider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -46,7 +47,12 @@ class _HomePageState extends State<HomePage> {
           Expanded(
               child: isLoading
                   ? const Center(child: CircularProgressIndicator())
-                  : Categories(categoryList: categoryList))
+                  : Categories(categoryList: categoryList)),
+          SizedBox(
+            height: 200,
+            child: CarouselSliderCustom(),
+          )
+          
         ]),
         endDrawer: const CustomDrawer(),
         bottomNavigationBar: const BottomNav(currentIndex: 0,));

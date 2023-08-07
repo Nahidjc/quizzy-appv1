@@ -49,19 +49,18 @@ class Categories extends StatelessWidget {
                   const Icon(
                     Icons.school,
                     size: 48.0,
-                    color: Colors.blue,
+                    color: Color.fromARGB(255, 144, 106, 250),
                   ),
                   const SizedBox(height: 8.0),
                   Center(
                     child: LayoutBuilder(
                       builder: (context, constraints) {
                         double fontSize = constraints.maxWidth *
-                            0.12; // Adjust this factor to control the font size
+                            0.12;
                         return Text(
                           category.displayName,
                           style: TextStyle(
-                            color: const Color.fromARGB(255, 204, 109,
-                                251), 
+                            color: const Color.fromARGB(255, 144, 106, 250),
                             fontSize: fontSize,
                             fontWeight: FontWeight.bold,
                             fontStyle:
@@ -69,11 +68,11 @@ class Categories extends StatelessWidget {
                             shadows: [
                               Shadow(
                                 color: Colors.black.withOpacity(
-                                    0.5), 
+                                    0.2), 
                                 offset: const Offset(1,
                                     1), 
                                 blurRadius:
-                                    2.0, 
+                                    1.0, 
                               ),
                             ],
                           ),

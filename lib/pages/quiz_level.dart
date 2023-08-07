@@ -87,7 +87,7 @@ class _QuizLevelListState extends State<QuizLevelList> {
       appBar: AppBar(
         toolbarHeight: 80.0,
         centerTitle: true,
-        backgroundColor: Colors.purple,
+        backgroundColor: const Color.fromARGB(255, 144, 106, 250),
         iconTheme: const IconThemeData(color: Colors.white),
         title: Breadcrumbs(
           crumbs: [
@@ -109,7 +109,6 @@ class _QuizLevelListState extends State<QuizLevelList> {
                   String stageId = levelData.id;
                   int cost = levelData.cost;
                   int currentIndex = _stages.indexOf(levelData);
-                  // // Get the previous stage data
                   StageData? previousStage;
                   if (currentIndex > 0) {
                     previousStage = _stages[currentIndex - 1];
@@ -132,8 +131,8 @@ class _QuizLevelListState extends State<QuizLevelList> {
     const double buttonWidth = 180.0;
     const double buttonHeight = 60.0;
     const double borderRadius = 10.0;
-    const Color unlockedColor = Colors.teal;
-    const Color lockedColor = Colors.purple;
+    const Color unlockedColor = Colors.green;
+    const Color lockedColor = Color.fromARGB(255, 241, 75, 63);
     const Color textColor = Colors.white;
     Color boxShadowColor = Colors.black.withOpacity(0.3);
 
