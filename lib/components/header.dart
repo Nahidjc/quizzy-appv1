@@ -36,7 +36,7 @@ class _MyAppBarState extends State<MyAppBar>
         toolbarHeight: 190.0,
         automaticallyImplyLeading: false,
         leading: null,
-        backgroundColor: const Color.fromARGB(255, 159, 125, 255),
+        backgroundColor: const Color.fromARGB(255, 144, 106, 250),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(20),
@@ -57,7 +57,9 @@ class _MyAppBarState extends State<MyAppBar>
                       ),
                       child: const CircleAvatar(
                         radius: 20.0,
-                        backgroundImage: AssetImage("assets/images/avatar.png"),
+                        // backgroundImage: AssetImage("assets/images/avatar.png"),
+                        backgroundImage: NetworkImage(
+                            "https://avatars.githubusercontent.com/u/113003788?v=4"),
                       ),
                     ),
                     Column(
@@ -68,7 +70,7 @@ class _MyAppBarState extends State<MyAppBar>
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 12.0,
-                            fontWeight: FontWeight.w300,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
@@ -89,7 +91,7 @@ class _MyAppBarState extends State<MyAppBar>
                       height: 30.0,
                       child: Container(
                         decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 159, 125, 255),
+                          color: const Color.fromARGB(255, 144, 106, 250),
                           borderRadius: BorderRadius.circular(12.0),
                           border: Border.all(
                             color: Colors.white,

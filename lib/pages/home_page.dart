@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
               child: isLoading
                   ? const Center(child: CircularProgressIndicator())
                   : Categories(categoryList: categoryList)),
-          Container(
+          SizedBox(
             height: 200,
             child: CarouselSliderCustom(),
           )

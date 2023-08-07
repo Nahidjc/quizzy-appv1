@@ -49,7 +49,7 @@ class Categories extends StatelessWidget {
                   const Icon(
                     Icons.school,
                     size: 48.0,
-                    color: Colors.blue,
+                    color: Color.fromARGB(255, 144, 106, 250),
                   ),
                   const SizedBox(height: 8.0),
                   Center(
@@ -60,7 +60,7 @@ class Categories extends StatelessWidget {
                         return Text(
                           category.displayName,
                           style: TextStyle(
-                            color: Colors.blue,
+                            color: const Color.fromARGB(255, 144, 106, 250),
                             fontSize: fontSize,
                             fontWeight: FontWeight.bold,
                             fontStyle:

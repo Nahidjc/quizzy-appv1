@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:quizzy/pages/leaderboard.dart';
+import 'package:quizzy/pages/login_page.dart';
+import 'package:quizzy/provider/login_provider.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<AuthProvider>(context);
+    if (!user.isAuthenticated) {
+      return const LoginPage();
+    }
     return Drawer(
       child: Column(
         children: <Widget>[
@@ -103,9 +110,13 @@ class CustomDrawer extends StatelessWidget {
                 style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
               ),
               onTap: () {
-                // Handle the drawer item tap here
-                Navigator.pop(context);
-                // Implement your logic here
+                // Navigator.pop(context);
+
+                if (user.isAuthenticated) {
+                  user.logout();
+                  Navigator.popUntil(context, (route) => route.isFirst);
+                }
+                
               },
             ),
           ),
