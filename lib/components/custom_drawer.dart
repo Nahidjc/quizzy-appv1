@@ -35,10 +35,10 @@ class CustomDrawer extends StatelessWidget {
                         user.name,
                         style: const TextStyle(color: Colors.white, fontSize: 20),
                       ),
-                      const  Text(
-                        'test@email.com',
-                        style: TextStyle(color: Colors.white, fontSize: 12),
-                      ),
+                      // const  Text(
+                      //   'test@email.com',
+                      //   style: TextStyle(color: Colors.white, fontSize: 12),
+                      // ),
                     ],
                   ),
                 ),
