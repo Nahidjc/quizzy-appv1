@@ -20,20 +20,24 @@ class CustomDrawer extends StatelessWidget {
             child: ListView(
               padding: EdgeInsets.zero,
               children: <Widget>[
-                const DrawerHeader(
-                  decoration: BoxDecoration(
+                 DrawerHeader(
+                  decoration: const BoxDecoration(
                     color: Colors.purple,
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      CircleAvatar(
-                        radius: 48, // Image radius
+                      const CircleAvatar(
+                        radius: 42, // Image radius
                         backgroundImage: AssetImage('assets/images/avatar.png'),
                       ),
                       Text(
-                        "Shahin",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                        user.name,
+                        style: const TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      const  Text(
+                        'test@email.com',
+                        style: TextStyle(color: Colors.white, fontSize: 12),
                       ),
                     ],
                   ),
