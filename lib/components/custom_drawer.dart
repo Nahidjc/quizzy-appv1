@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizzy/pages/leaderboard.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({Key? key}) : super(key: key);
@@ -79,9 +80,10 @@ class CustomDrawer extends StatelessWidget {
                     leading: const Icon(Icons.leaderboard),
                     title: const Text('Leader Board'),
                     onTap: () {
-                      // Handle the drawer item tap here
                       Navigator.pop(context);
-                      // Implement your logic here
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const LeaderboardPage(),
+                      ));
                     },
                   ),
                 ),

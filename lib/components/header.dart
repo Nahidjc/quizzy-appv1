@@ -36,7 +36,7 @@ class _MyAppBarState extends State<MyAppBar>
         toolbarHeight: 190.0,
         automaticallyImplyLeading: false,
         leading: null,
-        backgroundColor: const Color(0xFF5826E5),
+        backgroundColor: const Color.fromARGB(255, 159, 125, 255),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(20),
@@ -89,7 +89,7 @@ class _MyAppBarState extends State<MyAppBar>
                       height: 30.0,
                       child: Container(
                         decoration: BoxDecoration(
-                          color: const Color(0xFF5826E5),
+                          color: const Color.fromARGB(255, 159, 125, 255),
                           borderRadius: BorderRadius.circular(12.0),
                           border: Border.all(
                             color: Colors.white,

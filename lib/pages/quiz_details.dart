@@ -167,7 +167,7 @@ class _QuizDetailsState extends State<QuizDetails> {
       ),
       bottomNavigationBar: BottomAppBar(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(2.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -187,7 +187,7 @@ class _QuizDetailsState extends State<QuizDetails> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
                     minimumSize:
                         Size(MediaQuery.of(context).size.width * 0.4, 0),
                   ),

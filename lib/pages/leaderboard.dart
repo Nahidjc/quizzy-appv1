@@ -52,7 +52,6 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
-        
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -92,7 +91,6 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           showTodayLeaderboard
               ? fetchDailyLeaderboardData()
               : fetchWeeklyLeaderboardData();
-        
         });
       },
       child: Container(
@@ -124,14 +122,50 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   }
 
   Widget _buildTopPerformers() {
-    return Column(
-      children: currentLeaderboardData
-          .sublist(0, currentLeaderboardData.length)
-          .asMap()
-          .entries
-          .map((entry) => _buildTopPerformerRow(entry.value, entry.key + 1))
-          .toList(),
-    );
+    if (currentLeaderboardData.isEmpty) {
+      return Center(
+        child: Align(
+          alignment: Alignment.center,
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.blueGrey[50], // Background color
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.info_outline,
+                  color: Colors.blueGrey[600],
+                  size: 40,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'No quiz attempts have been made yet. It\'s a great opportunity to challenge yourself and test your knowledge. Click the "Start Quiz" button to begin the exciting journey!',
+                  style: TextStyle(
+                    fontSize: 18, // Set font size to medium
+                    color: Colors.blueGrey[600],
+                  ),
+                  textAlign: TextAlign.justify,
+                ),
+                const SizedBox(height: 12),
+            
+              ],
+            ),
+          ),
+        ),
+      );
+    } else {
+      return Column(
+        children: currentLeaderboardData
+            .sublist(0, currentLeaderboardData.length)
+            .asMap()
+            .entries
+            .map((entry) => _buildTopPerformerRow(entry.value, entry.key + 1))
+            .toList(),
+      );
+    }
   }
 
   Widget _buildTopPerformerRow(Leaderboard entry, int position) {
