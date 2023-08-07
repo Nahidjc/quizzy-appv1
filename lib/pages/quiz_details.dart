@@ -27,7 +27,14 @@ class _QuizDetailsState extends State<QuizDetails> {
     var title = widget.quiz.title;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text(
+          "Ready for the challenge",
+          style: TextStyle(fontSize: 18),
+        ),
+        centerTitle: true,
+        elevation: 4,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
