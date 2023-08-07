@@ -23,6 +23,8 @@ class QuizResultPage extends StatefulWidget {
   final double percentage;
   final int quizpoint;
   final List<dynamic> selectedArray;
+  final int skipQuestion;
+  final int timeSpent;
 
   const QuizResultPage(
       {Key? key,
@@ -30,7 +32,9 @@ class QuizResultPage extends StatefulWidget {
       required this.correctAnswers,
       required this.percentage,
       required this.quizpoint,
-      required this.selectedArray})
+      required this.selectedArray,
+      required this.skipQuestion,
+      required this.timeSpent})
       : super(key: key);
 
   @override
@@ -76,6 +80,8 @@ class _QuizResultPageState extends State<QuizResultPage>
 
   @override
   Widget build(BuildContext context) {
+    print(widget.timeSpent);
+    print(widget.skipQuestion);
     return Scaffold(
         backgroundColor: Colors.white,
         body: Stack(children: [
@@ -174,7 +180,7 @@ class _QuizResultPageState extends State<QuizResultPage>
                         child: Center(
                       child: FractionallySizedBox(
                         widthFactor: 0.9,
-                        heightFactor: 0.6,
+                        heightFactor: 0.70,
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -187,7 +193,8 @@ class _QuizResultPageState extends State<QuizResultPage>
                             ],
                             borderRadius: BorderRadius.circular(20.0),
                           ),
-                          padding: const EdgeInsets.only(left: 50.0, top: 30),
+                          padding: const EdgeInsets.only(
+                              left: 50.0, top: 15, bottom: 15),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -269,7 +276,7 @@ class _QuizResultPageState extends State<QuizResultPage>
                                             CrossAxisAlignment.stretch,
                                         children: [
                                           Text(
-                                            '${quizLength - widget.correctAnswers}',
+                                            '${quizLength - widget.correctAnswers - widget.skipQuestion}',
                                             style: const TextStyle(
                                                 color: Colors.orange,
                                                 fontWeight: FontWeight.bold,
@@ -277,6 +284,57 @@ class _QuizResultPageState extends State<QuizResultPage>
                                           ),
                                           const Text(
                                             'Wrong',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14.0),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        children: [
+                                          Text(
+                                            formatDuration(Duration(
+                                                seconds: widget.timeSpent)),
+                                            style: const TextStyle(
+                                              color: Colors.green,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16.0,
+                                            ),
+                                          ),
+                                          const Text(
+                                            'Spent time',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14.0,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        children: [
+                                          Text(
+                                            '${widget.skipQuestion}',
+                                            style: const TextStyle(
+                                                color: Colors.orange,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16.0),
+                                          ),
+                                          const Text(
+                                            'Skipped Question',
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 14.0),
@@ -456,7 +514,8 @@ class _QuizResultPageState extends State<QuizResultPage>
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => LeaderboardPage()),
+                                    builder: (context) =>
+                                        const LeaderboardPage()),
                               );
                             },
                             child: const Column(
@@ -491,6 +550,11 @@ class _QuizResultPageState extends State<QuizResultPage>
             ],
           )
         ]));
+  }
+  String formatDuration(Duration duration) {
+    String minutes = (duration.inSeconds ~/ 60).toString().padLeft(2, '0');
+    String seconds = (duration.inSeconds % 60).toString().padLeft(2, '0');
+    return '$minutes:$seconds s';
   }
 }
 

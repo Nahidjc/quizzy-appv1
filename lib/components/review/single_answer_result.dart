@@ -19,6 +19,7 @@ class SingleCorrectAnswerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isCorrect = selectedAnswer == correctAnswer;
+    final isSkiped = selectedAnswer == options.length;
     final optionColor =
         isCorrect ? Colors.green : (selectedAnswer != -1 ? Colors.red : null);
     final iconData = isCorrect ? Icons.check : Icons.close;
@@ -52,11 +53,13 @@ class SingleCorrectAnswerWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                isCorrect ? 'Correct' : 'Incorrect',
+                isSkiped ? 'Skipped' : (isCorrect ? 'Correct' : 'Incorrect'),
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: isCorrect ? Colors.green : Colors.red,
+                  color: isSkiped
+                      ? Colors.purple
+                      : (isCorrect ? Colors.green : Colors.red),
                 ),
               ),
             ],
@@ -122,4 +125,3 @@ class SingleCorrectAnswerWidget extends StatelessWidget {
     );
   }
 }
-
