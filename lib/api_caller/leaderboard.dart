@@ -40,4 +40,21 @@ class LeaderboardAPi {
       throw Exception('Error: $e');
     }
   }
+  Future<List<Leaderboard>> getAllTimeLeaderboard() async {
+    try {
+      final url = Uri.parse('${AppUrl.baseUrl}/user/alltime/leaderboard');
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        var jsonData = json.decode(response.body);
+        List<dynamic> weeklyData = jsonData['data'];
+        var weeklyLeaderboard =
+            weeklyData.map((data) => Leaderboard.fromJson(data)).toList();
+        return weeklyLeaderboard;
+      } else {
+        throw Exception('Failed to load data from API');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
 }

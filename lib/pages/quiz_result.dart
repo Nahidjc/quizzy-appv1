@@ -456,7 +456,8 @@ class _QuizResultPageState extends State<QuizResultPage>
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => LeaderboardPage()),
+                                    builder: (context) =>
+                                        const LeaderboardPage()),
                               );
                             },
                             child: const Column(

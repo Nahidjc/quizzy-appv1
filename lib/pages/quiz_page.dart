@@ -26,8 +26,7 @@ class _QuizPageState extends State<QuizPage> {
   @override
   void initState() {
     super.initState();
-    authProvider =
-        Provider.of<AuthProvider>(context, listen: false);
+    authProvider = Provider.of<AuthProvider>(context, listen: false);
     setState(() {
       quizData = convertToQuizData(widget.quiz.questions);
     });

@@ -13,8 +13,10 @@ class LeaderboardPage extends StatefulWidget {
 class _LeaderboardPageState extends State<LeaderboardPage> {
   List<dynamic> dailyLeaderboard = [];
   List<dynamic> weeklyLeaderboard = [];
+  List<dynamic> allTimeLeaderboard = [];
   late List<dynamic> currentLeaderboardData;
   bool showTodayLeaderboard = true;
+  bool showWeeklyLeaderboard = false;
   bool isLoading = false;
 
   @override
@@ -23,7 +25,6 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
     fetchDailyLeaderboardData();
     currentLeaderboardData = dailyLeaderboard;
   }
-
   Future<void> fetchDailyLeaderboardData() async {
     setState(() {
       isLoading = true;
@@ -48,10 +49,29 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
     });
   }
 
+  Future<void> fetchAllTimeLeaderboardData() async {
+    setState(() {
+      isLoading = true;
+    });
+    LeaderboardAPi leaderboardApi = LeaderboardAPi();
+    allTimeLeaderboard = await leaderboardApi.getAllTimeLeaderboard();
+    currentLeaderboardData = allTimeLeaderboard;
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text(
+          "Leaderboard",
+          style: TextStyle(fontSize: 18),
+        ),
+        centerTitle: true,
+        elevation: 4,
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +83,11 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 children: [
                   _buildLeaderboardOption('Today', showTodayLeaderboard),
                   const SizedBox(width: 10),
-                  _buildLeaderboardOption('Weekly', !showTodayLeaderboard),
+                  _buildLeaderboardOption('Weekly', showWeeklyLeaderboard),
+                  const SizedBox(width: 10),
+                  _buildLeaderboardOption('All Time',
+                      !showTodayLeaderboard && !showWeeklyLeaderboard),
+
                 ],
               ),
             ),
@@ -90,9 +114,14 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
       onTap: () {
         setState(() {
           showTodayLeaderboard = title == 'Today';
-          showTodayLeaderboard
-              ? fetchDailyLeaderboardData()
-              : fetchWeeklyLeaderboardData();
+          showWeeklyLeaderboard = title == 'Weekly';
+          if (showTodayLeaderboard) {
+            fetchDailyLeaderboardData();
+          } else if (showWeeklyLeaderboard) {
+            fetchWeeklyLeaderboardData();
+          } else {
+            fetchAllTimeLeaderboardData();
+          }
         });
       },
       child: Container(
