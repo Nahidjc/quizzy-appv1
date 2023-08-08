@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quizzy/api_caller/campaign.dart';
+import 'package:quizzy/components/campaign/campaign_quiz_list.dart';
 import 'package:quizzy/models/campaign.dart';
 import 'package:quizzy/provider/login_provider.dart';
 
@@ -241,7 +242,17 @@ class _MyAppBarState extends State<MyAppBar>
                     ),
 
                     ElevatedButton(
-                      onPressed: isRunning ? () {} : null,
+                      onPressed: isRunning
+                          ? () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CampaignQuizList(
+                                      campaignId: campaign!.id),
+                                ),
+                              );
+                            }
+                          : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: isRunning
                             ? Colors.orange
@@ -252,8 +263,7 @@ class _MyAppBarState extends State<MyAppBar>
                           borderRadius: BorderRadius.circular(15.0),
                         ),
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 10.0),
-                        minimumSize: const Size(75.0, 75.0),
+                            horizontal: 15.0, vertical: 15.0),
                       ),
                       child: const Text(
                         "Join",
