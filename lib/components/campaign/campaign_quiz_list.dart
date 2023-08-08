@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quizzy/api_caller/campaign.dart';
 import 'package:quizzy/components/campaign/quiz_item.dart';
+import 'package:quizzy/components/campaign/skeleton.dart';
 import 'package:quizzy/models/campaign_quiz.dart';
 import 'package:quizzy/provider/login_provider.dart';
 
@@ -17,32 +18,32 @@ class _CampaignQuizListState extends State<CampaignQuizList> {
   late List<CampaignModel> _campaignQuizList;
   final CampaignApi campaignApi = CampaignApi();
   bool isLoading = false;
-  final List<Map<String, dynamic>> quizData = [
-    {
-      'title': 'Quiz 1',
-      'isAttempted': true,
-      'isCorrect': true,
-      'points': 10,
-      'startTime': DateTime.now().subtract(const Duration(minutes: 30)),
-      'endTime': DateTime.now().add(const Duration(minutes: 30)),
-    },
-    {
-      'title': 'Quiz 2',
-      'isAttempted': false,
-      'isCorrect': false,
-      'points': null,
-      'startTime': DateTime.now().add(const Duration(minutes: 10)),
-      'endTime': DateTime.now().add(const Duration(minutes: 40)),
-    },
-    {
-      'title': 'Quiz 3',
-      'isAttempted': false,
-      'isCorrect': false,
-      'points': null,
-      'startTime': DateTime.now().add(const Duration(minutes: 1)),
-      'endTime': DateTime.now().add(const Duration(minutes: 2)),
-    },
-  ];
+  // final List<Map<String, dynamic>> quizData = [
+  //   {
+  //     'title': 'Quiz 1',
+  //     'isAttempted': true,
+  //     'isCorrect': true,
+  //     'points': 10,
+  //     'startTime': DateTime.now().subtract(const Duration(minutes: 30)),
+  //     'endTime': DateTime.now().add(const Duration(minutes: 30)),
+  //   },
+  //   {
+  //     'title': 'Quiz 2',
+  //     'isAttempted': false,
+  //     'isCorrect': false,
+  //     'points': null,
+  //     'startTime': DateTime.now().add(const Duration(minutes: 10)),
+  //     'endTime': DateTime.now().add(const Duration(minutes: 40)),
+  //   },
+  //   {
+  //     'title': 'Quiz 3',
+  //     'isAttempted': false,
+  //     'isCorrect': false,
+  //     'points': null,
+  //     'startTime': DateTime.now().add(const Duration(minutes: 1)),
+  //     'endTime': DateTime.now().add(const Duration(minutes: 2)),
+  //   },
+  // ];
 
   @override
   void initState() {
@@ -76,7 +77,7 @@ class _CampaignQuizListState extends State<CampaignQuizList> {
         title: const Text('Campaign Quiz'),
       ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const SkeletonBoxes()
           : ListView(
               children: _campaignQuizList.map((quiz) {
                 return CampaignQuizItem(

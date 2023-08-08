@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quizzy/api_caller/campaign.dart';
 import 'package:quizzy/components/campaign/campaign_quiz_list.dart';
+import 'package:quizzy/components/campaign/campaign_skeleton.dart';
 import 'package:quizzy/models/campaign.dart';
 import 'package:quizzy/provider/login_provider.dart';
 
@@ -179,30 +180,48 @@ class _MyAppBarState extends State<MyAppBar>
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.0),
                   color: Colors.white),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    // Container(
-                    //     margin: const EdgeInsets.only(left: 6.0),
-                    //     child: const Icon(
-                    //       Icons.emoji_events,
-                    //       color: Color(0xFFFFD700),
-                    //       size: 50.0,
-                    //     )),
-                    Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: isLoading
-                          ? const Center(
-                              child: Text(
-                              "Loading...",
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w400,
-                                letterSpacing: 0.6,
+              child: isLoading
+                  ? const CampaignSkeleton()
+                  : campaign == null
+                      ? const Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.campaign,
+                                color: Colors.grey,
+                                size: 64.0,
                               ),
-                            ))
-                          : Column(
+                              SizedBox(height: 16.0),
+                              Text(
+                                "No active campaigns at the moment",
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.grey,
+                                  letterSpacing: 0.6,
+                                ),
+                              ),
+                              SizedBox(height: 8.0),
+                              Text(
+                                "Please check back later for exciting challenges.",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 14.0,
+                                  color: Colors.grey,
+                                  letterSpacing: 0.6,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                              Container(
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.only(top: 10.0),
+                                child: Column(
                               children: [
                                 Text(
                                   isUpcoming
@@ -239,8 +258,7 @@ class _MyAppBarState extends State<MyAppBar>
                                 ),
                               ],
                             ),
-                    ),
-
+                              ),
                     ElevatedButton(
                       onPressed: isRunning
                           ? () {
