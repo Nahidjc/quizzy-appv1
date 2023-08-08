@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:quizzy/api_caller/campaign.dart';
+import 'package:quizzy/models/campaign.dart';
 import 'package:quizzy/provider/login_provider.dart';
 
 class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -13,10 +16,14 @@ class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _MyAppBarState extends State<MyAppBar>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  final CampaignApi campaignApi = CampaignApi();
+  bool isLoading = false;
 
+  Campaign? campaign;
   @override
   void initState() {
     super.initState();
+    getCampaign();
     _controller = AnimationController(vsync: this);
   }
 
@@ -26,12 +33,42 @@ class _MyAppBarState extends State<MyAppBar>
     super.dispose();
   }
 
+  Future<void> getCampaign() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      Campaign campaignData = await campaignApi.getCampaign();
+      setState(() {
+        campaign = campaignData;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     AuthProvider user = Provider.of<AuthProvider>(context);
     String name = user.name;
     int coin = user.coin;
     String coinString = coin.toString();
+    DateTime currentDate = DateTime.now();
+
+    bool isUpcoming = campaign?.startDate != null &&
+        campaign?.startDate.isAfter(currentDate) == true;
+    bool isRunning = campaign?.startDate != null &&
+        campaign?.endDate != null &&
+        campaign?.startDate.isBefore(currentDate) == true &&
+        campaign?.endDate.isAfter(currentDate) == true;
+
+    bool isClosed = campaign?.endDate != null &&
+        campaign?.endDate.isBefore(currentDate) == true;
+
+    // bool isClosed = campaign?.endDate.isBefore(currentDate) ?? false;
     return AppBar(
         toolbarHeight: 190.0,
         automaticallyImplyLeading: false,
@@ -136,63 +173,97 @@ class _MyAppBarState extends State<MyAppBar>
             ),
             const SizedBox(height: 20.0),
             Container(
-              height: 80.0,
-              width: 380.0,
+              height: 90.0,
+              width: MediaQuery.of(context).size.width * 0.95,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.0),
                   color: Colors.white),
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
+                    // Container(
+                    //     margin: const EdgeInsets.only(left: 6.0),
+                    //     child: const Icon(
+                    //       Icons.emoji_events,
+                    //       color: Color(0xFFFFD700),
+                    //       size: 50.0,
+                    //     )),
                     Container(
-                        margin: const EdgeInsets.only(left: 16.0),
-                        child: const Icon(
-                          Icons.emoji_events,
-                          color: Color(0xFFFFD700),
-                          size: 50.0,
-                        )),
-                    Container(
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: const Column(children: [
-                          Text("Upcoming Competitions",
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: isLoading
+                          ? const Center(
+                              child: Text(
+                              "Loading...",
                               style: TextStyle(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w400,
-                                  letterSpacing: 0.5)),
-                          Text("Weekly challenges",
-                              style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 0.6)),
-                          Text("Now 11.00 am - 11.30 pm",
-                              style: TextStyle(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w400,
-                                  letterSpacing: 0.6))
-                        ])),
-                    Container(
-                      margin: const EdgeInsets.only(right: 3.0),
-                      child: TextButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.yellow),
-                          minimumSize: MaterialStateProperty.all<Size>(
-                              const Size(75, 75)),
-                          shape: MaterialStateProperty.all<OutlinedBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: 0.6,
+                              ),
+                            ))
+                          : Column(
+                              children: [
+                                Text(
+                                  isUpcoming
+                                      ? "Upcoming Competition"
+                                      : isRunning
+                                          ? "Running Competition"
+                                          : "Closed Competition",
+                                  style: const TextStyle(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  campaign?.campaignName ?? 'Loading...',
+                                  style: const TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 0.6,
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    '${DateFormat('d MMM, h:mm a').format(campaign!.startDate)} - ${DateFormat('d MMM, h:mm a').format(campaign!.endDate)}',
+                                    style: const TextStyle(
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.w400,
+                                      letterSpacing: 0.6,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
+                    ),
+
+                    ElevatedButton(
+                      onPressed: isRunning ? () {} : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isRunning
+                            ? Colors.orange
+                            : (isUpcoming || isClosed)
+                                ? Colors.grey
+                                : Colors.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
                         ),
-                        onPressed: () {},
-                        child: const Text("Join\nNow",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18.0)),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 10.0),
+                        minimumSize: const Size(75.0, 75.0),
                       ),
-                    )
+                      child: const Text(
+                        "Join",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ),
                   ]),
             )
           ],
