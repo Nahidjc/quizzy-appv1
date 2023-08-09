@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quizzy/api_caller/quiz.dart';
+import 'package:quizzy/api_caller/campaign.dart';
+import 'package:quizzy/components/campaign/campaign_quiz_result.dart';
 import 'package:quizzy/components/campaign/convert_quiz.dart';
 import 'package:quizzy/components/multiple_answer_quiz.dart';
 import 'package:quizzy/components/single_answer_quiz.dart';
 import 'package:quizzy/models/campaign_quiz.dart';
-import 'package:quizzy/pages/quiz_result.dart';
 import 'package:quizzy/provider/login_provider.dart';
 import 'dart:async';
 import 'package:quizzy/utils/quiz_points.dart';
@@ -139,8 +139,9 @@ class _CampaignQuizState extends State<CampaignQuiz> {
     int timeSpent = totalTime - timeRemaining;
     List<dynamic> selectedArray = result[1];
     selectedAnswers = {};
-    final quizApi = QuizApi();
-    await quizApi.attemptQuiz(widget.quiz.id, authProvider.userId, points);
+    final campaignApi = CampaignApi();
+    await campaignApi.attemptCampaignQuiz(widget.quiz.campaign, widget.quiz.id,
+        authProvider.userId, points, selectedArray);
     updateData();
     setState(() {
       isSubmitting = false;
@@ -158,14 +159,15 @@ class _CampaignQuizState extends State<CampaignQuiz> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => QuizResultPage(
+        builder: (context) => CampaignQuizResultPage(
             quizData: quizData,
             correctAnswers: correctAnswers,
             percentage: (correctAnswers / quizData.length) * 100,
             quizpoint: quizpoint,
             selectedArray: selectedArray,
             skipQuestion: skipQuestion,
-            timeSpent: timeSpent),
+            timeSpent: timeSpent,
+            campaign: widget.quiz.campaign),
       ),
     );
   }

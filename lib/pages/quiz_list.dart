@@ -128,11 +128,11 @@ class _QuizListState extends State<QuizList> {
                 )
               : ListView.builder(
                   itemCount: quizzes.length,
-        itemBuilder: (context, index) {
-          return Card(
-            margin: const EdgeInsets.all(5.0),
-            color: Colors.white,
-            child: ListTile(
+                  itemBuilder: (context, index) {
+                    return Card(
+                      margin: const EdgeInsets.all(5.0),
+                      color: Colors.white,
+                      child: ListTile(
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -140,19 +140,19 @@ class _QuizListState extends State<QuizList> {
                                 QuizDetails(quiz: quizzes[index]),
                           ),
                         ),
-              title: Text(
+                        title: Text(
                           quizzes[index].title,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.normal,
                             color: Colors.black,
                           ),
-              ),
-            ),
-          );
-        },
-      ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
     );
   }
 }

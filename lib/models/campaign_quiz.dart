@@ -7,6 +7,7 @@ class CampaignModel {
   final DateTime endTime;
   final bool isAttempted;
   final bool isAvailable;
+  int? point;
   final bool isClosed;
   final bool isUpcoming;
   final int currentTime;
@@ -20,6 +21,7 @@ class CampaignModel {
     required this.endTime,
     required this.isAttempted,
     required this.isAvailable,
+    this.point,
     required this.isClosed,
     required this.isUpcoming,
     required this.currentTime,
@@ -36,6 +38,7 @@ class CampaignModel {
       startTime: DateTime.fromMillisecondsSinceEpoch(json['startTime']),
       endTime: DateTime.fromMillisecondsSinceEpoch(json['endTime']),
       isAttempted: json['isAttempted'],
+      point: json['point'],
       isAvailable: json['isAvailable'],
       isClosed: json['isClosed'],
       isUpcoming: json['isUpcoming'],
