@@ -3,12 +3,14 @@ class UserDetails {
   final String name;
   final int coin;
   final String id;
+  final String? profileUrl;
 
   UserDetails({
     required this.token,
     required this.name,
     required this.coin,
     required this.id,
+    this.profileUrl,
   });
 
   factory UserDetails.fromJson(Map<String, dynamic> json) {
@@ -17,6 +19,7 @@ class UserDetails {
       name: json['name'],
       coin: json['coin'],
       id: json['id'],
+      profileUrl: json['profileUrl'],
     );
   }
 }
@@ -26,12 +29,14 @@ class UserData {
   String id;
   String firstName;
   String message;
+  String? profileUrl;
 
   UserData({
     required this.coin,
     required this.id,
     required this.firstName,
     required this.message,
+    this.profileUrl,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {
@@ -40,6 +45,7 @@ class UserData {
       id: json['data']['id'] as String,
       firstName: json['data']['firstName'] as String,
       message: json['message'] as String,
+      profileUrl: json['data']['profileUrl'], 
     );
   }
 
@@ -49,6 +55,7 @@ class UserData {
         'coin': coin,
         'id': id,
         'firstName': firstName,
+        'profileUrl': profileUrl,
       },
       'message': message,
     };
