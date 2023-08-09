@@ -38,11 +38,11 @@ class _BottomNavState extends State<BottomNav> {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => const ProfilePage(),
               ));
-            } else if (index == 2) {
+            } else if (index == 2 && index != _currentIndex) {
                Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => const LeaderboardPage(),
               ));
-            } else if (index == 3 && index != _currentIndex) {
+            } else if (index == 3 ) {
               Scaffold.of(context).openEndDrawer();
             }
           });
