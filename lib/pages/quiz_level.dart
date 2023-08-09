@@ -131,9 +131,9 @@ class _QuizLevelListState extends State<QuizLevelList> {
     const double buttonWidth = 180.0;
     const double buttonHeight = 60.0;
     const double borderRadius = 10.0;
-    const Color unlockedColor = Colors.green;
-    const Color lockedColor = Color.fromARGB(255, 241, 75, 63);
-    const Color textColor = Colors.white;
+    const Color unlockedColor = Colors.blue;
+    const Color lockedColor = Colors.purple;
+    Color textColor = Colors.white;
     Color boxShadowColor = Colors.black.withOpacity(0.3);
 
     return Padding(
@@ -210,14 +210,14 @@ class _QuizLevelListState extends State<QuizLevelList> {
                 children: [
                   Text(
                     levelName,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: textColor,
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   if (!isUnlocked)
-                    const Icon(
+                    Icon(
                       Icons.lock,
                       color: textColor,
                       size: 24.0,

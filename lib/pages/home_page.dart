@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quizzy/components/bottom-navigation.dart';
-import 'package:quizzy/components/categories.dart';
+import 'package:quizzy/components/category/categories.dart';
+import 'package:quizzy/components/category/category_skeleton.dart';
 import 'package:quizzy/components/custom_drawer.dart';
 import 'package:quizzy/components/header.dart';
 import 'package:quizzy/api_caller/categories.dart';
@@ -46,7 +47,7 @@ class _HomePageState extends State<HomePage> {
                       TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold))),
           Expanded(
               child: isLoading
-                  ? const Center(child: CircularProgressIndicator())
+                  ? const CategorySkeleton()
                   : Categories(categoryList: categoryList)),
           SizedBox(
             height: 200,

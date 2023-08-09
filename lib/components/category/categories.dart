@@ -55,24 +55,19 @@ class Categories extends StatelessWidget {
                   Center(
                     child: LayoutBuilder(
                       builder: (context, constraints) {
-                        double fontSize = constraints.maxWidth *
-                            0.12;
+                        double fontSize = constraints.maxWidth * 0.12;
                         return Text(
                           category.displayName,
                           style: TextStyle(
                             color: const Color.fromARGB(255, 144, 106, 250),
                             fontSize: fontSize,
                             fontWeight: FontWeight.bold,
-                            fontStyle:
-                                FontStyle.italic,
+                            fontStyle: FontStyle.italic,
                             shadows: [
                               Shadow(
-                                color: Colors.black.withOpacity(
-                                    0.2), 
-                                offset: const Offset(1,
-                                    1), 
-                                blurRadius:
-                                    1.0, 
+                                color: Colors.black.withOpacity(0.2),
+                                offset: const Offset(1, 1),
+                                blurRadius: 1.0,
                               ),
                             ],
                           ),
@@ -80,9 +75,6 @@ class Categories extends StatelessWidget {
                       },
                     ),
                   ),
-
-
-
                 ],
               ),
             ),
