@@ -14,6 +14,12 @@ class CustomDrawer extends StatelessWidget {
     if (!user.isAuthenticated) {
       return const LoginPage();
     }
+    ImageProvider<Object>? backgroundImage;
+    if (user.profileUrl == null) {
+      backgroundImage = const AssetImage("assets/images/avatar.png");
+    } else {
+      backgroundImage = NetworkImage(user.profileUrl!);
+    }
     return Drawer(
       child: Column(
         children: <Widget>[
@@ -28,9 +34,9 @@ class CustomDrawer extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      const CircleAvatar(
-                        radius: 42, // Image radius
-                        backgroundImage: AssetImage('assets/images/avatar.png'),
+                      CircleAvatar(
+                        radius: 42,
+                        backgroundImage: backgroundImage,
                       ),
                       Text(
                         user.name,
