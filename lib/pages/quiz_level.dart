@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:quizzy/api_caller/stage.dart';
+import 'package:quizzy/components/bottom-navigation.dart';
+import 'package:quizzy/components/custom_drawer.dart';
 import 'package:quizzy/models/stage_model.dart';
 import 'package:quizzy/pages/login_page.dart';
 import 'package:quizzy/pages/quiz_list.dart';
@@ -84,45 +86,47 @@ class _QuizLevelListState extends State<QuizLevelList> {
       return const LoginPage();
     }
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 80.0,
-        centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 144, 106, 250),
-        iconTheme: const IconThemeData(color: Colors.white),
-        title: Breadcrumbs(
-          crumbs: [
-            TextSpan(text: widget.displayName),
-            TextSpan(text: widget.subjectName),
-          ],
-          separator: ' > ',
-          style: const TextStyle(color: Colors.white, fontSize: 18.0),
+        appBar: AppBar(
+          toolbarHeight: 80.0,
+          centerTitle: true,
+          backgroundColor: const Color.fromARGB(255, 144, 106, 250),
+          iconTheme: const IconThemeData(color: Colors.white),
+          title: Breadcrumbs(
+            crumbs: [
+              TextSpan(text: widget.displayName),
+              TextSpan(text: widget.subjectName),
+            ],
+            separator: ' > ',
+            style: const TextStyle(color: Colors.white, fontSize: 18.0),
+          ),
+          actions: [Container()],
         ),
-      ),
-      body: Center(
-        child: isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: _stages.map((levelData) {
-                  String levelName = levelData.levelName;
-                  bool isUnlocked = levelData.isAccessible;
-                  String stageId = levelData.id;
-                  int cost = levelData.cost;
-                  int currentIndex = _stages.indexOf(levelData);
-                  StageData? previousStage;
-                  if (currentIndex > 0) {
-                    previousStage = _stages[currentIndex - 1];
-                  }
+        body: Center(
+          child: isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: _stages.map((levelData) {
+                    String levelName = levelData.levelName;
+                    bool isUnlocked = levelData.isAccessible;
+                    String stageId = levelData.id;
+                    int cost = levelData.cost;
+                    int currentIndex = _stages.indexOf(levelData);
+                    StageData? previousStage;
+                    if (currentIndex > 0) {
+                      previousStage = _stages[currentIndex - 1];
+                    }
 
-                  bool isPreviousUnlocked =
-                      previousStage != null && previousStage.isAccessible;
+                    bool isPreviousUnlocked =
+                        previousStage != null && previousStage.isAccessible;
 
-                  return buildLevelButton(context, levelName, isUnlocked,
-                      stageId, cost, isPreviousUnlocked);
-                }).toList(),
-              ),
-      ),
-    );
+                    return buildLevelButton(context, levelName, isUnlocked,
+                        stageId, cost, isPreviousUnlocked);
+                  }).toList(),
+                ),
+        ),
+        endDrawer: const CustomDrawer(),
+        bottomNavigationBar: const BottomNav());
   }
 
   Widget buildLevelButton(BuildContext context, String levelName,

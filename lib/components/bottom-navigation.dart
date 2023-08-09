@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:quizzy/pages/home_page.dart';
+import 'package:quizzy/pages/leaderboard.dart';
 import 'package:quizzy/pages/profile_page.dart';
 
 class BottomNav extends StatefulWidget {
   final int currentIndex;
-  const BottomNav({Key? key, this.currentIndex = 0}) : super(key: key);
+  const BottomNav({Key? key, this.currentIndex = 3}) : super(key: key);
 
   @override
   State<BottomNav> createState() => _BottomNavState();
 }
 
 class _BottomNavState extends State<BottomNav> {
-   late int _currentIndex;
+  late int _currentIndex;
 
   @override
   void initState() {
@@ -26,24 +27,27 @@ class _BottomNavState extends State<BottomNav> {
       showUnselectedLabels: false,
       currentIndex: _currentIndex,
       selectedItemColor: Colors.purple,
+      unselectedItemColor: Colors.amber,
       onTap: (int index) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        // WidgetsBinding.instance.addPostFrameCallback((_) {
           setState(() {
-            // _currentIndex = index;
             if (index == 0 && index != _currentIndex) {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => const HomePage(),
               ));
-            }
-            if (index == 1 && index != _currentIndex) {
+            } else if (index == 1 && index != _currentIndex) {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => const ProfilePage(),
               ));
             } else if (index == 2) {
+               Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const LeaderboardPage(),
+              ));
+            } else if (index == 3 && index != _currentIndex) {
               Scaffold.of(context).openEndDrawer();
             }
           });
-        });
+        // });
       },
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
@@ -51,8 +55,12 @@ class _BottomNavState extends State<BottomNav> {
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),
+          icon: Icon(Icons.group),
           label: 'Profile',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.bar_chart),
+          label: 'Leaderboard',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.menu_rounded),

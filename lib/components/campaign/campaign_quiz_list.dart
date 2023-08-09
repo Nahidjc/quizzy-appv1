@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quizzy/api_caller/campaign.dart';
+import 'package:quizzy/components/bottom-navigation.dart';
 import 'package:quizzy/components/campaign/quiz_item.dart';
 import 'package:quizzy/components/campaign/skeleton.dart';
+import 'package:quizzy/components/custom_drawer.dart';
 import 'package:quizzy/models/campaign_quiz.dart';
 import 'package:quizzy/provider/login_provider.dart';
 
@@ -75,6 +77,7 @@ class _CampaignQuizListState extends State<CampaignQuizList> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Campaign Quiz'),
+        actions: [Container()],
       ),
       body: isLoading
           ? const SkeletonBoxes()
@@ -89,6 +92,8 @@ class _CampaignQuizListState extends State<CampaignQuizList> {
                     quiz: quiz);
               }).toList(),
             ),
+             endDrawer: const CustomDrawer(),
+        bottomNavigationBar: const BottomNav()
     );
   }
 }

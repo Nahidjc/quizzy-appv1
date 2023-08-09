@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quizzy/components/bottom-navigation.dart';
+import 'package:quizzy/components/custom_drawer.dart';
 import 'package:quizzy/components/info_message.dart';
 import 'package:quizzy/models/level_model.dart';
 import 'package:quizzy/pages/quiz_level.dart';
@@ -17,6 +19,7 @@ class SubjectList extends StatelessWidget {
             centerTitle: true,
             backgroundColor: const Color.fromARGB(255, 144, 106, 250),
             iconTheme: const IconThemeData(color: Colors.white),
+            actions: [Container()],
             title: Text(displayName,
                 style: const TextStyle(
                     color: Colors.white,
@@ -52,6 +55,8 @@ class SubjectList extends StatelessWidget {
                   );
                 },
               )
-            : InfoMessage('No data available for $displayName'));
+            : InfoMessage('No data available for $displayName'),
+        endDrawer: const CustomDrawer(),
+        bottomNavigationBar: const BottomNav());
   }
 }

@@ -53,9 +53,10 @@ class _HomePageState extends State<HomePage> {
             height: 200,
             child: CarouselSliderCustom(),
           )
-          
         ]),
         endDrawer: const CustomDrawer(),
-        bottomNavigationBar: const BottomNav(currentIndex: 0,));
+        bottomNavigationBar: const BottomNav(
+          currentIndex: 0,
+        ));
   }
 }
