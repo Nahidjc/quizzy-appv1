@@ -29,7 +29,6 @@ class _BottomNavState extends State<BottomNav> {
       selectedItemColor: Colors.purple,
       unselectedItemColor: Colors.amber,
       onTap: (int index) {
-        // WidgetsBinding.instance.addPostFrameCallback((_) {
           setState(() {
             if (index == 0 && index != _currentIndex) {
               Navigator.of(context).push(MaterialPageRoute(
@@ -47,7 +46,6 @@ class _BottomNavState extends State<BottomNav> {
               Scaffold.of(context).openEndDrawer();
             }
           });
-        // });
       },
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
