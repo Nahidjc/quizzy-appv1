@@ -220,205 +220,206 @@ class _CampaignQuizState extends State<CampaignQuiz> {
     final List<dynamic> questionOptions = getOptions();
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            PanaraConfirmDialog.show(
-              context,
-              title: 'Submit Quiz?',
-              message:
-                  'Are you sure you want to leave? Your quiz will be submitted.',
-              confirmButtonText: "OK",
-              cancelButtonText: "Cancel",
-              onTapCancel: () {
-                Navigator.pop(context);
-              },
-              onTapConfirm: () {
-                Navigator.pop(context);
-                submitQuiz();
-              },
-              panaraDialogType: PanaraDialogType.warning,
-              barrierDismissible: false,
-            );
-          },
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              PanaraConfirmDialog.show(
+                context,
+                title: 'Submit Quiz?',
+                message:
+                    'Are you sure you want to leave? Your quiz will be submitted.',
+                confirmButtonText: "OK",
+                cancelButtonText: "Cancel",
+                onTapCancel: () {
+                  Navigator.pop(context);
+                },
+                onTapConfirm: () {
+                  Navigator.pop(context);
+                  submitQuiz();
+                },
+                panaraDialogType: PanaraDialogType.warning,
+                barrierDismissible: false,
+              );
+            },
+          ),
+          actions: [Container()],
         ),
-      ),
-      body: isSubmitting
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: CircleProgressBar(
-                      timeRemaining: timeRemaining,
-                      strokeWidth: 10.0,
-                      radius: 50.0,
+        body: isSubmitting
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: CircleProgressBar(
+                        timeRemaining: timeRemaining,
+                        strokeWidth: 10.0,
+                        radius: 50.0,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '${currentQuestionIndex + 1}',
+                    const SizedBox(height: 20),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '${currentQuestionIndex + 1}',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(width: 18),
+                              Expanded(
+                                child: Container(
+                                  height: 10,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.orange,
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: LinearProgressIndicator(
+                                      value: (currentQuestionIndex + 1) /
+                                          quizData.length,
+                                      backgroundColor: Colors.transparent,
+                                      valueColor:
+                                          const AlwaysStoppedAnimation<Color>(
+                                              Colors.green),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 18),
+                              Text(
+                                ' ${quizData.length - currentQuestionIndex - 1}',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Center(
+                            child: Text(
+                              'Question ${currentQuestionIndex + 1}/${quizData.length}',
                               style: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.green,
+                                fontSize: 14,
+                                color: Colors.purple,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            const SizedBox(width: 18),
-                            Expanded(
-                              child: Container(
-                                height: 10,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.orange,
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: LinearProgressIndicator(
-                                    value: (currentQuestionIndex + 1) /
-                                        quizData.length,
-                                    backgroundColor: Colors.transparent,
-                                    valueColor:
-                                        const AlwaysStoppedAnimation<Color>(
-                                            Colors.green),
+                          ),
+                          const SizedBox(height: 8),
+                          Center(
+                            child: SizedBox(
+                              height: 80, // Set the desired fixed height
+                              child: SingleChildScrollView(
+                                child: Text(
+                                  currentQuestion['question'],
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 18),
-                            Text(
-                              ' ${quizData.length - currentQuestionIndex - 1}',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.orange,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Center(
-                          child: Text(
-                            'Question ${currentQuestionIndex + 1}/${quizData.length}',
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.purple,
-                              fontWeight: FontWeight.bold,
-                            ),
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        Center(
-                          child: SizedBox(
-                            height: 80, // Set the desired fixed height
-                            child: SingleChildScrollView(
-                              child: Text(
-                                currentQuestion['question'],
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  Expanded(
-                    child: FractionallySizedBox(
-                      alignment: Alignment.center,
-                      widthFactor: 1.0,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            if (currentQuestion.containsKey('correctAnswers'))
-                              MultipleCorrectAnswerQuestionWidget(
-                                options: questionOptions,
-                                selectedAnswers:
-                                    selectedAnswers[currentQuestionIndex] ?? [],
-                                onAnswerSelected: (selectedOptions) {
-                                  setState(() {
-                                    selectedAnswers[currentQuestionIndex] =
-                                        selectedOptions;
-                                    allQuestionsAnswered =
-                                        checkAllQuestionsAnswered();
-                                  });
-                                },
-                              )
-                            else
-                              SingleCorrectAnswerQuestionWidget(
-                                options: questionOptions,
-                                selectedAnswer:
-                                    selectedAnswers[currentQuestionIndex],
-                                onAnswerSelected: (selectedOption) {
-                                  setState(() {
-                                    selectedAnswers[currentQuestionIndex] =
-                                        selectedOption;
-                                    allQuestionsAnswered =
-                                        checkAllQuestionsAnswered();
-                                  });
-                                },
-                              ),
-                          ],
+                    const SizedBox(height: 20),
+                    Expanded(
+                      child: FractionallySizedBox(
+                        alignment: Alignment.center,
+                        widthFactor: 1.0,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              if (currentQuestion.containsKey('correctAnswers'))
+                                MultipleCorrectAnswerQuestionWidget(
+                                  options: questionOptions,
+                                  selectedAnswers:
+                                      selectedAnswers[currentQuestionIndex] ??
+                                          [],
+                                  onAnswerSelected: (selectedOptions) {
+                                    setState(() {
+                                      selectedAnswers[currentQuestionIndex] =
+                                          selectedOptions;
+                                      allQuestionsAnswered =
+                                          checkAllQuestionsAnswered();
+                                    });
+                                  },
+                                )
+                              else
+                                SingleCorrectAnswerQuestionWidget(
+                                  options: questionOptions,
+                                  selectedAnswer:
+                                      selectedAnswers[currentQuestionIndex],
+                                  onAnswerSelected: (selectedOption) {
+                                    setState(() {
+                                      selectedAnswers[currentQuestionIndex] =
+                                          selectedOption;
+                                      allQuestionsAnswered =
+                                          checkAllQuestionsAnswered();
+                                    });
+                                  },
+                                ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (currentQuestionIndex > 0)
-                        ElevatedButton(
-                          onPressed: previousQuestion,
-                          child: const Text('Previous'),
-                        ),
-                      const SizedBox(width: 20),
-                      if (currentQuestionIndex < quizData.length - 1)
-                        ElevatedButton(
-                          onPressed: nextQuestion,
-                          child: const Text('Next'),
-                        ),
-                      const SizedBox(width: 20),
-                      if (currentQuestionIndex == quizData.length - 1)
-                        ElevatedButton(
-                          onPressed: showWarningIfQuestionsNotFilled,
-                          child: const Text('Submit Quiz'),
-                        ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-    );
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (currentQuestionIndex > 0)
+                          ElevatedButton(
+                            onPressed: previousQuestion,
+                            child: const Text('Previous'),
+                          ),
+                        const SizedBox(width: 20),
+                        if (currentQuestionIndex < quizData.length - 1)
+                          ElevatedButton(
+                            onPressed: nextQuestion,
+                            child: const Text('Next'),
+                          ),
+                        const SizedBox(width: 20),
+                        if (currentQuestionIndex == quizData.length - 1)
+                          ElevatedButton(
+                            onPressed: showWarningIfQuestionsNotFilled,
+                            child: const Text('Submit Quiz'),
+                          ),
+                      ],
+                    )
+                  ],
+                ),
+              ));
   }
 }

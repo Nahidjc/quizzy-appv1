@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quizzy/components/bottom-navigation.dart';
+import 'package:quizzy/components/custom_drawer.dart';
 import 'package:quizzy/pages/home_page.dart';
 import 'package:quizzy/pages/leaderboard.dart';
 import 'package:quizzy/pages/result_review.dart';
@@ -549,8 +551,11 @@ class _QuizResultPageState extends State<QuizResultPage>
               )
             ],
           )
-        ]));
+        ]),
+        endDrawer: const CustomDrawer(),
+        bottomNavigationBar: const BottomNav());
   }
+
   String formatDuration(Duration duration) {
     String minutes = (duration.inSeconds ~/ 60).toString().padLeft(2, '0');
     String seconds = (duration.inSeconds % 60).toString().padLeft(2, '0');
