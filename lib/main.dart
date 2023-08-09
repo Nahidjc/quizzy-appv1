@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quizzy/provider/login_provider.dart';
+import 'package:quizzy/provider/user_provider.dart';
 import 'package:quizzy/routes/app_routes.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => AuthProvider()),
+    ChangeNotifierProvider(create: (_) => UserProvider()),
   ], child: const MyApp()));
 }
 

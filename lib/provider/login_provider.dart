@@ -16,6 +16,8 @@ class AuthProvider extends ChangeNotifier {
   bool get isAuthenticated => _isAuthenticated;
   bool get isLoading => _isLoading;
   bool get isRegistered => _isRegistered;
+  String? _profileUrl;
+  String? get profileUrl => _profileUrl;
   String _name = '';
   String get name => _name;
   int _coin = 0;
@@ -52,6 +54,7 @@ class AuthProvider extends ChangeNotifier {
         _name = userDetails.name;
         _coin = userDetails.coin;
         _userId = userDetails.id;
+        _profileUrl = userDetails.profileUrl;
         notifyListeners();
         setLoading(false);
         setAuthenticated(true);
@@ -141,6 +144,8 @@ class AuthProvider extends ChangeNotifier {
         var jsonResponse = json.decode(response.body);
         UserData userData = UserData.fromJson(jsonResponse);
         _coin = userData.coin;
+        _name = userData.firstName;
+        _profileUrl = userData.profileUrl;
       }
     } catch (e) {
       _errorMessage = 'An error occurred.';

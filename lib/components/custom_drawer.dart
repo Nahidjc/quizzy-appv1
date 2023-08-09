@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quizzy/pages/leaderboard.dart';
 import 'package:quizzy/pages/login_page.dart';
+import 'package:quizzy/pages/update_user.dart';
 import 'package:quizzy/provider/login_provider.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -47,9 +48,11 @@ class CustomDrawer extends StatelessWidget {
                     leading: const Icon(Icons.edit_rounded),
                     title: const Text('Update Profile'),
                     onTap: () {
-                      // Handle the drawer item tap here
                       Navigator.pop(context);
-                      // Implement your logic here
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            UserProfilePage(userId: user.userId),
+                      ));
                     },
                   ),
                 ),

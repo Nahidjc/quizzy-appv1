@@ -6,6 +6,7 @@ import 'package:quizzy/components/campaign/campaign_quiz_list.dart';
 import 'package:quizzy/components/campaign/campaign_skeleton.dart';
 import 'package:quizzy/models/campaign.dart';
 import 'package:quizzy/provider/login_provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
   const MyAppBar({super.key});
@@ -57,6 +58,12 @@ class _MyAppBarState extends State<MyAppBar>
     AuthProvider user = Provider.of<AuthProvider>(context);
     String name = user.name;
     int coin = user.coin;
+    ImageProvider<Object>? backgroundImage;
+    if (user.profileUrl == null) {
+      backgroundImage = const AssetImage("assets/images/avatar.png");
+    } else {
+      backgroundImage = NetworkImage(user.profileUrl!);
+    }
     String coinString = coin.toString();
     DateTime currentDate = DateTime.now();
 
@@ -69,8 +76,6 @@ class _MyAppBarState extends State<MyAppBar>
 
     bool isClosed = campaign?.endDate != null &&
         campaign?.endDate.isBefore(currentDate) == true;
-
-    // bool isClosed = campaign?.endDate.isBefore(currentDate) ?? false;
     return AppBar(
         toolbarHeight: 190.0,
         automaticallyImplyLeading: false,
@@ -94,12 +99,19 @@ class _MyAppBarState extends State<MyAppBar>
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(40.0),
                       ),
-                      child: const CircleAvatar(
-                        radius: 20.0,
-                        // backgroundImage: AssetImage("assets/images/avatar.png"),
-                        backgroundImage: NetworkImage(
-                            "https://avatars.githubusercontent.com/u/113003788?v=4"),
-                      ),
+                      child: isLoading
+                          ? Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: CircleAvatar(
+                                radius: 20.0,
+                                backgroundColor: Colors.grey[300],
+                              ),
+                            )
+                          : CircleAvatar(
+                              radius: 20.0,
+                              backgroundImage: backgroundImage,
+                            ),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -148,9 +160,7 @@ class _MyAppBarState extends State<MyAppBar>
                                   color: Color(0xFFFFD700),
                                   size: 20.0,
                                 ),
-                                const SizedBox(
-                                    width:
-                                        4.0), // Add some spacing between the icon and text
+                                const SizedBox(width: 4.0),
                                 Text(
                                   coinString,
                                   style: const TextStyle(
@@ -183,36 +193,33 @@ class _MyAppBarState extends State<MyAppBar>
               child: isLoading
                   ? const CampaignSkeleton()
                   : campaign == null
-                      ? const Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.campaign,
-                                color: Colors.grey,
-                                size: 64.0,
-                              ),
-                              SizedBox(height: 16.0),
-                              Text(
-                                "No active campaigns at the moment",
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.grey,
-                                  letterSpacing: 0.6,
+                      ? Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.campaign,
+                                  color: Colors.orange,
+                                  size: MediaQuery.of(context).size.height *
+                                      0.035,
                                 ),
-                              ),
-                              SizedBox(height: 8.0),
-                              Text(
-                                "Please check back later for exciting challenges.",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 14.0,
-                                  color: Colors.grey,
-                                  letterSpacing: 0.6,
+                                const SizedBox(height: 6.0),
+                                Text(
+                                  "No active campaigns at the moment",
+                                  style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.height *
+                                            0.018,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.orange,
+                                    letterSpacing: 0.5,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         )
                       : Row(
@@ -222,77 +229,78 @@ class _MyAppBarState extends State<MyAppBar>
                                 alignment: Alignment.center,
                                 padding: const EdgeInsets.only(top: 10.0),
                                 child: Column(
-                              children: [
-                                Text(
-                                  isUpcoming
-                                      ? "Upcoming Competition"
-                                      : isRunning
-                                          ? "Running Competition"
-                                          : "Closed Competition",
-                                  style: const TextStyle(
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 0.5,
-                                  ),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  campaign?.campaignName ?? 'Loading...',
-                                  style: const TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 0.6,
-                                  ),
-                                ),
-                                const SizedBox(height: 5),
-                                FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: Text(
-                                    '${DateFormat('d MMM, h:mm a').format(campaign!.startDate)} - ${DateFormat('d MMM, h:mm a').format(campaign!.endDate)}',
-                                    style: const TextStyle(
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.w400,
-                                      letterSpacing: 0.6,
+                                  children: [
+                                    Text(
+                                      isUpcoming
+                                          ? "Upcoming Competition"
+                                          : isRunning
+                                              ? "Running Competition"
+                                              : "Closed Competition",
+                                      style: const TextStyle(
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 0.5,
+                                      ),
                                     ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      campaign?.campaignName ?? 'Loading...',
+                                      style: const TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 0.6,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        '${DateFormat('d MMM, h:mm a').format(campaign!.startDate)} - ${DateFormat('d MMM, h:mm a').format(campaign!.endDate)}',
+                                        style: const TextStyle(
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.w400,
+                                          letterSpacing: 0.6,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: isRunning
+                                    ? () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                CampaignQuizList(
+                                                    campaignId: campaign!.id),
+                                          ),
+                                        );
+                                      }
+                                    : null,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: isRunning
+                                      ? Colors.orange
+                                      : (isUpcoming || isClosed)
+                                          ? Colors.grey
+                                          : Colors.red,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15.0, vertical: 15.0),
+                                ),
+                                child: const Text(
+                                  "Join",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0,
                                   ),
                                 ),
-                              ],
-                            ),
                               ),
-                    ElevatedButton(
-                      onPressed: isRunning
-                          ? () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => CampaignQuizList(
-                                      campaignId: campaign!.id),
-                                ),
-                              );
-                            }
-                          : null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: isRunning
-                            ? Colors.orange
-                            : (isUpcoming || isClosed)
-                                ? Colors.grey
-                                : Colors.red,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15.0, vertical: 15.0),
-                      ),
-                      child: const Text(
-                        "Join",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                    ),
-                  ]),
+                            ]),
             )
           ],
         ));
