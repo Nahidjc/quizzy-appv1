@@ -21,11 +21,11 @@ class CampaignApi {
   }
 
   Future<List<CampaignModel>> getCampaignQuiz(
-      String campaignId, String userId) async {
+      String campaignId, String studentid) async {
     final url = Uri.parse('${AppUrl.baseUrl}/quiz/campaign-quiz');
     final headers = {
       'campaignid': campaignId,
-      'userid': userId,
+      'studentid': studentid,
     };
     final response = await http.get(url, headers: headers);
     if (response.statusCode == 200) {
@@ -35,5 +35,23 @@ class CampaignApi {
     } else {
       throw Exception('Failed to load data from API');
     }
+  }
+
+  Future<void> attemptCampaignQuiz(String campaign, String quizId,
+      String userId, int point, List selectedAnswers) async {
+    final url = Uri.parse('${AppUrl.baseUrl}/quiz/attempt/campaign');
+    await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(
+        {
+          'campaign': campaign,
+          'quizId': quizId,
+          'userId': userId,
+          'point': point,
+          'selectedAnswers': selectedAnswers
+        },
+      ),
+    );
   }
 }

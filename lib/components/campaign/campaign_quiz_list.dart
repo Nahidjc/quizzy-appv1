@@ -86,7 +86,7 @@ class _CampaignQuizListState extends State<CampaignQuizList> {
                 return CampaignQuizItem(
                     title: quiz.title,
                     isAttempted: quiz.isAttempted,
-                    points: 0,
+                    points: quiz.point,
                     startTime: quiz.startTime,
                     endTime: quiz.endTime,
                     quiz: quiz);
